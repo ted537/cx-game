@@ -4,7 +4,7 @@ import (
 	"log"
 	"runtime"
 
-	//"github.com/skycoin/cx-game/spriteloader"
+	"github.com/skycoin/cx-game/sprite"
 	"github.com/skycoin/cx-game/render"
 	"github.com/skycoin/cx-game/tile"
 	"github.com/go-gl/gl/v4.1-core/gl"
@@ -44,8 +44,21 @@ func main() {
 	window := win.Window
 	window.SetKeyCallback(keyCallBack)
 	defer glfw.Terminate()
+
+	sprite.InitSpriteloader(&win)
+	spriteSheetId := sprite.
+		LoadSpriteSheet("./assets/starfield/stars/planets.png")
+	sprite.
+		LoadSprite(spriteSheetId, "star", 2,1)
+	spriteId := sprite.
+		GetSpriteIdByName("star")
+
 	tilemap := tile.TileMap {
-		TileIds: []int{1,0,3,4},
+		Tiles: []tile.Tile {tile.Tile{
+			Name: "real tile",
+			SpriteId: spriteId,
+		}},
+		TileIds: []int{-1,0,0,-1},
 		Width: 2, Height: 2,
 	}
 	for !window.ShouldClose() {
