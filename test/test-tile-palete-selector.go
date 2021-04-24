@@ -44,7 +44,8 @@ func keyCallBack(w *glfw.Window, k glfw.Key, s int, a glfw.Action, mk glfw.Modif
 func mouseButtonCallback(w *glfw.Window, b glfw.MouseButton, a glfw.Action, mk glfw.ModifierKey) {
 	screenX := float32(mouseX/float64(win.Width)-0.5)
 	screenY := float32(mouseY/float64(win.Height)-0.5)
-	tilePaleteSelector.ClickHandler(screenX,screenY)
+	projection := win.GetProjectionMatrix()
+	tilePaleteSelector.ClickHandler(screenX,screenY,projection)
 }
 
 func cursorPosCallback(w *glfw.Window, xpos, ypos float64) {

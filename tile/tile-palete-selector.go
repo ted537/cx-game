@@ -63,6 +63,12 @@ func (selector *TilePaleteSelector) Draw() {
 	}
 }
 
-func (selector *TilePaleteSelector) ClickHandler(x,y float32) {
+func (selector *TilePaleteSelector) ClickHandler(x,y float32, projection mgl32.Mat4) {
 	log.Print("tile palete selector is checking collisions for a click at ",x,y)
+	homogenousClipCoords := mgl32.Vec4 { x,y,-1.0,1.0}
+	cameraCoords := projection.Inv().Mul4x1(homogenousClipCoords)
+	rayEye := mgl32.Vec4 { cameraCoords.X(), cameraCoords.Y(), -1.0, 0 }
+	projected := rayEye.Normalize().Mul(10.0)
+
+	log.Print(projected.Vec3())
 }

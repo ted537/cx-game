@@ -143,11 +143,15 @@ func compileShader(source string, shaderType uint32) (uint32, error) {
 	return shader, nil
 }
 
-func (window *Window) UpdateProjectionMatrix() {
+func (window *Window) GetProjectionMatrix() mgl32.Mat4 {
 	aspect := float32(window.Width)/float32(window.Height)
-	projectTransform := mgl32.Perspective(
+	return mgl32.Perspective(
 		mgl32.DegToRad(45), aspect, 0.1, 100.0,
 	)
+}
+
+func (window *Window) UpdateProjectionMatrix() {
+	projectTransform := window.GetProjectionMatrix()
 	gl.UniformMatrix4fv(
 		gl.GetUniformLocation(window.Program, gl.Str("projection\x00")),
 		1, false, &projectTransform[0],
