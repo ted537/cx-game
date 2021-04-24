@@ -20,6 +20,8 @@ func init() {
 
 var isFreeCamera = false
 var isDebugMode = false
+var mouseX = 0.0
+var mouseY = 0.0
 
 func keyCallBack(w *glfw.Window, k glfw.Key, s int, a glfw.Action, mk glfw.ModifierKey) {
 	if a == glfw.Press {
@@ -37,12 +39,23 @@ func keyCallBack(w *glfw.Window, k glfw.Key, s int, a glfw.Action, mk glfw.Modif
 	}
 }
 
+func mouseButtonCallback(w *glfw.Window, b glfw.MouseButton, a glfw.Action, mk glfw.ModifierKey) {
+	log.Print("clicked at ",mouseX,mouseY)
+}
+
+func cursorPosCallback(w *glfw.Window, xpos, ypos float64) {
+	mouseX = xpos
+	mouseY = ypos
+}
+
 func main() {
 	log.Print("running test")
 	log.Print("you should see a tile palete selector")
 	win := render.NewWindow(640,480,true)
 	window := win.Window
 	window.SetKeyCallback(keyCallBack)
+	window.SetCursorPosCallback(cursorPosCallback)
+	window.SetMouseButtonCallback(mouseButtonCallback)
 	defer glfw.Terminate()
 
 	sprite.InitSpriteloader(&win)
