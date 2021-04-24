@@ -5,7 +5,7 @@ import (
 	"runtime"
 
 	"github.com/go-gl/glfw/v3.3/glfw"
-	"github.com/go-gl/mathgl/mgl32"
+	//"github.com/go-gl/mathgl/mgl32"
 	"github.com/go-gl/gl/v4.1-core/gl"
 
 	"github.com/skycoin/cx-game/sprite"
@@ -42,8 +42,8 @@ func keyCallBack(w *glfw.Window, k glfw.Key, s int, a glfw.Action, mk glfw.Modif
 }
 
 func mouseButtonCallback(w *glfw.Window, b glfw.MouseButton, a glfw.Action, mk glfw.ModifierKey) {
-	screenX := float32(mouseX/float64(win.Width)-0.5)
-	screenY := float32(mouseY/float64(win.Height)-0.5)
+	screenX := float32(2*mouseX/float64(win.Width)-1)
+	screenY := 1-float32(2*mouseY/float64(win.Height))
 	projection := win.GetProjectionMatrix()
 	tilePaleteSelector.ClickHandler(screenX,screenY,projection)
 }
@@ -142,13 +142,7 @@ func load() {
 		TileIds: []int{-1,0,2,-1},
 		Width: 2, Height: 2,
 	}
-	tilePaleteSelector = tile.TilePaleteSelector {
-		Tiles: tiles,
-		Transform: mgl32.Mat4.Mul4(
-			mgl32.Ident4(),
-			mgl32.Translate3D(0.0,-2.0,0),
-		),
-	}
+	tilePaleteSelector = tile.MakeTilePaleteSelector(tiles)
 }
 
 func main() {

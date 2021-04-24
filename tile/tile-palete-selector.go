@@ -26,6 +26,20 @@ type TilePaleteSelector struct {
 	// store tiles for (1) displaying selector and (2) placing tiles
 	Tiles []Tile
 	Transform mgl32.Mat4
+	Width int
+}
+
+func MakeTilePaleteSelector(tiles []Tile) TilePaleteSelector {
+	width := math.Ceil(math.Sqrt(float64(len(tiles))))
+	scale := float32(1.0/width)
+	return TilePaleteSelector {
+		Tiles: tiles,
+		Transform: mgl32.Mat4.Mul4(
+			mgl32.Translate3D(0.0,-3.0,0.0),
+			mgl32.Scale3D(scale,scale,scale),
+		),
+		Width: int(width),
+	}
 }
 
 func (tilemap *TileMap) Draw() {
@@ -39,24 +53,21 @@ func (tilemap *TileMap) Draw() {
 	}
 }
 
-const paleteXOffset = 0.0
-const paleteYOffset = -3.0
 func (selector *TilePaleteSelector) Draw() {
 	numTiles := float64(len(selector.Tiles))
 	if numTiles>0 {
-		width := math.Ceil(math.Sqrt(numTiles))
-		scale := float32(1.0/width)
 		for idx,tile := range selector.Tiles {
-			yLocal := float32(idx/int(width))*scale
-			xLocal := float32(idx%int(width))*scale
+			yLocal := float32(idx/int(selector.Width))
+			xLocal := float32(idx%int(selector.Width))
 			localTransform := mgl32.Mat4.Mul4(
 				selector.Transform,
 				mgl32.Translate3D(xLocal,yLocal,0),
 			)
 			localPos := localTransform.Col(3)
+			scaleX,scaleY,_ := mgl32.Extract3DScale(localTransform)
 			sprite.DrawSpriteQuad(
 				localPos.X(),localPos.Y(),
-				scale,scale,
+				scaleX,scaleY,
 				tile.SpriteId,
 			)
 		}
@@ -69,6 +80,7 @@ func (selector *TilePaleteSelector) ClickHandler(x,y float32, projection mgl32.M
 	cameraCoords := projection.Inv().Mul4x1(homogenousClipCoords)
 	rayEye := mgl32.Vec4 { cameraCoords.X(), cameraCoords.Y(), -1.0, 0 }
 	worldCoords := rayEye.Normalize().Mul(sprite.SpriteRenderDistance)
+	worldCoords[3]=1
 
 	paleteCoords := selector.Transform.Inv().Mul4x1(worldCoords)
 	log.Print(paleteCoords)
