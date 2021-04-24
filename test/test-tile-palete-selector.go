@@ -53,18 +53,26 @@ func main() {
 	spriteId := sprite.
 		GetSpriteIdByName("star")
 
+	tiles := []tile.Tile {tile.Tile{
+		Name: "real tile",
+		SpriteId: spriteId,
+	}}
 	tilemap := tile.TileMap {
-		Tiles: []tile.Tile {tile.Tile{
-			Name: "real tile",
-			SpriteId: spriteId,
-		}},
+		Tiles: tiles,
 		TileIds: []int{-1,0,0,-1},
 		Width: 2, Height: 2,
 	}
+	tilePaleteSelector := tile.TilePaleteSelector {
+		Tiles: tiles,
+	}
+
 	for !window.ShouldClose() {
 		gl.ClearColor(1,1,1,1)
 		gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 		tilemap.Draw()
+		if isDebugMode {
+			tilePaleteSelector.Draw()
+		}
 		glfw.PollEvents()
 		window.SwapBuffers()
 	}

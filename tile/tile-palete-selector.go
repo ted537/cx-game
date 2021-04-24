@@ -19,7 +19,8 @@ type TileMap struct {
 }
 
 type TilePaleteSelector struct {
-	spritesheet sprite.Spritesheet
+	// store tiles for (1) displaying selector and (2) placing tiles
+	Tiles []Tile
 }
 
 func (tilemap *TileMap) Draw() {
@@ -34,5 +35,7 @@ func (tilemap *TileMap) Draw() {
 }
 
 func (selector *TilePaleteSelector) Draw() {
-
+	for _,tile := range selector.Tiles {
+		sprite.DrawSpriteQuad(0,-1,1,1,tile.SpriteId)
+	}
 }
