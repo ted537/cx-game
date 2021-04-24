@@ -68,7 +68,8 @@ func (selector *TilePaleteSelector) ClickHandler(x,y float32, projection mgl32.M
 	homogenousClipCoords := mgl32.Vec4 { x,y,-1.0,1.0}
 	cameraCoords := projection.Inv().Mul4x1(homogenousClipCoords)
 	rayEye := mgl32.Vec4 { cameraCoords.X(), cameraCoords.Y(), -1.0, 0 }
-	projected := rayEye.Normalize().Mul(10.0)
+	worldCoords := rayEye.Normalize().Mul(sprite.SpriteRenderDistance)
 
-	log.Print(projected.Vec3())
+	paleteCoords := selector.Transform.Inv().Mul4x1(worldCoords)
+	log.Print(paleteCoords)
 }
