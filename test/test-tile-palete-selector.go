@@ -40,7 +40,9 @@ func keyCallBack(w *glfw.Window, k glfw.Key, s int, a glfw.Action, mk glfw.Modif
 }
 
 func mouseButtonCallback(w *glfw.Window, b glfw.MouseButton, a glfw.Action, mk glfw.ModifierKey) {
-	log.Print("clicked at ",mouseX,mouseY)
+	screenX := mouseX/float64(win.Width)-0.5
+	screenY := mouseY/float64(win.Height)-0.5
+	log.Print("clicked at ",screenX,screenY)
 }
 
 func cursorPosCallback(w *glfw.Window, xpos, ypos float64) {
