@@ -76,18 +76,33 @@ func (selector *TilePaleteSelector) Draw() {
 	}
 }
 
-func (selector *TilePaleteSelector) ClickHandler(x,y float32, projection mgl32.Mat4) {
-	log.Print("tile palete selector is checking collisions for a click at ",x,y)
+func convertScreenCoordsToWorld(x,y float32, projection mgl32.Mat4) mgl32.Vec4 {
 	homogenousClipCoords := mgl32.Vec4 { x,y,-1.0,1.0}
 	cameraCoords := projection.Inv().Mul4x1(homogenousClipCoords)
 	rayEye := mgl32.Vec4 { cameraCoords.X(), cameraCoords.Y(), -1.0, 0 }
 	worldCoords := rayEye.Normalize().Mul(sprite.SpriteRenderDistance)
 	worldCoords[3]=1
+	return worldCoords
+}
 
+func (selector *TilePaleteSelector) ClickHandler(x,y float32, projection mgl32.Mat4) {
+	worldCoords := convertScreenCoordsToWorld(x,y,projection)
 	paleteCoords := selector.Transform.Inv().Mul4x1(worldCoords).Vec2()
 	tileX := int(paleteCoords.X()+0.5)
 	tileY := int(paleteCoords.Y()+0.5)
 	if tileX>=0 && tileX<selector.Width && tileY>=0 && tileY<selector.Width {
 		selector.SelectedTileIndex = tileY*selector.Width + tileX
+	}
+}
+
+func (tilemap *TileMap) TryPlaceTile(x,y float32, projection mgl32.Mat4, tileId int) {
+	// tilemap is drawn directly on the world - no need to convert further
+	worldCoords := convertScreenCoordsToWorld(x,y,projection)
+	tileX := int(worldCoords.X()+0.5)
+	tileY := int(worldCoords.Y()+0.5)
+	if tileX>=0 && tileX<tilemap.Width && tileY>=0 && tileY<tilemap.Width {
+		log.Print("clicked world tile at ",tileX,tileY)
+		tileIdx := tileY*tilemap.Width + tileX
+		tilemap.TileIds[tileIdx] = tileId
 	}
 }

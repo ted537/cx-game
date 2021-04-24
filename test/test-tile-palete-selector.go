@@ -46,6 +46,10 @@ func mouseButtonCallback(w *glfw.Window, b glfw.MouseButton, a glfw.Action, mk g
 	screenY := 1-float32(2*mouseY/float64(win.Height))
 	projection := win.GetProjectionMatrix()
 	tilePaleteSelector.ClickHandler(screenX,screenY,projection)
+	tilemap.TryPlaceTile(
+		screenX,screenY,projection,
+		tilePaleteSelector.SelectedTileIndex,
+	)
 }
 
 func cursorPosCallback(w *glfw.Window, xpos, ypos float64) {
