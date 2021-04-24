@@ -25,8 +25,8 @@ type TilePaleteSelector struct {
 
 func (tilemap *TileMap) Draw() {
 	for idx,tileId := range tilemap.TileIds {
-		y := idx / tilemap.Width
-		x := idx % tilemap.Width
+		y := float32(idx / tilemap.Width)
+		x := float32(idx % tilemap.Width)
 		if tileId>=0 {
 			spriteId := tilemap.Tiles[tileId].SpriteId
 			sprite.DrawSpriteQuad(x,y,1,1,spriteId)
@@ -36,6 +36,6 @@ func (tilemap *TileMap) Draw() {
 
 func (selector *TilePaleteSelector) Draw() {
 	for _,tile := range selector.Tiles {
-		sprite.DrawSpriteQuad(0,-1,1,1,tile.SpriteId)
+		sprite.DrawSpriteQuad(0.0,-1.0,1.0,1.0,tile.SpriteId)
 	}
 }
