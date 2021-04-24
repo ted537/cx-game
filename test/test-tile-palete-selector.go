@@ -48,15 +48,37 @@ func cursorPosCallback(w *glfw.Window, xpos, ypos float64) {
 	mouseY = ypos
 }
 
-func main() {
+var win render.Window
+var tilemap tile.TileMap
+var tilePaleteSelector tile.TilePaleteSelector
+
+func tick() {
+
+}
+
+func draw() {
+	win.UpdateProjectionMatrix()
+	gl.ClearColor(1,1,1,1)
+	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+	tilemap.Draw()
+	if isDebugMode {
+		tilePaleteSelector.Draw()
+	}
+}
+
+func wait() {
+	glfw.PollEvents()
+	win.Window.SwapBuffers()
+}
+
+func load() {
 	log.Print("running test")
 	log.Print("you should see a tile palete selector")
-	win := render.NewWindow(640,480,true)
+	win = render.NewWindow(640,480,true)
 	window := win.Window
 	window.SetKeyCallback(keyCallBack)
 	window.SetCursorPosCallback(cursorPosCallback)
 	window.SetMouseButtonCallback(mouseButtonCallback)
-	defer glfw.Terminate()
 
 	sprite.InitSpriteloader(&win)
 	spriteSheetId := sprite.
@@ -70,25 +92,22 @@ func main() {
 		Name: "real tile",
 		SpriteId: spriteId,
 	}}
-	tilemap := tile.TileMap {
+	tilemap = tile.TileMap {
 		Tiles: tiles,
 		TileIds: []int{-1,0,0,-1},
 		Width: 2, Height: 2,
 	}
-	tilePaleteSelector := tile.TilePaleteSelector {
+	tilePaleteSelector = tile.TilePaleteSelector {
 		Tiles: tiles,
 	}
+}
 
-	for !window.ShouldClose() {
-		win.UpdateProjectionMatrix()
-		gl.ClearColor(1,1,1,1)
-		gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-		tilemap.Draw()
-		if isDebugMode {
-			tilePaleteSelector.Draw()
-		}
-		glfw.PollEvents()
-		window.SwapBuffers()
+func main() {
+	load()
+	defer glfw.Terminate()
+	for !win.Window.ShouldClose() {
+		tick()
+		draw()
+		wait()
 	}
-	tilemap.Draw()
 }
