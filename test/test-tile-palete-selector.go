@@ -114,13 +114,27 @@ func load() {
 		"wood3",
 	)
 
-	tiles := []tile.Tile {tile.Tile{
-		Name: "real tile",
-		SpriteId: sprite.GetSpriteIdByName("wood3"),
-	}}
+	tiles := []tile.Tile {
+		tile.Tile{
+			Name: "blue1",
+			SpriteId: sprite.GetSpriteIdByName("blue1"),
+		},
+		tile.Tile{
+			Name: "blue2",
+			SpriteId: sprite.GetSpriteIdByName("blue2"),
+		},
+		tile.Tile{
+			Name: "stone1",
+			SpriteId: sprite.GetSpriteIdByName("stone1"),
+		},
+		tile.Tile{
+			Name: "wood2",
+			SpriteId: sprite.GetSpriteIdByName("wood2"),
+		},
+	}
 	tilemap = tile.TileMap {
 		Tiles: tiles,
-		TileIds: []int{-1,0,0,-1},
+		TileIds: []int{-1,1,2,-1},
 		Width: 2, Height: 2,
 	}
 	tilePaleteSelector = tile.TilePaleteSelector {
