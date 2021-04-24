@@ -1,7 +1,7 @@
 package tile
 
 import (
-	"log"
+	//"log"
 	"math"
 	"github.com/skycoin/cx-game/sprite"
 )
@@ -43,10 +43,10 @@ func (selector *TilePaleteSelector) Draw() {
 		width := math.Ceil(math.Sqrt(numTiles))
 		scale := float32(1.0/width)
 		for idx,tile := range selector.Tiles {
-			yLocal := idx/int(width)
-			xLocal := idx%int(width)
-			log.Print(tile.SpriteId)
-			log.Print(tile.Name)
+			yLocal := float32(idx/int(width))*scale
+			xLocal := float32(idx%int(width))*scale
+			//log.Print(tile.SpriteId)
+			//log.Print(tile.Name)
 			sprite.DrawSpriteQuad(
 				float32(paleteXOffset+xLocal),
 				float32(paleteYOffset+yLocal),

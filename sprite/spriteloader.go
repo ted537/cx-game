@@ -76,7 +76,6 @@ func DrawSpriteQuad(xpos, ypos, xwidth, yheight float32, spriteId int) {
 	sprite := sprites[spriteId]
 	spritesheet := spritesheets[sprite.spriteSheetId]
 	gl.UseProgram(window.Program)
-	log.Print("setting texture to ",spritesheet.tex)
 	gl.Uniform1ui(
 		gl.GetUniformLocation(window.Program, gl.Str("ourTexture\x00")),
 		spritesheet.tex,
