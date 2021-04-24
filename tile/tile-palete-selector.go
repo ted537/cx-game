@@ -1,8 +1,11 @@
 package tile
 
 import (
-	//"log"
+	"log"
 	"math"
+
+	"github.com/go-gl/mathgl/mgl32"
+
 	"github.com/skycoin/cx-game/sprite"
 )
 
@@ -22,6 +25,7 @@ type TileMap struct {
 type TilePaleteSelector struct {
 	// store tiles for (1) displaying selector and (2) placing tiles
 	Tiles []Tile
+	Transform mgl32.Mat4
 }
 
 func (tilemap *TileMap) Draw() {
@@ -45,14 +49,20 @@ func (selector *TilePaleteSelector) Draw() {
 		for idx,tile := range selector.Tiles {
 			yLocal := float32(idx/int(width))*scale
 			xLocal := float32(idx%int(width))*scale
-			//log.Print(tile.SpriteId)
-			//log.Print(tile.Name)
+			localTransform := mgl32.Mat4.Mul4(
+				selector.Transform,
+				mgl32.Translate3D(xLocal,yLocal,0),
+			)
+			localPos := localTransform.Col(3)
 			sprite.DrawSpriteQuad(
-				float32(paleteXOffset+xLocal),
-				float32(paleteYOffset+yLocal),
+				localPos.X(),localPos.Y(),
 				scale,scale,
 				tile.SpriteId,
 			)
 		}
 	}
+}
+
+func (selector *TilePaleteSelector) ClickHandler(x,y float32) {
+	log.Print("tile palete selector is checking collisions for a click at ",x,y)
 }
