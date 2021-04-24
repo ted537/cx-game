@@ -35,11 +35,15 @@ var sprites = []Sprite{};
 var spriteIdsByName = make(map[string]int);
 
 func LoadSpriteSheet(fname string) int {
+	return LoadSpriteSheetWithSize(fname, 32,32)
+}
+
+func LoadSpriteSheetWithSize(fname string, spriteW,spriteH int) int {
 	img := loadPng(fname)
 
 	spritesheets = append(spritesheets, Spritesheet{
-		xScale: float32(32) / float32(img.Bounds().Dx()),
-		yScale: float32(32) / float32(img.Bounds().Dy()),
+		xScale: float32(spriteW) / float32(img.Bounds().Dx()),
+		yScale: float32(spriteH) / float32(img.Bounds().Dy()),
 		tex: makeTexture(img),
 	})
 
@@ -49,6 +53,15 @@ func LoadSpriteSheet(fname string) int {
 func LoadSprite(spriteSheetId int, name string, x,y int) {
 	sprites = append(sprites,Sprite{spriteSheetId,x,y})
 	spriteIdsByName[name] = len(sprites)-1
+}
+
+func LoadSingleSprite(fname string, name string) {
+	img := loadPng(fname)
+	spritesheetId := LoadSpriteSheetWithSize(
+		fname,
+		img.Bounds().Dx(),img.Bounds().Dy(),
+	)
+	LoadSprite(spritesheetId,name,0,0)
 }
 
 func GetSpriteIdByName(name string) int {
