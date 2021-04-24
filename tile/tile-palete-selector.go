@@ -82,6 +82,10 @@ func (selector *TilePaleteSelector) ClickHandler(x,y float32, projection mgl32.M
 	worldCoords := rayEye.Normalize().Mul(sprite.SpriteRenderDistance)
 	worldCoords[3]=1
 
-	paleteCoords := selector.Transform.Inv().Mul4x1(worldCoords)
-	log.Print(paleteCoords)
+	paleteCoords := selector.Transform.Inv().Mul4x1(worldCoords).Vec2()
+	tileX := int(paleteCoords.X()+0.5)
+	tileY := int(paleteCoords.Y()+0.5)
+	if tileX>=0 && tileX<selector.Width && tileY>=0 && tileY<selector.Width {
+		log.Print("got palete tile at ",tileX,tileY)
+	}
 }
