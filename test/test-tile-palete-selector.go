@@ -81,16 +81,42 @@ func load() {
 	window.SetMouseButtonCallback(mouseButtonCallback)
 
 	sprite.InitSpriteloader(&win)
-	spriteSheetId := sprite.
-		LoadSpriteSheet("./assets/starfield/stars/planets.png")
-	sprite.
-		LoadSprite(spriteSheetId, "star", 2,1)
-	spriteId := sprite.
-		GetSpriteIdByName("star")
+	sprite.LoadSingleSprite(
+		"./assets/tile/test-tile-blue-01.png",
+		"blue1",
+	)
+	sprite.LoadSingleSprite(
+		"./assets/tile/test-tile-blue-02.png",
+		"blue2",
+	)
+	sprite.LoadSingleSprite(
+		"./assets/tile/test-tile-blue-03.png",
+		"blue3",
+	)
+	sprite.LoadSingleSprite(
+		"./assets/tile/test-tile-stone-01.png",
+		"stone1",
+	)
+	sprite.LoadSingleSprite(
+		"./assets/tile/test-tile-stone-02.png",
+		"stone2",
+	)
+	sprite.LoadSingleSprite(
+		"./assets/tile/test-tile-stone-03.png",
+		"stone3",
+	)
+	sprite.LoadSingleSprite(
+		"./assets/tile/test-tile-wood-02.png",
+		"wood2",
+	)
+	sprite.LoadSingleSprite(
+		"./assets/tile/test-tile-wood-03.png",
+		"wood3",
+	)
 
 	tiles := []tile.Tile {tile.Tile{
 		Name: "real tile",
-		SpriteId: spriteId,
+		SpriteId: sprite.GetSpriteIdByName("wood3"),
 	}}
 	tilemap = tile.TileMap {
 		Tiles: tiles,
