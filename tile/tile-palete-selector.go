@@ -27,6 +27,7 @@ type TilePaleteSelector struct {
 	Tiles []Tile
 	Transform mgl32.Mat4
 	Width int
+	SelectedTileIndex int
 }
 
 func MakeTilePaleteSelector(tiles []Tile) TilePaleteSelector {
@@ -39,6 +40,7 @@ func MakeTilePaleteSelector(tiles []Tile) TilePaleteSelector {
 			mgl32.Scale3D(scale,scale,scale),
 		),
 		Width: int(width),
+		SelectedTileIndex: -1,
 	}
 }
 
@@ -86,6 +88,6 @@ func (selector *TilePaleteSelector) ClickHandler(x,y float32, projection mgl32.M
 	tileX := int(paleteCoords.X()+0.5)
 	tileY := int(paleteCoords.Y()+0.5)
 	if tileX>=0 && tileX<selector.Width && tileY>=0 && tileY<selector.Width {
-		log.Print("got palete tile at ",tileX,tileY)
+		selector.SelectedTileIndex = tileY*selector.Width + tileX
 	}
 }
