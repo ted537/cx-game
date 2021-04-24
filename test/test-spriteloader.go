@@ -4,7 +4,7 @@ import (
 	"log"
 	"runtime"
 
-	"github.com/skycoin/cx-game/spriteloader"
+	"github.com/skycoin/cx-game/sprite"
 	"github.com/skycoin/cx-game/render"
 	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
@@ -30,17 +30,17 @@ func main() {
 	window := win.Window
 	window.SetKeyCallback(keyCallBack)
 	defer glfw.Terminate()
-	spriteloader.InitSpriteloader(&win)
-	spriteSheetId := spriteloader.
+	sprite.InitSpriteloader(&win)
+	spriteSheetId := sprite.
 		LoadSpriteSheet("./assets/starfield/stars/planets.png")
-	spriteloader.
+	sprite.
 		LoadSprite(spriteSheetId, "star", 2,1)
-	spriteId := spriteloader.
+	spriteId := sprite.
 		GetSpriteIdByName("star")
 	for !window.ShouldClose() {
 		gl.ClearColor(1,1,1,1)
 		gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-		spriteloader.DrawSpriteQuad(0,0,2,2,spriteId)
+		sprite.DrawSpriteQuad(0,0,2,2,spriteId)
 		glfw.PollEvents()
 		window.SwapBuffers()
 	}

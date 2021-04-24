@@ -1,4 +1,4 @@
-package spriteloader
+package sprite
 
 import (
 	"log"

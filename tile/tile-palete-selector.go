@@ -2,16 +2,17 @@ package tile
 
 import (
 	"log"
-	"github.com/skycoin/cx-game/spriteloader"
+	"github.com/skycoin/cx-game/sprite"
 )
 
 type TileMap struct {
+	spritesheet *sprite.Spritesheet
 	TileIds []int
 	Width, Height int
 }
 
 type TilePaleteSelector struct {
-	spritesheet spriteloader.Spritesheet
+	spritesheet sprite.Spritesheet
 }
 
 func (tilemap *TileMap) Draw() {
