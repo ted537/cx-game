@@ -76,6 +76,7 @@ func DrawSpriteQuad(xpos, ypos, xwidth, yheight float32, spriteId int) {
 	sprite := sprites[spriteId]
 	spritesheet := spritesheets[sprite.spriteSheetId]
 	gl.UseProgram(window.Program)
+	log.Print("setting texture to ",spritesheet.tex)
 	gl.Uniform1ui(
 		gl.GetUniformLocation(window.Program, gl.Str("ourTexture\x00")),
 		spritesheet.tex,
@@ -97,6 +98,20 @@ func DrawSpriteQuad(xpos, ypos, xwidth, yheight float32, spriteId int) {
 		gl.GetUniformLocation(window.Program,gl.Str("world\x00")),
 		1,false,&worldTranslate[0],
 	)
+
+	gl.Enable(gl.TEXTURE_2D)
+	gl.Enable(gl.BLEND)
+	gl.BlendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
+	gl.Enable(gl.DEPTH_TEST)
+	gl.DepthFunc(gl.LESS)
+	gl.ActiveTexture(gl.TEXTURE0)
+	gl.BindTexture(gl.TEXTURE_2D, spritesheet.tex)
+	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT)
+	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT)
+	// sample nearest pixel such that we see nice pixel art
+	// and not a blurry mess
+	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST)
+	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST)
 
 	gl.BindVertexArray(quadVao)
 	gl.DrawArrays(gl.TRIANGLES, 0, 6)

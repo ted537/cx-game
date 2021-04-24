@@ -134,7 +134,7 @@ func load() {
 	}
 	tilemap = tile.TileMap {
 		Tiles: tiles,
-		TileIds: []int{-1,1,2,-1},
+		TileIds: []int{-1,0,2,-1},
 		Width: 2, Height: 2,
 	}
 	tilePaleteSelector = tile.TilePaleteSelector {
