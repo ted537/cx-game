@@ -80,6 +80,7 @@ func main() {
 	}
 
 	for !window.ShouldClose() {
+		win.UpdateProjectionMatrix()
 		gl.ClearColor(1,1,1,1)
 		gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 		tilemap.Draw()

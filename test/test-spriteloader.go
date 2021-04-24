@@ -37,7 +37,9 @@ func main() {
 		LoadSprite(spriteSheetId, "star", 2,1)
 	spriteId := sprite.
 		GetSpriteIdByName("star")
+
 	for !window.ShouldClose() {
+		win.UpdateProjectionMatrix()
 		gl.ClearColor(1,1,1,1)
 		gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 		sprite.DrawSpriteQuad(0,0,2,2,spriteId)

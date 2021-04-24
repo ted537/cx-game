@@ -60,9 +60,6 @@ func GetSpriteIdByName(name string) int {
 }
 
 func DrawSpriteQuad(xpos, ypos, xwidth, yheight float32, spriteId int) {
-	// TODO this method probably shouldn't be responsible 
-	// for setting up the projection matrix.
-	// clarify responsibilities later
 	sprite := sprites[spriteId]
 	spritesheet := spritesheets[sprite.spriteSheetId]
 	gl.UseProgram(window.Program)
@@ -86,15 +83,6 @@ func DrawSpriteQuad(xpos, ypos, xwidth, yheight float32, spriteId int) {
 	gl.UniformMatrix4fv(
 		gl.GetUniformLocation(window.Program,gl.Str("world\x00")),
 		1,false,&worldTranslate[0],
-	)
-
-	aspect := float32(window.Width)/float32(window.Height)
-	projectTransform := mgl32.Perspective(
-		mgl32.DegToRad(45), aspect, 0.1, 100.0,
-	)
-	gl.UniformMatrix4fv(
-		gl.GetUniformLocation(window.Program, gl.Str("projection\x00")),
-		1, false, &projectTransform[0],
 	)
 
 	gl.BindVertexArray(quadVao)
