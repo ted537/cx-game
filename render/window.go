@@ -2,11 +2,15 @@ package render
 
 import (
 	"fmt"
+	"io/fs"
+	"io/ioutil"
 	"log"
+	"path/filepath"
 	"strings"
 
 	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
+	"github.com/go-gl/mathgl/mgl32"
 )
 
 type Window struct {
@@ -97,12 +101,12 @@ func initOpenGL() uint32 {
     }
 ` + "\x00"
 
-	vertexShader, err := compileShader(vertexShaderSource, gl.VERTEX_SHADER)
+	vertexShader, err := CompileShader(vertexShaderSource, gl.VERTEX_SHADER)
 	if err != nil {
 		panic(err)
 	}
 
-	fragmentShader, err := compileShader(fragmentShaderSource, gl.FRAGMENT_SHADER)
+	fragmentShader, err := CompileShader(fragmentShaderSource, gl.FRAGMENT_SHADER)
 	if err != nil {
 		panic(err)
 	}
@@ -119,7 +123,7 @@ func initOpenGL() uint32 {
 	return prog
 }
 
-func compileShader(source string, shaderType uint32) (uint32, error) {
+func CompileShader(source string, shaderType uint32) (uint32, error) {
 	shader := gl.CreateShader(shaderType)
 
 	csources, free := gl.Strs(source)
@@ -140,4 +144,62 @@ func compileShader(source string, shaderType uint32) (uint32, error) {
 	}
 
 	return shader, nil
+}
+
+func (window *Window) GetProjectionMatrix() mgl32.Mat4 {
+    aspect := float32(window.Width)/float32(window.Height)
+    return mgl32.Perspective(
+        mgl32.DegToRad(45), aspect, 0.1, 100.0,
+    )
+}
+
+func InitOpenGLCustom(shaderDir string) uint32 {
+	var vertexShaderSource, fragmentShaderSource []byte
+
+	filepath.WalkDir(shaderDir, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			log.Panic(err)
+		}
+		if d.IsDir() {
+			return nil
+		}
+		if d.Name() == "vertex.glsl" {
+			vertexShaderSource, err = ioutil.ReadFile(path)
+			if err != nil {
+				log.Panic(err)
+			}
+		} else if d.Name() == "fragment.glsl" {
+			fragmentShaderSource, err = ioutil.ReadFile(path)
+			if err != nil {
+				log.Panic(err)
+			}
+		}
+
+		return nil
+	})
+	if len(vertexShaderSource) == 0 || len(fragmentShaderSource) == 0 {
+		log.Panic("NO shaders found")
+	}
+	if err := gl.Init(); err != nil {
+		panic(err)
+	}
+	version := gl.GoStr(gl.GetString(gl.VERSION))
+	log.Println("OpenGL version", version)
+
+	vertexShader, err := CompileShader(string(vertexShaderSource)+"\x00", gl.VERTEX_SHADER)
+	if err != nil {
+		panic(err)
+	}
+
+	fragmentShader, err := CompileShader(string(fragmentShaderSource)+"\x00", gl.FRAGMENT_SHADER)
+	if err != nil {
+		panic(err)
+	}
+
+	prog := gl.CreateProgram()
+	gl.AttachShader(prog, vertexShader)
+	gl.AttachShader(prog, fragmentShader)
+	gl.LinkProgram(prog)
+	gl.UseProgram(prog)
+	return prog
 }
