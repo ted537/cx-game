@@ -16,6 +16,7 @@ import (
 	"github.com/skycoin/cx-game/spriteloader"
 	"github.com/skycoin/cx-game/ui"
 	"github.com/skycoin/cx-game/world"
+	"github.com/skycoin/cx-game/inventory"
 )
 
 func init() {
@@ -162,6 +163,7 @@ func keyCallBack(w *glfw.Window, k glfw.Key, s int, a glfw.Action, mk glfw.Modif
 	}
 }
 
+var inventoryId uint32
 func main() {
 
 	/*
@@ -174,6 +176,8 @@ func main() {
 	win = render.NewWindow(height, width, true)
 	spriteloader.InitSpriteloader(&win)
 	cat = models.NewCat()
+	inventoryId = inventory.NewInventory(10,8)
+	log.Printf("inventoryId=%v",inventoryId)
 	fps = models.NewFps(false)
 
 	CurrentPlanet = world.NewDevPlanet()
@@ -262,6 +266,8 @@ func redraw(window *glfw.Window, program uint32, VAO uint32) {
 		Cam.DrawLines(collidingLines, []float32{1.0, 0.0, 0.0})
 	}
 
+	inventory := inventory.GetInventoryById(inventoryId)
+	inventory.DrawBar()
 	tilePaleteSelector.Draw()
 
 	glfw.PollEvents()
