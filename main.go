@@ -88,6 +88,7 @@ func cursorPosCallback(w *glfw.Window, xpos, ypos float64) {
 
 var isFreeCam = false
 var isTileSelectorVisible = false
+var isInventoryGridVisible = false
 var tilePaleteSelector ui.TilePaleteSelector
 
 var cat *models.Cat
@@ -146,6 +147,9 @@ func keyCallBack(w *glfw.Window, k glfw.Key, s int, a glfw.Action, mk glfw.Modif
 		}
 		if k == glfw.KeyF3 {
 			tilePaleteSelector.Toggle()
+		}
+		if k == glfw.KeyI {
+			isInventoryGridVisible = !isInventoryGridVisible
 		}
 	} else if a == glfw.Release {
 		if k == glfw.KeyW {
@@ -268,6 +272,9 @@ func redraw(window *glfw.Window, program uint32, VAO uint32) {
 
 	inventory := inventory.GetInventoryById(inventoryId)
 	inventory.DrawBar()
+	if isInventoryGridVisible {
+		inventory.DrawGrid()
+	}
 	tilePaleteSelector.Draw()
 
 	glfw.PollEvents()

@@ -1,6 +1,10 @@
 package inventory;
 
-import "log"
+import (
+	"log"
+	"github.com/go-gl/mathgl/mgl32"
+	"github.com/skycoin/cx-game/spriteloader"
+)
 
 type InventorySlot struct {
 	itemType uint32
@@ -33,20 +37,32 @@ func (inventory Inventory) getBarSlots() []InventorySlot {
 	return inventory.slots[start:]
 }
 
+var gridScale float32 = 0.8
 func (inventory Inventory) DrawGrid() {
+	gridTransform :=
+		mgl32.Translate3D(0,1,-spriteloader.SpriteRenderDistance).
+		Mul4(mgl32.Scale3D(gridScale,gridScale,gridScale))
 	for y:=0;y<inventory.Height;y++ {
 		for x:=0;x<inventory.Width;x++ {
-			// TODO
-			_=x
-			_=y
+			xRender := float32(x) - float32(inventory.Width) / 2
+			yRender := float32(y) - float32(inventory.Height) / 2
+			slotTransform := gridTransform.
+				Mul4(mgl32.Translate3D(xRender,yRender,0))
+			spriteloader.DrawSpriteQuadMatrix(slotTransform, 0)
 		}
 	}
 }
 
 func (inv Inventory) DrawBar() {
-	for idx,slot := range inv.getBarSlots() {
+	barTransform := mgl32.Translate3D(0,-3,-spriteloader.SpriteRenderDistance)
+	barSlots := inv.getBarSlots()
+	for idx,slot := range barSlots {
+		x := float32(idx) - float32(len(barSlots)) / 2
+		slotTransform := barTransform.
+			Mul4(mgl32.Translate3D(x,0,0))
 		_ = idx
-		// TODO
+		// TODO draw the correct sprite
 		log.Print(slot)
+		spriteloader.DrawSpriteQuadMatrix(slotTransform, 0)
 	}
 }
