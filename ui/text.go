@@ -128,6 +128,7 @@ func DrawString(text string, transform mgl32.Mat4) {
 		fontTex,
 	)
 
+	// center it
 	pos := mgl32.Vec2 {
 		-calculateLineWidth(text)/2,
 		0,
@@ -135,12 +136,9 @@ func DrawString(text string, transform mgl32.Mat4) {
 	for _, charCode := range text {
 		charData,ok := asciiToCharDataMap[int(charCode)]
 		if ok {
-			//z := -spriteloader.SpriteRenderDistance
 			letterTransform := transform.
 				Mul4(cxmath.Scale(10)).
 				Mul4(mgl32.Translate3D(pos.X(),pos.Y(),0))
-			_ = letterTransform
-			_ = charData
 
 			gl.UniformMatrix4fv(
 				gl.GetUniformLocation(program, gl.Str("world\x00")),
