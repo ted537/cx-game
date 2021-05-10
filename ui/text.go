@@ -158,6 +158,6 @@ func DrawString(text string, transform mgl32.Mat4) {
 			gl.DrawArrays(gl.TRIANGLES, int32(glStart), 6)
 		}
 		// TODO variable width fonts
-		pos = pos.Add(mgl32.Vec2{1.1,0})
+		pos = pos.Add(mgl32.Vec2{1,0})
 	}
 }
