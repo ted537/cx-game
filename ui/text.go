@@ -12,7 +12,16 @@ import (
 	"github.com/skycoin/cx-game/spriteloader"
 )
 
-var asciiToCharDataMap = make(map[int]CharData)
+const fontTexWidth = 256
+const fontTexHeight = 256
+
+type NormalizedCharData struct {
+	size mgl32.Vec2
+	offset mgl32.Vec2
+	index int
+}
+
+var asciiToCharDataMap = make(map[int]NormalizedCharData)
 // opengl objects
 var fontTex,vao,vbo uint32
 
@@ -98,18 +107,28 @@ func InitTextRendering() {
 	fontTex = spriteloader.MakeTexture(img)
 
 	for _,charData := range charDatas {
-		asciiToCharDataMap[charData.ascii] = charData
+		asciiToCharDataMap[charData.ascii] = NormalizedCharData {
+			size: mgl32.Vec2 {
+				float32(charData.w)/fontTexWidth,
+				float32(charData.h)/fontTexHeight,
+			},
+			offset: mgl32.Vec2 {
+				float32(charData.tx)/fontTexWidth,
+				float32(charData.ty)/fontTexHeight,
+			},
+			index: charData.index,
+		}
 	}
 
 	initFontVbo()
 }
 
 func calculateLineWidth(text string) float32 {
-	x := 0
+	x := float32(0)
 	for _,charCode := range text {
-		x += asciiToCharDataMap[int(charCode)].w
+		x += asciiToCharDataMap[int(charCode)].size.X()
 	}
-	return float32(x)/256
+	return float32(x)
 }
 // TODO line wrapping
 // TODO alignment options
@@ -157,6 +176,6 @@ func DrawString(text string, transform mgl32.Mat4) {
 			gl.DrawArrays(gl.TRIANGLES, int32(glStart), 6)
 		}
 		// TODO variable width fonts
-		pos = pos.Add(mgl32.Vec2{float32(charData.w)/256,0})
+		pos = pos.Add(mgl32.Vec2{charData.size.X(),0})
 	}
 }
