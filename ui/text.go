@@ -142,6 +142,7 @@ func DrawString(text string, transform mgl32.Mat4) {
 	// TODO dedicate a program just for this
 	program := spriteloader.Window.Program
 	gl.UseProgram(program)
+	// this line only needs to occur once if we have a dedicated program
 	gl.Uniform1ui(
 		gl.GetUniformLocation(program, gl.Str("ourTexture\x00")),
 		fontTex,
