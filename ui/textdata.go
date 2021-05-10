@@ -1,13 +1,13 @@
 package ui;
 
 type CharData struct {
-	x,y int
+	w,h int
 	tx,ty int
 	ascii int
 	index int
 }
 
-var charData = []CharData {
+var charDatas = []CharData {
 	{6,30,0,0,' ',0},
 	{11,30,6,0,'!',1},
 	{11,30,17,0,'"',2},

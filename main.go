@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
+	"github.com/go-gl/mathgl/mgl32"
 	"github.com/skycoin/cx-game/camera"
 	"github.com/skycoin/cx-game/starmap"
 
@@ -180,6 +181,8 @@ func main() {
 
 	win = render.NewWindow(height, width, true)
 	spriteloader.InitSpriteloader(&win)
+	ui.InitTextRendering()
+
 	cat = models.NewCat()
 	log.Printf("inventoryId=%v",inventoryId)
 	fps = models.NewFps(false)
@@ -293,6 +296,9 @@ func redraw(window *glfw.Window, program uint32, VAO uint32) {
 		inventory.DrawBar()
 	}
 	tilePaleteSelector.Draw()
+
+	textTransform := mgl32.Translate3D(0,0,-spriteloader.SpriteRenderDistance)
+	ui.DrawString("Hello World!", textTransform)
 
 	glfw.PollEvents()
 	window.SwapBuffers()
