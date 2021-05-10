@@ -27,15 +27,18 @@ func initFontVbo() {
 		right := float32(charData.tx + charData.w)/256
 		left := float32(charData.tx)/256
 
+		w := float32(charData.w)*10/256
+		h := float32(charData.h)*10/256
+
 		// tri 1
-		vertexAttributes[i] = 1
-		vertexAttributes[i+1] = 1
+		vertexAttributes[i] = w
+		vertexAttributes[i+1] = h
 		vertexAttributes[i+2] = 0
 		vertexAttributes[i+3] = right
 		vertexAttributes[i+4] = bottom
 		i += 5
 
-		vertexAttributes[i] = 1
+		vertexAttributes[i] = w
 		vertexAttributes[i+1] = 0
 		vertexAttributes[i+2] = 0
 		vertexAttributes[i+3] = right
@@ -43,14 +46,14 @@ func initFontVbo() {
 		i += 5
 
 		vertexAttributes[i] = 0
-		vertexAttributes[i+1] = 1
+		vertexAttributes[i+1] = h
 		vertexAttributes[i+2] = 0
 		vertexAttributes[i+3] = left
 		vertexAttributes[i+4] = bottom
 		i += 5
 
 		// tri 2
-		vertexAttributes[i] = 1
+		vertexAttributes[i] = w
 		vertexAttributes[i+1] = 0
 		vertexAttributes[i+2] = 0
 		vertexAttributes[i+3] = right
@@ -65,7 +68,7 @@ func initFontVbo() {
 		i += 5
 
 		vertexAttributes[i] = 0
-		vertexAttributes[i+1] = 1
+		vertexAttributes[i+1] = h
 		vertexAttributes[i+2] = 0
 		vertexAttributes[i+3] = left
 		vertexAttributes[i+4] = bottom
