@@ -44,8 +44,8 @@ func initFontVbo() {
 		vertexAttributes[i] = left
 		vertexAttributes[i+1] = top
 		vertexAttributes[i+2] = 0
-		vertexAttributes[i+3] = 1
-		vertexAttributes[i+4] = 1
+		vertexAttributes[i+3] = 0
+		vertexAttributes[i+4] = 0
 		i += 5
 
 		vertexAttributes[i] = right
@@ -58,15 +58,15 @@ func initFontVbo() {
 		vertexAttributes[i] = left
 		vertexAttributes[i+1] = bottom
 		vertexAttributes[i+2] = 0
-		vertexAttributes[i+3] = 1
+		vertexAttributes[i+3] = 0
 		vertexAttributes[i+4] = 1
 		i += 5
 
 		vertexAttributes[i] = left
 		vertexAttributes[i+1] = top
 		vertexAttributes[i+2] = 0
-		vertexAttributes[i+3] = 1
-		vertexAttributes[i+4] = 1
+		vertexAttributes[i+3] = 0
+		vertexAttributes[i+4] = 0
 		i += 5
 	}
 	log.Print(vertexAttributes[6*5:6*5+6*5])
@@ -132,10 +132,10 @@ func DrawString(text string, transform mgl32.Mat4) {
 	for _, charCode := range text {
 		charData,ok := asciiToCharDataMap[int(charCode)]
 		if ok {
-			z := -spriteloader.SpriteRenderDistance
+			//z := -spriteloader.SpriteRenderDistance
 			letterTransform := transform.
 				Mul4(cxmath.Scale(1)).
-				Mul4(mgl32.Translate3D(pos.X(),pos.Y(),z))
+				Mul4(mgl32.Translate3D(pos.X(),pos.Y(),0))
 			_ = letterTransform
 			_ = charData
 
@@ -152,8 +152,9 @@ func DrawString(text string, transform mgl32.Mat4) {
 				1, false, &projectTransform[0],
 			)
 			gl.BindVertexArray(vao)
-			glStart := 6*charData.index
-			gl.DrawArrays(gl.TRIANGLES, int32(glStart), 6)
+			//glStart := 6*charData.index
+			//gl.DrawArrays(gl.TRIANGLES, int32(glStart), 6)
+			gl.DrawArrays(gl.TRIANGLES, 0,int32(6*len(asciiToCharDataMap)))
 		}
 		// TODO variable width fonts
 		pos = pos.Add(mgl32.Vec2{1.1,0})
