@@ -27,46 +27,48 @@ func initFontVbo() {
 		right := float32(charData.tx + charData.w)/256
 		left := float32(charData.tx)/256
 
-		vertexAttributes[i] = right
-		vertexAttributes[i+1] = top
+		// tri 1
+		vertexAttributes[i] = 1
+		vertexAttributes[i+1] = 1
 		vertexAttributes[i+2] = 0
-		vertexAttributes[i+3] = 1
-		vertexAttributes[i+4] = 0
+		vertexAttributes[i+3] = right
+		vertexAttributes[i+4] = bottom
 		i += 5
 
-		vertexAttributes[i] = right
-		vertexAttributes[i+1] = bottom
+		vertexAttributes[i] = 1
+		vertexAttributes[i+1] = 0
 		vertexAttributes[i+2] = 0
-		vertexAttributes[i+3] = 1
-		vertexAttributes[i+4] = 1
+		vertexAttributes[i+3] = right
+		vertexAttributes[i+4] = top
 		i += 5
 
-		vertexAttributes[i] = left
-		vertexAttributes[i+1] = top
+		vertexAttributes[i] = 0
+		vertexAttributes[i+1] = 1
 		vertexAttributes[i+2] = 0
-		vertexAttributes[i+3] = 0
-		vertexAttributes[i+4] = 0
+		vertexAttributes[i+3] = left
+		vertexAttributes[i+4] = bottom
 		i += 5
 
-		vertexAttributes[i] = right
-		vertexAttributes[i+1] = bottom
+		// tri 2
+		vertexAttributes[i] = 1
+		vertexAttributes[i+1] = 0
 		vertexAttributes[i+2] = 0
-		vertexAttributes[i+3] = 1
-		vertexAttributes[i+4] = 1
+		vertexAttributes[i+3] = right
+		vertexAttributes[i+4] = top
 		i += 5
 
-		vertexAttributes[i] = left
-		vertexAttributes[i+1] = bottom
+		vertexAttributes[i] = 0
+		vertexAttributes[i+1] = 0
 		vertexAttributes[i+2] = 0
-		vertexAttributes[i+3] = 0
-		vertexAttributes[i+4] = 1
+		vertexAttributes[i+3] = left
+		vertexAttributes[i+4] = top
 		i += 5
 
-		vertexAttributes[i] = left
-		vertexAttributes[i+1] = top
+		vertexAttributes[i] = 0
+		vertexAttributes[i+1] = 1
 		vertexAttributes[i+2] = 0
-		vertexAttributes[i+3] = 0
-		vertexAttributes[i+4] = 0
+		vertexAttributes[i+3] = left
+		vertexAttributes[i+4] = bottom
 		i += 5
 	}
 	log.Print(vertexAttributes[6*5:6*5+6*5])
@@ -152,9 +154,8 @@ func DrawString(text string, transform mgl32.Mat4) {
 				1, false, &projectTransform[0],
 			)
 			gl.BindVertexArray(vao)
-			//glStart := 6*charData.index
-			//gl.DrawArrays(gl.TRIANGLES, int32(glStart), 6)
-			gl.DrawArrays(gl.TRIANGLES, 0,int32(6*len(asciiToCharDataMap)))
+			glStart := 6*charData.index
+			gl.DrawArrays(gl.TRIANGLES, int32(glStart), 6)
 		}
 		// TODO variable width fonts
 		pos = pos.Add(mgl32.Vec2{1.1,0})
