@@ -27,8 +27,8 @@ func initFontVbo() {
 		right := float32(charData.tx + charData.w)/256
 		left := float32(charData.tx)/256
 
-		w := float32(charData.w)*10/256
-		h := float32(charData.h)*10/256
+		w := float32(charData.w)/256
+		h := float32(charData.h)/256
 
 		// tri 1
 		vertexAttributes[i] = w
@@ -107,11 +107,9 @@ func InitTextRendering() {
 func calculateLineWidth(text string) float32 {
 	x := 0
 	for _,charCode := range text {
-		_ = charCode
-		x += 1
-		//x += asciiToCharDataMap[int(charCode)].w
+		x += asciiToCharDataMap[int(charCode)].w
 	}
-	return float32(x)
+	return float32(x)/256
 }
 // TODO line wrapping
 // TODO alignment options
@@ -139,7 +137,7 @@ func DrawString(text string, transform mgl32.Mat4) {
 		if ok {
 			//z := -spriteloader.SpriteRenderDistance
 			letterTransform := transform.
-				Mul4(cxmath.Scale(1)).
+				Mul4(cxmath.Scale(10)).
 				Mul4(mgl32.Translate3D(pos.X(),pos.Y(),0))
 			_ = letterTransform
 			_ = charData
@@ -161,6 +159,6 @@ func DrawString(text string, transform mgl32.Mat4) {
 			gl.DrawArrays(gl.TRIANGLES, int32(glStart), 6)
 		}
 		// TODO variable width fonts
-		pos = pos.Add(mgl32.Vec2{1,0})
+		pos = pos.Add(mgl32.Vec2{float32(charData.w)/256,0})
 	}
 }
