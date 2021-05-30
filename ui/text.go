@@ -181,16 +181,10 @@ func DrawStringLeftAligned(
 				gl.GetUniformLocation(program, gl.Str("world\x00")),
 				1, false, &letterTransform[0],
 			)
-			/*
-				aspect := float32(spriteloader.Window.Width) / float32(spriteloader.Window.Height)
-				projectTransform := mgl32.Perspective(
-					mgl32.DegToRad(45), aspect, 0.1, 100.0,
-				)
-			*/
-			// gl.UniformMatrix4fv(
-			// 	gl.GetUniformLocation(program, gl.Str("projection\x00")),
-			// 	1, false, &ctx.Projection[0],
-			// )
+			gl.UniformMatrix4fv(
+				gl.GetUniformLocation(program, gl.Str("projection\x00")),
+				1, false, &ctx.Projection[0],
+			)
 			gl.BindVertexArray(vao)
 			glStart := 6 * charData.index
 			gl.DrawArrays(gl.TRIANGLES, int32(glStart), 6)
