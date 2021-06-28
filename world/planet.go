@@ -7,6 +7,7 @@ import (
 
 	"github.com/skycoin/cx-game/camera"
 	"github.com/skycoin/cx-game/render"
+	"github.com/skycoin/cx-game/render/blob"
 	"github.com/skycoin/cx-game/spriteloader"
 	"github.com/skycoin/cx-game/particles"
 	"github.com/skycoin/cx-game/cxmath"
@@ -49,12 +50,27 @@ func NewPlanet(x, y int32) *Planet {
 	return &planet
 }
 
+// TODO pass a layer into this such that bg tiles can use blob tiling
+func (planet *Planet) GetNeighbours(x,y int) blob.Neighbours{
+	return blob.Neighbours {
+		Up: planet.TileIsSolid(x,y+1),
+		UpRight: planet.TileIsSolid(x+1,y+1),
+		Right: planet.TileIsSolid(x+1,y),
+		DownRight: planet.TileIsSolid(x+1,y-1),
+		Down: planet.TileIsSolid(x,y-1),
+		DownLeft: planet.TileIsSolid(x-1,y-1),
+		Left: planet.TileIsSolid(x-1,y),
+		UpLeft: planet.TileIsSolid(x-1,y+1),
+	}
+}
+
 func (planet *Planet) DrawLayer(tiles []Tile, cam *camera.Camera) {
 	for idx, tile := range tiles {
 		y := int32(idx) / planet.Width
 		x := int32(idx) % planet.Width
 
 		if tile.TileType.ShouldRender() && (true || cam.IsInBounds(int(x),int(y))) {
+			blob.ApplyBlobTiling(planet.GetNeighbours(int(x),int(y)))
 			spriteloader.DrawSpriteQuad(
 				float32(x)-cam.X, float32(y)-cam.Y,
 				1, 1,

@@ -1,7 +1,7 @@
-package render
+package blob
 
 import (
-	"github.com/go-gl/mathgl/mgl32"
+	"log"
 )
 
 // https://www.tilesetter.org/docs/generating_tilesets
@@ -136,6 +136,7 @@ func (n Neighbours) blobCoords() (x,y int) {
 	return x,y
 }
 
-func DrawBlobTile(mvp mgl32.Mat4, neighbours Neighbours) {
-	
+func ApplyBlobTiling(neighbours Neighbours) {
+	x,y := neighbours.blobCoords()
+	log.Printf("using blob tile [%v,%v]",x,y)
 }
