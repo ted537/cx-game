@@ -9,6 +9,7 @@ func TestBlobCoords(t *testing.T) {
 	var expectedX,expectedY int
 	n := NewSolidNeighbours()
 	n.DownRight = false
+	t.Logf("have %v inner corners",n.countInnerCorners())
 	gotX,gotY = n.blobCoords()
 	expectedX = 5; expectedY = 2
 	if gotX != expectedX || gotY != expectedY {

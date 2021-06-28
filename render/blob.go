@@ -62,7 +62,7 @@ func (n Neighbours) countEdges() int {
 }
 
 func boolToInt(x bool) int {
-	if x { return 0 } else { return 1 }
+	if x { return 1 } else { return 0 }
 }
 
 // compute coords on the maps TileSetter provides in their "Blob" format
