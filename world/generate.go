@@ -63,8 +63,9 @@ func GeneratePlanet() *Planet {
 	spriteloader.
 		LoadSprite(oreSheetId, "Blue Ore", 3, 7)
 
-	dirtBlobSpritesId :=
-		blobsprites.LoadBlobSprites("./assets/tile/blob-test-tiles.png")
+	dirtBlobSpritesId := blobsprites.LoadBlobSprites( []string {
+		"./assets/tile/Tiles_1.png", "./assets/tile/Tiles_1_v1.png",
+	})
 
 	dirt := Tile {
 		TileType: TileTypeNormal,
