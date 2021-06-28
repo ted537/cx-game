@@ -1,9 +1,5 @@
 package blob
 
-import (
-	"log"
-)
-
 // https://www.tilesetter.org/docs/generating_tilesets
 type Neighbours struct {
 	Left, Right, Up, Down bool
@@ -66,6 +62,7 @@ func boolToInt(x bool) int {
 }
 
 // compute coords on the maps TileSetter provides in their "Blob" format
+// TODO maybe alter internal packing for more efficient determining
 func (n Neighbours) blobCoords() (x,y int) {
 	innerCorners := n.countInnerCorners()
 	// default to the solid square
@@ -73,24 +70,26 @@ func (n Neighbours) blobCoords() (x,y int) {
 	y = 1
 	if innerCorners == 0 {
 		// block from (0,0) to (3,3)
-		x = 1 + boolToInt(n.Up) - boolToInt(n.Down)
+		x = 1 + boolToInt(n.Left) - boolToInt(n.Right)
 		y = 1 + boolToInt(n.Up) - boolToInt(n.Down)
 		if !n.Left && !n.Right { x = 3 }
 		if !n.Up && !n.Down { y = 3 }
-
-		return x,y
 	}
 	if innerCorners == 1 {
 		// block from (4,0) to (7,3)
 		if !n.Left { x = 4 }
-		if n.hasRightInnerCorner() { x = 5 }
-		if n.hasLeftInnerCorner() { x = 6 }
 		if !n.Right { x = 7 }
+		if n.Left && n.Right {
+			if n.hasRightInnerCorner() { x = 5 }
+			if n.hasLeftInnerCorner() { x = 6 }
+		}
 
 		if !n.Up { y = 0 }
-		if !n.hasDownInnerCorner() { y = 1 }
-		if !n.hasUpInnerCorner() { y = 2 }
 		if !n.Down { y = 3 }
+		if n.Up && n.Down {
+			if n.hasDownInnerCorner() { y = 1 }
+			if n.hasUpInnerCorner() { y = 2 }
+		}
 	}
 	if innerCorners == 2 {
 		// horizontal strip from (4,4) to (7,4)
@@ -136,7 +135,13 @@ func (n Neighbours) blobCoords() (x,y int) {
 	return x,y
 }
 
-func ApplyBlobTiling(neighbours Neighbours) {
+const (
+	BlobSheetWidth = 11
+	BlobSheetHeight = 5
+)
+
+func ApplyBlobTiling(neighbours Neighbours) int {
 	x,y := neighbours.blobCoords()
-	log.Printf("using blob tile [%v,%v]",x,y)
+	idx := y * BlobSheetWidth + x
+	return idx
 }

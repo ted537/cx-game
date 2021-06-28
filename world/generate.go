@@ -5,6 +5,7 @@ import (
 
 	perlin "github.com/skycoin/cx-game/procgen"
 	"github.com/skycoin/cx-game/spriteloader"
+	"github.com/skycoin/cx-game/spriteloader/blobsprites"
 )
 
 // TODO shove in .yaml file
@@ -62,10 +63,15 @@ func GeneratePlanet() *Planet {
 	spriteloader.
 		LoadSprite(oreSheetId, "Blue Ore", 3, 7)
 
+	dirtBlobSpritesId :=
+		blobsprites.LoadBlobSprites("./assets/tile/blob-test-tiles.png")
+
 	dirt := Tile {
 		TileType: TileTypeNormal,
 		SpriteID: uint32(spriteloader.GetSpriteIdByName("Dirt")),
 		Name: "Dirt",
+		IsBlob: true,
+		BlobSpriteID: dirtBlobSpritesId,
 	}
 	stone := Tile {
 		TileType: TileTypeNormal,

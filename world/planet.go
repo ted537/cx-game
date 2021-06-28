@@ -9,6 +9,7 @@ import (
 	"github.com/skycoin/cx-game/render"
 	"github.com/skycoin/cx-game/render/blob"
 	"github.com/skycoin/cx-game/spriteloader"
+	"github.com/skycoin/cx-game/spriteloader/blobsprites"
 	"github.com/skycoin/cx-game/particles"
 	"github.com/skycoin/cx-game/cxmath"
 )
@@ -51,7 +52,9 @@ func NewPlanet(x, y int32) *Planet {
 }
 
 // TODO pass a layer into this such that bg tiles can use blob tiling
-func (planet *Planet) GetNeighbours(x,y int) blob.Neighbours{
+// right now we are (falsely) assuming that 
+// we are using this for just the top layer
+func (planet *Planet) GetNeighbours(x,y int) blob.Neighbours {
 	return blob.Neighbours {
 		Up: planet.TileIsSolid(x,y+1),
 		UpRight: planet.TileIsSolid(x+1,y+1),
@@ -69,8 +72,17 @@ func (planet *Planet) DrawLayer(tiles []Tile, cam *camera.Camera) {
 		y := int32(idx) / planet.Width
 		x := int32(idx) % planet.Width
 
+		// FIXME temporarily disabling frustum check
+		// because of planet wrapping issues
 		if tile.TileType.ShouldRender() && (true || cam.IsInBounds(int(x),int(y))) {
-			blob.ApplyBlobTiling(planet.GetNeighbours(int(x),int(y)))
+			if tile.IsBlob {
+				blobSpriteIdx :=
+					blob.ApplyBlobTiling(planet.GetNeighbours(int(x),int(y)))
+				//blobSpriteIdx = 1
+				blobSprites :=
+					blobsprites.GetBlobSpritesById(tile.BlobSpriteID)
+				tile.SpriteID = uint32(blobSprites[blobSpriteIdx])
+			}
 			spriteloader.DrawSpriteQuad(
 				float32(x)-cam.X, float32(y)-cam.Y,
 				1, 1,
