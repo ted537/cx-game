@@ -1,8 +1,9 @@
 package ui
 
 import (
-	"github.com/skycoin/cx-game/world"
 	"github.com/skycoin/cx-game/cxmath"
+	"github.com/skycoin/cx-game/world"
+	"github.com/skycoin/cx-game/item"
 )
 
 const InventoryGridWidth = 5
@@ -18,6 +19,17 @@ func binTileTypesByMaterial(
 			append(bins[tiletype.MaterialID], tiletype)
 	}
 	return bins
+}
+
+func GetTileTypesForItemTypeIDs(
+		itemtypeIDs []item.ItemTypeID
+) []world.TileType {
+	tiletypes := []world.TileType{}
+	for _,itemtypeID := range itemtypeIDs {
+		tiletypeID,ok := item.GetTileTypesForItemTypeIDs(itemtypeID)
+		if ok { tiletypes = append(tiletypes, tiletypeID.get() }
+	}
+	return tiletypes
 }
 
 func LayoutTiletypes(tiletypes []world.TileType) []cxmath.Vec2i {
