@@ -34,6 +34,7 @@ type TileType struct {
 	Placer Placer
 	Invulnerable bool
 	ID TileTypeID
+	MaterialID MaterialID
 }
 
 type TileCreationOptions struct {
