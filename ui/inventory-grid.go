@@ -20,10 +20,21 @@ func binTileTypesByMaterial(
 	return bins
 }
 
-func LayoutMaterials(tiletypes []world.TileType) []cxmath.Vec2i {
+func LayoutTiletypes(tiletypes []world.TileType) []cxmath.Vec2i {
 	bins := binTileTypesByMaterial(tiletypes)
-	_ = bins
 	positions := []cxmath.Vec2i{}
+
+	y := int32(0)
+	x := int32(0)
+	for _,bin := range bins {
+		for _,tiletype := range bin {
+			_ = tiletype // no use currently, might throw in struct later
+			x++
+			if x==InventoryGridWidth { x=0; y++ }
+			positions = append(positions, cxmath.Vec2i{x,y})
+		}
+		if x>0 { y++ } // after each bin, we must go to the next row
+	}
 	
 	return positions
 }
