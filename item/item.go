@@ -43,7 +43,7 @@ func (info ItemUseInfo) PlayerCoords() mgl32.Vec2 {
 }
 
 var tileTypeIDsToItemTypeIDs = make(map[world.TileTypeID]ItemTypeID)
-var itemTypeIDsToTileTypeIDs = make(map[ItemtypeID]world.TileTypeID)
+var itemTypeIDsToTileTypeIDs = make(map[ItemTypeID]world.TileTypeID)
 var itemTypes = make(map[ItemTypeID]*ItemType)
 
 var nextItemTypeID = ItemTypeID(1)
@@ -67,8 +67,9 @@ func GetItemTypeById(id ItemTypeID) *ItemType {
 	return itemTypes[id]
 }
 
-func GetTileTypeIDForItemTypeID(id ItemTypeID) (TileTypeID,bool) {
-	return itemTypeIDsToTileTypeIDs[id]
+func GetTileTypeIDForItemTypeID(itemtypeID ItemTypeID) (world.TileTypeID,bool) {
+	tiletypeID,ok := itemTypeIDsToTileTypeIDs[itemtypeID]
+	return tiletypeID,ok
 }
 
 func GetItemTypeIdForTile(tile world.Tile) ItemTypeID {

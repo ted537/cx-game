@@ -75,3 +75,7 @@ func GetTileTypeByID(id TileTypeID) (TileType,bool) {
 		return TileType{},false
 	}
 }
+
+func (id TileTypeID) Get() TileType {
+	return tileTypes[id]
+}
