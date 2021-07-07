@@ -7,11 +7,13 @@ import (
 	"github.com/skycoin/cx-game/physics"
 	"github.com/skycoin/cx-game/spriteloader"
 	"github.com/skycoin/cx-game/world"
+	"github.com/skycoin/cx-game/enemies/pathfinding"
 )
 
 type BasicEnemy struct {
 	physics.Body
 	Health int
+	Route pathfinding.Route
 }
 
 func InitBasicEnemies() {
@@ -61,6 +63,7 @@ func SpawnBasicEnemy(x, y float32) {
 			Pos:  cxmath.Vec2{X: x, Y: y},
 		},
 		Health: 5,
+		Route: pathfinding.NewWalkingRoute(3),
 	}
 	enemy.Damage = func(damage int) {
 		enemy.Health -= 1
@@ -79,11 +82,18 @@ func sign(x float32) float32 {
 	return 0
 }
 
+func (enemy BasicEnemy) isStuck() bool {
+	return (enemy.Collisions.Left || enemy.Collisions.Right) &&
+		!enemy.Collisions.Below
+}
+
 func (enemy *BasicEnemy) Tick(
 	world *world.Planet, dt float32, player *models.Player,
 	playerIsAttacking bool,
 ) bool {
-	enemy.Vel.X = basicEnemyMovSpeed * sign(player.Pos.X-enemy.Pos.X)
+	enemy.Route.UpdatePosition(enemy.Body.Pos.Mgl32())
+	moveToward := enemy.Route.NextCheckpoint()
+	enemy.Vel.X = basicEnemyMovSpeed * sign(moveToward.X()-enemy.Pos.X)
 
 	needsToJumpUpLeftWall := enemy.Collisions.Left && enemy.Vel.X<0
 	needsToJumpUpRightWall := enemy.Collisions.Right && enemy.Vel.X>0
@@ -93,7 +103,8 @@ func (enemy *BasicEnemy) Tick(
 	} else {
 		enemy.Vel.Y -= physics.Gravity * dt
 	}
-	//enemy.Move(world, dt)
+
+	if enemy.isStuck() { enemy.Route.Elaborate() }
 
 	playerIsCloseEnoughToStrike :=
 		player.Pos.Sub(enemy.Pos).LengthSqr() <
