@@ -63,6 +63,7 @@ func Draw() {
 	} else {
 		inventory.DrawBar(win.DefaultRenderContext())
 	}
+	inventory.PlacementGrid.Draw(win.DefaultRenderContext())
 	tilePaletteSelector.Draw(win.DefaultRenderContext())
 
 	glfw.PollEvents()

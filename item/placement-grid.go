@@ -1,12 +1,14 @@
 package item
 
 import (
+	"log"
 	"github.com/skycoin/cx-game/cxmath"
 	"github.com/skycoin/cx-game/cxmath/math32i"
+	"github.com/skycoin/cx-game/render"
 	"github.com/skycoin/cx-game/world"
 )
 
-const InventoryGridWidth = 5
+const PlacementGridWidth = 5
 
 func binTileTypeIDsByMaterial(
 		tiletypeIDs []world.TileTypeID,
@@ -52,7 +54,7 @@ func LayoutTiletypes(tiletypeIDs []world.TileTypeID) []PositionedTileTypeID {
 
 	for _,bin := range bins {
 		sizes := getTileTypeSizes(bin)
-		rects := cxmath.PackRectangles(InventoryGridWidth, sizes)
+		rects := cxmath.PackRectangles(PlacementGridWidth, sizes)
 		for binIdx,_ := range rects {
 			rect := &rects[binIdx]
 			rect.Origin.Y += materialYOffset
@@ -67,4 +69,28 @@ func LayoutTiletypes(tiletypeIDs []world.TileTypeID) []PositionedTileTypeID {
 	}
 	
 	return positionedTileTypeIDs
+}
+
+type PlacementGrid struct {
+	PositionedTileTypeIDs []PositionedTileTypeID
+	Visible bool
+}
+
+func NewPlacementGrid() PlacementGrid {
+	return PlacementGrid { PositionedTileTypeIDs: []PositionedTileTypeID{} }
+}
+
+func (ig *PlacementGrid) Assemble(itemTypeIDs []ItemTypeID) {
+	tileTypeIDs := GetTileTypesIDsForItemTypeIDs(itemTypeIDs)
+	ig.PositionedTileTypeIDs = LayoutTiletypes(tileTypeIDs)
+	log.Printf("%+v",*ig)
+}
+
+func (ig *PlacementGrid) ToggleVisible(itemTypeIDs []ItemTypeID) {
+	ig.Visible = !ig.Visible
+	if ig.Visible { ig.Assemble(itemTypeIDs) }
+}
+
+func (ig *PlacementGrid) Draw(ctx render.Context) {
+	if !ig.Visible { return }
 }

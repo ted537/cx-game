@@ -58,6 +58,9 @@ func ProcessInput() {
 	if input.GetButtonDown("inventory-grid") {
 		isInventoryGridVisible = !isInventoryGridVisible
 	}
+	if input.GetButtonDown("placement-grid") {
+		inventoryId.Get().TogglePlacementGridVisible()
+	}
 	if input.GetKeyDown(glfw.KeyL) {
 		starfield.SwitchBackgrounds(starfield.BACKGROUND_NEBULA)
 	}

@@ -23,11 +23,13 @@ type InventorySlot struct {
 	Durability uint32
 }
 
+type InventoryID uint32
 type Inventory struct {
 	Width, Height int
 	Slots []InventorySlot
 	SelectedBarSlotIndex int
 	GridHoldingIndex int
+	PlacementGrid PlacementGrid
 }
 
 var inventories = []Inventory{}
@@ -35,16 +37,17 @@ var bgColor = mgl32.Vec4{0.3,0.3,0.3,1}
 var borderColor = mgl32.Vec4{0.8,0.8,0.8,1}
 var selectedBorderColor = mgl32.Vec4{0.8,0,0,1}
 
-func NewInventory(width, height int) uint32 {
+func NewInventory(width, height int) InventoryID {
 	inventories = append(inventories, Inventory {
 		Width: width, Height: height,
 		Slots: make([]InventorySlot, width*height),
 		SelectedBarSlotIndex: 3,
+		PlacementGrid: NewPlacementGrid(),
 	})
-	return uint32(len(inventories)-1)
+	return InventoryID(len(inventories)-1)
 }
 
-func NewDevInventory() uint32 {
+func NewDevInventory() InventoryID {
 	inventoryId := NewInventory(10, 8)
 	inventory := GetInventoryById(inventoryId)
 	inventory.Slots[inventory.ItemSlotIndexForPosition(1, 0)] =
@@ -62,9 +65,11 @@ func NewDevInventory() uint32 {
 	return inventoryId
 }
 
-func GetInventoryById(id uint32) *Inventory {
+func GetInventoryById(id InventoryID) *Inventory {
 	return &inventories[id]
 }
+
+func (id InventoryID) Get() *Inventory { return &inventories[id] }
 
 func (inventory Inventory) getBarSlots() []InventorySlot {
 	return inventory.Slots[:inventory.Width]
@@ -74,6 +79,18 @@ func (inventory Inventory) getGridTransform() mgl32.Mat4 {
 	return mgl32.Ident4().
 		Mul4(mgl32.Translate3D(0,0.5,0)).
 		Mul4(mgl32.Scale3D(gridScale,gridScale,gridScale))
+}
+
+func (inventory Inventory) ItemTypeIDs() []ItemTypeID {
+	ids := []ItemTypeID{}
+	for _,slot := range inventory.Slots {
+		if slot.Quantity>0 { ids = append(ids, slot.ItemTypeID) }
+	}
+	return ids
+}
+
+func (inv *Inventory) TogglePlacementGridVisible() {
+	inv.PlacementGrid.ToggleVisible(inv.ItemTypeIDs())
 }
 
 var gridScale float32 = 1.5
