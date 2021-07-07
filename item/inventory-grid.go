@@ -20,25 +20,30 @@ func binTileTypesByMaterial(
 	return bins
 }
 
-func GetTileTypesForItemTypeIDs(
+func GetTileTypesIDsForItemTypeIDs(
 		itemtypeIDs []ItemTypeID,
-) []world.TileType {
-	tiletypes := []world.TileType{}
+) []world.TileTypeID {
+	tiletypeIDs := []world.TileTypeID{}
 	for _,itemtypeID := range itemtypeIDs {
 		tiletypeID,ok := GetTileTypeIDForItemTypeID(itemtypeID)
-		if ok { tiletypes = append(tiletypes, tiletypeID.Get()) }
+		if ok { tiletypeIDs = append(tiletypeIDs, tiletypeID) }
 	}
-	return tiletypes
+	return tiletypeIDs
 }
 
-func LayoutTiletypes(tiletypes []world.TileType) []cxmath.Vec2i {
+type PositionedTileTypeID struct {
+	TileTypeID world.TileTypeID
+	Rect cxmath.Rect
+}
+
+func LayoutTiletypes(tiletypeIDs []world.TileTypeID) []cxmath.Vec2i {
 	bins := binTileTypesByMaterial(tiletypes)
-	positions := []cxmath.Vec2i{}
+	positionedTileTypeIDs := []cxmath.Vec2i{}
 
 	y := int32(0)
 	x := int32(0)
 	for _,bin := range bins {
-		for _,tiletype := range bin {
+		for _,tiletypeID := range bin {
 			_ = tiletype // no use currently, might throw in struct later
 			x++
 			if x==InventoryGridWidth { x=0; y++ }
