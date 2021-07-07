@@ -2,6 +2,7 @@ package item
 
 import (
 	"github.com/skycoin/cx-game/cxmath"
+	"github.com/skycoin/cx-game/cxmath/math32i"
 	"github.com/skycoin/cx-game/world"
 )
 
@@ -45,10 +46,24 @@ func getTileTypeSizes(ids []world.TileTypeID) []cxmath.Vec2i{
 func LayoutTiletypes(tiletypeIDs []world.TileTypeID) []PositionedTileTypeID {
 	bins := binTileTypeIDsByMaterial(tiletypeIDs)
 	positionedTileTypeIDs := make([]PositionedTileTypeID,len(tiletypeIDs))
+	layoutIdx := 0
+
+	materialYOffset := int32(0)
 
 	for _,bin := range bins {
 		sizes := getTileTypeSizes(bin)
-		_ = sizes // temporary
+		rects := cxmath.PackRectangles(InventoryGridWidth, sizes)
+		for binIdx,_ := range rects {
+			rect := &rects[binIdx]
+			rect.Origin.Y += materialYOffset
+			positionedTileTypeIDs[layoutIdx] = PositionedTileTypeID {
+				TileTypeID: tiletypeIDs[layoutIdx],
+				Rect: *rect,
+			}
+		}
+		for _,rect := range rects {
+			materialYOffset = math32i.Max(materialYOffset,rect.Bottom())
+		}
 	}
 	
 	return positionedTileTypeIDs
