@@ -2,6 +2,7 @@ package world
 
 import (
 	"github.com/skycoin/cx-game/render/blob"
+	"github.com/skycoin/cx-game/cxmath"
 )
 
 type Placer interface {
@@ -35,6 +36,11 @@ type TileType struct {
 	Invulnerable bool
 	ID TileTypeID
 	MaterialID MaterialID
+	Width,Height int32
+}
+
+func (tt TileType) Size() cxmath.Vec2i {
+	return cxmath.Vec2i{tt.Width,tt.Height}
 }
 
 type TileCreationOptions struct {

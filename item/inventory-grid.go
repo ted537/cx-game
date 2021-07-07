@@ -7,15 +7,15 @@ import (
 
 const InventoryGridWidth = 5
 
-func binTileTypesByMaterial(
-		tiletypes []world.TileType,
-) map[world.MaterialID][]world.TileType {
-	bins := make(map[world.MaterialID][]world.TileType)
-	for _,tiletype := range tiletypes {
-		_,ok := bins[tiletype.MaterialID]
-		if !ok { bins[tiletype.MaterialID] = []world.TileType{} }
-		bins[tiletype.MaterialID] =
-			append(bins[tiletype.MaterialID], tiletype)
+func binTileTypeIDsByMaterial(
+		tiletypeIDs []world.TileTypeID,
+) map[world.MaterialID][]world.TileTypeID {
+	bins := make(map[world.MaterialID][]world.TileTypeID)
+	for _,tiletypeID := range tiletypeIDs {
+		_,ok := bins[tiletypeID.Get().MaterialID]
+		if !ok { bins[tiletypeID.Get().MaterialID] = []world.TileTypeID{} }
+		bins[tiletypeID.Get().MaterialID] =
+			append(bins[tiletypeID.Get().MaterialID], tiletypeID)
 	}
 	return bins
 }
@@ -36,21 +36,20 @@ type PositionedTileTypeID struct {
 	Rect cxmath.Rect
 }
 
-func LayoutTiletypes(tiletypeIDs []world.TileTypeID) []cxmath.Vec2i {
-	bins := binTileTypesByMaterial(tiletypes)
-	positionedTileTypeIDs := []cxmath.Vec2i{}
+func getTileTypeSizes(ids []world.TileTypeID) []cxmath.Vec2i{
+	sizes := make([]cxmath.Vec2i,len(ids))
+	for idx,id := range ids { sizes[idx] = id.Get().Size() }
+	return sizes
+}
 
-	y := int32(0)
-	x := int32(0)
+func LayoutTiletypes(tiletypeIDs []world.TileTypeID) []PositionedTileTypeID {
+	bins := binTileTypeIDsByMaterial(tiletypeIDs)
+	positionedTileTypeIDs := make([]PositionedTileTypeID,len(tiletypeIDs))
+
 	for _,bin := range bins {
-		for _,tiletypeID := range bin {
-			_ = tiletype // no use currently, might throw in struct later
-			x++
-			if x==InventoryGridWidth { x=0; y++ }
-			positions = append(positions, cxmath.Vec2i{x,y})
-		}
-		if x>0 { y++ } // after each bin, we must go to the next row
+		sizes := getTileTypeSizes(bin)
+		_ = sizes // temporary
 	}
 	
-	return positions
+	return positionedTileTypeIDs
 }
