@@ -24,6 +24,8 @@ var basicEnemySpriteId int
 var basicEnemyMovSpeed = float32(1)
 var basicEnemies = []*BasicEnemy{}
 
+const enemyJumpVelocity = 15
+
 // TODO create a system to handle projectiles, melee attacks, etc
 var playerStrikeRange = float32(1)
 
@@ -82,7 +84,15 @@ func (enemy *BasicEnemy) Tick(
 	playerIsAttacking bool,
 ) bool {
 	enemy.Vel.X = basicEnemyMovSpeed * sign(player.Pos.X-enemy.Pos.X)
-	enemy.Vel.Y -= physics.Gravity * dt
+
+	needsToJumpUpLeftWall := enemy.Collisions.Left && enemy.Vel.X<0
+	needsToJumpUpRightWall := enemy.Collisions.Right && enemy.Vel.X>0
+	needsToJump := needsToJumpUpLeftWall || needsToJumpUpRightWall
+	if enemy.Collisions.Below && needsToJump {
+		enemy.Vel.Y = enemyJumpVelocity
+	} else {
+		enemy.Vel.Y -= physics.Gravity * dt
+	}
 	//enemy.Move(world, dt)
 
 	playerIsCloseEnoughToStrike :=
