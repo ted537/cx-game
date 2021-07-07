@@ -65,6 +65,9 @@ var tileTypes = make([]TileType,1)
 func RegisterTileType(tileType TileType) TileTypeID {
 	id := TileTypeID(len(tileTypes))
 	tileType.ID = id
+	// fill in default size
+	if tileType.Width==0 { tileType.Width=1 }
+	if tileType.Height==0 { tileType.Height=1 }
 	tileTypes = append(tileTypes, tileType)
 	return id
 }
