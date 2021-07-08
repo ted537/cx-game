@@ -10,10 +10,11 @@ import (
 	"github.com/skycoin/cx-game/enemies/pathfinding"
 )
 
-type BasicEnemy struct {
+type Enemy struct {
 	physics.Body
 	Health int
-	Route pathfinding.Route
+	TimeSinceLastJump float32
+	PathfindingBehaviourID pathfinding.BehaviourID
 }
 
 func InitBasicEnemies() {
