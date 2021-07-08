@@ -13,7 +13,9 @@ type WalkingBehaviour struct {
 func (wb WalkingBehaviour) shouldJump(ctx BehaviourContext) bool {
 	needsToJumpUpLeftWall := ctx.Self.Collisions.Left && ctx.Self.Vel.X<0
 	needsToJumpUpRightWall := ctx.Self.Collisions.Right && ctx.Self.Vel.X>0
-	return needsToJumpUpLeftWall || needsToJumpUpRightWall
+	needsToJump := needsToJumpUpLeftWall || needsToJumpUpRightWall
+	canJump := ctx.Self.Collisions.Below
+	return canJump && needsToJump
 }
 
 func (wb WalkingBehaviour) Follow(ctx BehaviourContext) {
