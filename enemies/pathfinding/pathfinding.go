@@ -7,16 +7,12 @@ import (
 )
 
 type BehaviourContext struct {
-	Self physics.Body
+	Self *physics.Body
 	PlayerPos mgl32.Vec2
 }
 
-type Instruction struct {
-	Velocity mgl32.Vec2
-}
-
 type Behaviour interface {
-	Follow(BehaviourContext) Instruction
+	Follow(BehaviourContext)
 }
 type BehaviourID uint32
 

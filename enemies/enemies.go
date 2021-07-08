@@ -12,6 +12,7 @@ import (
 
 type Enemy struct {
 	physics.Body
+	SpriteID uint32
 	Health int
 	TimeSinceLastJump float32
 	PathfindingBehaviourID pathfinding.BehaviourID
@@ -25,7 +26,7 @@ func InitBasicEnemies() {
 // TODO load an actual sprite here
 var basicEnemySpriteId int
 var basicEnemyMovSpeed = float32(1)
-var basicEnemies = []*BasicEnemy{}
+var basicEnemies = []*Enemy{}
 
 const enemyJumpVelocity = 15
 
@@ -36,7 +37,7 @@ func TickBasicEnemies(
 	world *world.Planet, dt float32,
 	player *models.Player, playerIsAttacking bool,
 ) {
-	nextEnemies := []*BasicEnemy{}
+	nextEnemies := []*Enemy{}
 	for idx, _ := range basicEnemies {
 		enemy := basicEnemies[idx]
 		enemy.Tick(world, dt, player, playerIsAttacking)
@@ -58,13 +59,14 @@ func DrawBasicEnemies(cam *camera.Camera) {
 }
 
 func SpawnBasicEnemy(x, y float32) {
-	enemy := BasicEnemy{
+	enemy := Enemy{
 		Body: physics.Body{
 			Size: cxmath.Vec2{X: 3.0, Y: 3.0},
 			Pos:  cxmath.Vec2{X: x, Y: y},
 		},
 		Health: 5,
-		Route: pathfinding.NewWalkingRoute(3),
+		SpriteID: uint32(basicEnemySpriteId),
+		PathfindingBehaviourID: pathfinding.WalkingBehaviourID,
 	}
 	enemy.Damage = func(damage int) {
 		enemy.Health -= 1
@@ -73,39 +75,19 @@ func SpawnBasicEnemy(x, y float32) {
 	basicEnemies = append(basicEnemies, &enemy)
 }
 
-func sign(x float32) float32 {
-	if x < 0 {
-		return -1
-	}
-	if x > 0 {
-		return 1
-	}
-	return 0
-}
-
-func (enemy BasicEnemy) isStuck() bool {
+func (enemy Enemy) isStuck() bool {
 	return (enemy.Collisions.Left || enemy.Collisions.Right) &&
 		!enemy.Collisions.Below
 }
 
-func (enemy *BasicEnemy) Tick(
+func (enemy *Enemy) Tick(
 	world *world.Planet, dt float32, player *models.Player,
 	playerIsAttacking bool,
 ) bool {
-	enemy.Route.UpdatePosition(enemy.Body.Pos.Mgl32())
-	moveToward := enemy.Route.NextCheckpoint()
-	enemy.Vel.X = basicEnemyMovSpeed * sign(moveToward.X()-enemy.Pos.X)
-
-	needsToJumpUpLeftWall := enemy.Collisions.Left && enemy.Vel.X<0
-	needsToJumpUpRightWall := enemy.Collisions.Right && enemy.Vel.X>0
-	needsToJump := needsToJumpUpLeftWall || needsToJumpUpRightWall
-	if enemy.Collisions.Below && needsToJump {
-		enemy.Vel.Y = enemyJumpVelocity
-	} else {
-		enemy.Vel.Y -= physics.Gravity * dt
-	}
-
-	if enemy.isStuck() { enemy.Route.Elaborate() }
+	enemy.PathfindingBehaviourID.Get().Follow(pathfinding.BehaviourContext{
+		Self: &enemy.Body,
+		PlayerPos: player.Pos.Mgl32(),
+	})
 
 	playerIsCloseEnoughToStrike :=
 		player.Pos.Sub(enemy.Pos).LengthSqr() <
@@ -115,7 +97,7 @@ func (enemy *BasicEnemy) Tick(
 	return stillAlive
 }
 
-func (enemy *BasicEnemy) Draw(cam *camera.Camera) {
+func (enemy *Enemy) Draw(cam *camera.Camera) {
 	camX := enemy.Pos.X - cam.X
 	camY := enemy.Pos.Y - cam.Y
 

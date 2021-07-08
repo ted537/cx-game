@@ -1,8 +1,6 @@
 package pathfinding
 
 import (
-	"github.com/go-gl/mathgl/mgl32"
-
 	"github.com/skycoin/cx-game/cxmath/math32"
 	"github.com/skycoin/cx-game/physics"
 )
@@ -18,23 +16,23 @@ func (wb WalkingBehaviour) shouldJump(ctx BehaviourContext) bool {
 	return needsToJumpUpLeftWall || needsToJumpUpRightWall
 }
 
-func (wb WalkingBehaviour) Follow(ctx BehaviourContext) Instruction {
+func (wb WalkingBehaviour) Follow(ctx BehaviourContext) {
 	// TODO fix this
 	dt := float32(1.0/30.0)
-	velX := float32(0); velY := float32(0)
 	directionX := math32.Sign(ctx.PlayerPos.X()-ctx.Self.Pos.X)
-	velX = directionX * wb.walkSpeed
+	ctx.Self.Vel.X = directionX * wb.walkSpeed
 
 	if wb.shouldJump(ctx) {
-		velY = wb.jumpSpeed
+		ctx.Self.Vel.Y = wb.jumpSpeed
 	} else {
-		velY = physics.Gravity * dt
+		ctx.Self.Vel.Y -= physics.Gravity * dt
 	}
-
-	return Instruction { Velocity: mgl32.Vec2{ velX, velY } }
 }
 
 var WalkingBehaviourID BehaviourID
 func init() {
-	WalkingBehaviourID = RegisterBehaviour(WalkingBehaviour{})
+	WalkingBehaviourID = RegisterBehaviour(WalkingBehaviour{
+		walkSpeed: 1,
+		jumpSpeed: 15,
+	})
 }
