@@ -5,7 +5,7 @@ import (
 )
 
 // all values are normalized to [1,1] range
-type HUD struct {
+type HUDState struct {
 	Health float32
 
 	Fullness float32 // opposite of hunger
@@ -14,14 +14,24 @@ type HUD struct {
 	Fuel float32
 }
 
-func (h HUD) Draw(ctx render.Context) {
-	h.drawHealthBar(ctx)
-	h.drawFullnessCircle(ctx)
-	h.drawHydrationCircle(ctx)
-	h.drawOxygenCircle(ctx)
-	h.drawFuelCircle(ctx)
+type HUD struct {
+	fullnessSpriteID uin
 }
 
-func DrawHUD(ctx render.Context, state HUDState) {
-	
+func (h HUD) drawHealthBar(health float32) {
+	// TODO
+}
+
+func (h HUD) drawFullnessCircle(fullness float32) {
+
+}
+
+func (h HUD)
+
+func (h HUD) Draw() {
+	h.drawHealthBar()
+	h.drawFullnessCircle()
+	h.drawHydrationCircle()
+	h.drawOxygenCircle()
+	h.drawFuelCircle()
 }
