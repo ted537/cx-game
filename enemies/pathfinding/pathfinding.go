@@ -2,16 +2,17 @@ package pathfinding
 
 import (
 	"github.com/go-gl/mathgl/mgl32"
+
+	"github.com/skycoin/cx-game/physics"
 )
 
 type BehaviourContext struct {
-	Self *Enemy
+	Self physics.Body
 	PlayerPos mgl32.Vec2
 }
 
 type Instruction struct {
-	ShouldJump bool
-	Direction float32
+	Velocity mgl32.Vec2
 }
 
 type Behaviour interface {
