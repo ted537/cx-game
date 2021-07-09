@@ -11,7 +11,6 @@ import (
 	"github.com/skycoin/cx-game/physics/movement"
 	"github.com/skycoin/cx-game/utility"
 	"github.com/skycoin/cx-game/world"
-	"github.com/skycoin/cx-game/ui"
 	"github.com/skycoin/cx-game/spriteloader"
 )
 
@@ -56,8 +55,6 @@ func (player *Player) Draw(cam *camera.Camera, planet *world.Planet) {
 	disp := planet.ShortestDisplacement(
 		mgl32.Vec2{cam.X, cam.Y},
 		player.InterpolatedTransform.Col(3).Vec2())
-
-	hud := ui.HUD { 
 
 	player.DrawOutfit(disp)
 

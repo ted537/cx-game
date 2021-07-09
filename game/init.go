@@ -37,6 +37,7 @@ var (
 	window *glfw.Window
 	player *models.Player
 	fps    *models.Fps
+	hud    ui.HUD
 
 	CurrentPlanet      *world.Planet
 	DrawCollisionBoxes = false
@@ -79,6 +80,7 @@ func Init() {
 
 	models.Init()
 	player = models.NewPlayer()
+	hud = ui.NewHUD()
 
 	fps = models.NewFps(false)
 	Cam = camera.NewCamera(&win)
