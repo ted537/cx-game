@@ -5,13 +5,12 @@ import (
 
 	"github.com/skycoin/cx-game/render"
 	"github.com/skycoin/cx-game/spriteloader"
-	"github.com/skycoin/cx-game/utility"
 )
 
 type HealthBar struct {
 	verticalDivider spriteloader.SpriteID
 	horizontalDivider spriteloader.SpriteID
-
+	nineslice StretchingNineSlice
 }
 func NewHealthBar() HealthBar {
 	return HealthBar{
@@ -19,13 +18,21 @@ func NewHealthBar() HealthBar {
 			"./assets/hud/hud_hp_bar_div1.png", "hp-bar-vertical-divider" ),
 		horizontalDivider: spriteloader.LoadSingleSprite(
 			"./assets/hud/hud_hp_bar_div2.png", "hp-bar-horizontal-divider" ),
+		nineslice: NewStretchingNineSlice(
+			spriteloader.LoadSingleSprite(
+				"./assets/hud/hud_hp_bar_border.png", "hp-bar-border" ),
+			3,1, // w,h
+		),
 	}
 }
 
 func (bar HealthBar) Draw(ctx render.Context,x float32) {
-	utility.DrawColorQuad(ctx, mgl32.Vec4{1,0,0,1})
+	bar.nineslice.Draw(ctx)
+	//utility.DrawColorQuad(ctx, mgl32.Vec4{1,0,0,1})
+	/*
 	spriteloader.DrawSpriteQuadContext(
 		ctx.PushLocal(mgl32.Scale3D(0.1,1,1)), bar.verticalDivider)
+	*/
 	// TODO
 }
 
@@ -39,7 +46,7 @@ func NewCircleIndicator(spriteID spriteloader.SpriteID) CircleIndicator {
 
 // x describes how full circle is
 func (indicator CircleIndicator) Draw(ctx render.Context,x float32) {
-	DrawArc(ctx.MVP(), mgl32.Vec4{1,1,1,1}, x)
+	DrawArc(ctx.MVP(), x)
 	spriteloader.DrawSpriteQuadContext(ctx, indicator.spriteID)
 }
 
