@@ -15,6 +15,7 @@ type HealthBar struct {
 	filledDivider spriteloader.SpriteID
 	unfilledDivider spriteloader.SpriteID
 	nineslice StretchingNineSlice
+	Width,Height float32
 }
 func NewHealthBar() HealthBar {
 	return HealthBar{
@@ -27,6 +28,7 @@ func NewHealthBar() HealthBar {
 				"./assets/hud/hud_hp_bar_border.png", "hp-bar-border" ),
 			3,1, // w,h
 		),
+		Width: 4, Height: 1,
 	}
 }
 
@@ -47,7 +49,7 @@ func (bar HealthBar) Draw(ctx render.Context,hp,maxHP int) {
 			divider,
 		)
 	}
-	bar.nineslice.Draw(topLeftCtx)
+	bar.nineslice.Draw(topLeftCtx,mgl32.Vec2{bar.Width,bar.Height})
 	text := fmt.Sprintf("%d/%d",hp,maxHP)
 	DrawString(
 		text, mgl32.Vec4{1,1,1,1}, AlignRight,

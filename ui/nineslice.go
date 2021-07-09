@@ -2,6 +2,7 @@ package ui
 
 import (
 	"github.com/go-gl/gl/v4.1-core/gl"
+	"github.com/go-gl/mathgl/mgl32"
 
 	"github.com/skycoin/cx-game/spriteloader"
 	"github.com/skycoin/cx-game/render"
@@ -79,7 +80,7 @@ func NewStretchingNineSlice(
 	}
 }
 
-func (nine StretchingNineSlice) Draw(ctx render.Context) {
+func (nine StretchingNineSlice) Draw(ctx render.Context, size mgl32.Vec2) {
 	metadata := spriteloader.GetSpriteMetadata(nine.sprite)
 	gl.ActiveTexture(gl.TEXTURE0)
 	nine.shader.Use()
