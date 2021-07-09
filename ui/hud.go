@@ -5,6 +5,9 @@ import (
 )
 
 type HealthBar struct {}
+func NewHealthBar() HealthBar {
+	return HealthBar{}
+}
 
 func (bar HealthBar) Draw(x float32) {
 	// TODO
@@ -12,6 +15,9 @@ func (bar HealthBar) Draw(x float32) {
 
 type CircleIndicator struct {
 	spriteID spriteloader.SpriteID
+}
+func NewCircleIndicator(spriteID spriteloader.SpriteID) CircleIndicator {
+	return CircleIndicator { spriteID: spriteID }
 }
 
 
@@ -44,7 +50,16 @@ func InitHUD() {
 	hud = HUD {
 		Health: NewHealthBar(),
 
-		Fullness: NewCircleIndicator(spriteloader.LoadSprite(
+		Fullness: NewCircleIndicator(spriteloader.LoadSingleSprite(
+			"./assets/hud/hud_status_food.png", "status_food")),
+		Hydration: NewCircleIndicator(spriteloader.LoadSingleSprite(
+			"./assets/hud/hud_status_water.png", "status_water")),
+		Oxygen: NewCircleIndicator(spriteloader.LoadSingleSprite(
+			"./assets/hud/hud_status_oxygen.png", "status_oxygen")),
+		Fuel: NewCircleIndicator(spriteloader.LoadSingleSprite(
+			"./assets/hud/hud_status_fuel.png", "status_fuel")),
+	}
+}
 
 func DrawHUD(state HUDState) {
 	hud.Draw(state)
