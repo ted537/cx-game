@@ -27,7 +27,7 @@ func NewHealthBar() HealthBar {
 }
 
 func (bar HealthBar) Draw(ctx render.Context,x float32) {
-	bar.nineslice.Draw(ctx)
+	bar.nineslice.Draw(ctx.PushLocal(mgl32.Translate3D(-0.5,0.5,0)))
 	//utility.DrawColorQuad(ctx, mgl32.Vec4{1,0,0,1})
 	/*
 	spriteloader.DrawSpriteQuadContext(

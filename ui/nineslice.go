@@ -13,19 +13,18 @@ import (
 func newStretchingNineSliceVao(w,h float32) uint32 {
 	geometry := utility.NewGeometry()
 
-	border := float32(0.1)
-	b := border
-
-	third := float32(1.0/3.0)
-	t := third
+	// TODO read from struct / config file
+	left := float32(1.0/8.0)
+	right := left
+	top := float32(1.0/8.0)
 
 	geometry.AddQuadFromCorners(
 		utility.Vert { 0,0,0, 0,0 },
-		utility.Vert { b,-b,0, t,t },
+		utility.Vert { left,-top,0, left,top },
 	)
 	geometry.AddQuadFromCorners(
-		utility.Vert { b,-b,0, t,t },
-		utility.Vert { w-b,-b,0, 2*t,t },
+		utility.Vert { left,0,0, left,0 },
+		utility.Vert { w-right,-top,0, 1-right,top },
 	)
 
 	log.Printf("nineslice geometry has %d verts",geometry.Verts())
@@ -68,7 +67,7 @@ func (nine StretchingNineSlice) Draw(ctx render.Context) {
 	nine.shader.SetVec2F("scale", 1,1)
 
 	gl.Disable(gl.DEPTH_TEST)
-	//gl.BindVertexArray(nine.vao)
+	gl.BindVertexArray(nine.vao)
 	// draw 9 quads = 18 triangles = 54 verts
 	gl.DrawArrays(gl.TRIANGLES,0,2*3*2)
 }
