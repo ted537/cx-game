@@ -21,7 +21,7 @@ func createArcVertexAttributes() []float32 {
 	for tri := 0 ; tri < arcTriangles; tri++ {
 		i += 5
 		angle := 2 * math.Pi * float32(tri) / float32(arcTriangles)
-		x := radius * math32.Sin(angle)
+		x := radius * -math32.Sin(angle)
 		y := radius * math32.Cos(angle)
 		z := float32(0)
 		attributes[i] = x
@@ -31,7 +31,7 @@ func createArcVertexAttributes() []float32 {
 		i += 5
 
 		angle = 2 * math.Pi * float32(tri+1) / float32(arcTriangles)
-		x = radius * math32.Sin(angle)
+		x = radius * -math32.Sin(angle)
 		y = radius * math32.Cos(angle)
 		z = float32(0)
 		attributes[i] = x
