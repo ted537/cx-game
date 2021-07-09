@@ -8,14 +8,25 @@ import (
 	"github.com/skycoin/cx-game/utility"
 )
 
-type HealthBar struct {}
+type HealthBar struct {
+	verticalDivider spriteloader.SpriteID
+	horizontalDivider spriteloader.SpriteID
+
+}
 func NewHealthBar() HealthBar {
-	return HealthBar{}
+	return HealthBar{
+		verticalDivider: spriteloader.LoadSingleSprite(
+			"./assets/hud/hud_hp_bar_div1.png", "hp-bar-vertical-divider" ),
+		horizontalDivider: spriteloader.LoadSingleSprite(
+			"./assets/hud/hud_hp_bar_div2.png", "hp-bar-horizontal-divider" ),
+	}
 }
 
 func (bar HealthBar) Draw(ctx render.Context,x float32) {
-	// TODO
 	utility.DrawColorQuad(ctx, mgl32.Vec4{1,0,0,1})
+	spriteloader.DrawSpriteQuadContext(
+		ctx.PushLocal(mgl32.Scale3D(0.1,1,1)), bar.verticalDivider)
+	// TODO
 }
 
 type CircleIndicator struct {
