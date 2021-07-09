@@ -48,6 +48,8 @@ type HUD struct {
 	Hydration CircleIndicator
 	Oxygen CircleIndicator
 	Fuel CircleIndicator
+
+	hpIconSpriteID spriteloader.SpriteID
 }
 var hud HUD
 
@@ -63,6 +65,9 @@ func InitHUD() {
 			"./assets/hud/hud_status_oxygen.png", "status_oxygen")),
 		Fuel: NewCircleIndicator(spriteloader.LoadSingleSprite(
 			"./assets/hud/hud_status_fuel.png", "status_fuel")),
+
+		hpIconSpriteID: spriteloader.LoadSingleSprite(
+			"./assets/hud/hud_hp_icon.png", "hp_icon" ),
 	}
 }
 
@@ -77,7 +82,11 @@ func (h HUD) Draw(state HUDState) {
 	ctx := render.CenterToTopLeft(spriteloader.Window.DefaultRenderContext()).
 		// padding
 		PushLocal(mgl32.Translate3D(hudPadding,-hudPadding,0))
-	h.Health.Draw(ctx,state.Health)
+
+	spriteloader.DrawSpriteQuadContext(ctx, h.hpIconSpriteID)
+
+	h.Health.Draw(
+		ctx.PushLocal(mgl32.Translate3D(1,0,0)),state.Health)
 	// TODO offset these
 	h.Fullness.Draw(
 		ctx.PushLocal(mgl32.Translate3D(0,y,0)),
