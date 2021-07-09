@@ -15,18 +15,32 @@ func newStretchingNineSliceVao(w,h float32) (tex uint32, verts int32) {
 	left := float32(1.0/6.0)
 	right := left
 	top := float32(1.0/8.0)
+	bottom := float32(2.0/8.0)
 
-	geometry.AddQuadFromCorners(
+	geometry.AddQuadFromCorners( // top left
 		utility.Vert { 0,0,0, 0,0 },
 		utility.Vert { left,-top,0, left,top },
 	)
-	geometry.AddQuadFromCorners(
+	geometry.AddQuadFromCorners( // top middle
 		utility.Vert { left,0,0, left,0 },
 		utility.Vert { w-right,-top,0, 1-right,top },
 	)
-	geometry.AddQuadFromCorners(
+	geometry.AddQuadFromCorners( // top righ
 		utility.Vert { w-right,0,0, 1-right,0 },
 		utility.Vert { w,-top,0, 1,top },
+	)
+	
+	geometry.AddQuadFromCorners( // middle left
+		utility.Vert { 0,-top,0, 0,top },
+		utility.Vert { left,-h+bottom,0, left,1-bottom },
+	)
+	geometry.AddQuadFromCorners( // center
+		utility.Vert { left,-top,0, left,top },
+		utility.Vert { w-right, -h+bottom,0, 1-right,1-bottom },
+	)
+	geometry.AddQuadFromCorners( //middle right
+		utility.Vert { w-right, -top, 0, 1-right, top },
+		utility.Vert { w, -h+bottom, 0, 1, 1-bottom },
 	)
 
 	return geometry.Upload(),geometry.Verts()
