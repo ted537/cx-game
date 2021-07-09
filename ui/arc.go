@@ -15,17 +15,29 @@ var arcVBO uint32
 var arcShader *utility.Shader
 
 func createArcVertexAttributes() []float32 {
+	radius := float32(0.5)
 	attributes := make([]float32,arcTriangles*3*5)
 	i := 0
 	for tri := 0 ; tri < arcTriangles; tri++ {
+		i += 5
 		angle := 2 * math.Pi * float32(tri) / float32(arcTriangles)
-		x := math32.Sin(angle)
-		y := math32.Cos(angle)
+		x := radius * math32.Sin(angle)
+		y := radius * math32.Cos(angle)
 		z := float32(0)
 		attributes[i] = x
 		attributes[i+1] = y
 		attributes[i+2] = z
 		// arc is currently untextured so values of u and v are not important
+		i += 5
+
+		angle = 2 * math.Pi * float32(tri+1) / float32(arcTriangles)
+		x = radius * math32.Sin(angle)
+		y = radius * math32.Cos(angle)
+		z = float32(0)
+		attributes[i] = x
+		attributes[i+1] = y
+		attributes[i+2] = z
+
 		i += 5
 	}
 	return attributes
@@ -65,7 +77,7 @@ func DrawArc(mvp mgl32.Mat4, color mgl32.Vec4, fullness float32) {
 	arcShader.Use()
 	defer arcShader.StopUsing()
 	arcShader.SetMat4("mvp",&mvp)
-	arcShader.SetVec4("color",&color)
+	arcShader.SetVec4("colour",&color)
 	gl.Disable(gl.DEPTH_TEST)
 	gl.BindVertexArray(arcVAO)
 	gl.DrawArrays(gl.TRIANGLES, 0, int32(fullness*arcTriangles*3))

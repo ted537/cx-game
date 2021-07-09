@@ -28,6 +28,7 @@ func NewCircleIndicator(spriteID spriteloader.SpriteID) CircleIndicator {
 
 // x describes how full circle is
 func (indicator CircleIndicator) Draw(ctx render.Context,x float32) {
+	DrawArc(ctx.MVP(), mgl32.Vec4{1,1,1,1}, x)
 	spriteloader.DrawSpriteQuadContext(ctx, indicator.spriteID)
 }
 
