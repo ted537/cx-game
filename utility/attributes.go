@@ -23,7 +23,9 @@ func (g *Geometry) AddVert(v Vert) {
 	g.data = append(g.data, v.X,v.Y,v.Z,v.U,v.V)
 }
 
-func (g *Geometry) Verts() int { return len(g.data)/5 }
+func (g *Geometry) Verts() int32 {
+	return int32(len(g.data)/5)
+}
 
 func (g *Geometry) AddTri(a,b,c Vert) {
 	g.AddVert(a)

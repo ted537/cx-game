@@ -1,8 +1,6 @@
 package ui
 
 import (
-	"log"
-
 	"github.com/go-gl/gl/v4.1-core/gl"
 
 	"github.com/skycoin/cx-game/spriteloader"
@@ -10,11 +8,11 @@ import (
 	"github.com/skycoin/cx-game/utility"
 )
 
-func newStretchingNineSliceVao(w,h float32) uint32 {
+func newStretchingNineSliceVao(w,h float32) (tex uint32, verts int32) {
 	geometry := utility.NewGeometry()
 
 	// TODO read from struct / config file
-	left := float32(1.0/8.0)
+	left := float32(1.0/6.0)
 	right := left
 	top := float32(1.0/8.0)
 
@@ -26,24 +24,27 @@ func newStretchingNineSliceVao(w,h float32) uint32 {
 		utility.Vert { left,0,0, left,0 },
 		utility.Vert { w-right,-top,0, 1-right,top },
 	)
+	geometry.AddQuadFromCorners(
+		utility.Vert { w-right,0,0, 1-right,0 },
+		utility.Vert { w,-top,0, 1,top },
+	)
 
-	log.Printf("nineslice geometry has %d verts",geometry.Verts())
-
-	return geometry.Upload()
+	return geometry.Upload(),geometry.Verts()
 }
 
 type StretchingNineSlice struct {
 	sprite spriteloader.SpriteID
 	vao uint32
+	verts int32
 	shader *utility.Shader
 }
 
 func NewStretchingNineSlice(
 		sprite spriteloader.SpriteID, w,h float32,
 ) StretchingNineSlice {
+	vao,verts := newStretchingNineSliceVao(w,h)
 	return StretchingNineSlice {
-		sprite: sprite,
-		vao: newStretchingNineSliceVao(w,h),
+		sprite: sprite, vao: vao, verts: verts,
 		shader: utility.NewShader(
 			"./assets/shader/mvp.vert", "./assets/shader/tex.frag" ),
 	}
@@ -68,6 +69,5 @@ func (nine StretchingNineSlice) Draw(ctx render.Context) {
 
 	gl.Disable(gl.DEPTH_TEST)
 	gl.BindVertexArray(nine.vao)
-	// draw 9 quads = 18 triangles = 54 verts
-	gl.DrawArrays(gl.TRIANGLES,0,2*3*2)
+	gl.DrawArrays(gl.TRIANGLES,0,nine.verts)
 }
