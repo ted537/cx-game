@@ -67,6 +67,7 @@ func Init() {
 	input.Init(win.Window)
 	sound.Init()
 	spriteloader.InitSpriteloader(&win)
+	ui.InitArc()
 	world.RegisterTileTypes()
 	spriteloader.DEBUG = false
 	item.InitWorldItem()
