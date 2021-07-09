@@ -1,10 +1,12 @@
 package ui
 
 import (
+	"math"
 	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/mathgl/mgl32"
 
 	"github.com/skycoin/cx-game/utility"
+	"github.com/skycoin/cx-game/cxmath/math32"
 )
 
 const arcTriangles = 50
@@ -16,9 +18,10 @@ func createArcVertexAttributes() []float32 {
 	attributes := make([]float32,arcTriangles*3*5)
 	i := 0
 	for tri := 0 ; tri < arcTriangles; tri++ {
-		angle := 2 * math.PI * float32(tri) / float32(arcTriangles)
+		angle := 2 * math.Pi * float32(tri) / float32(arcTriangles)
 		x := math32.Sin(angle)
 		y := math32.Cos(angle)
+		z := float32(0)
 		attributes[i] = x
 		attributes[i+1] = y
 		attributes[i+2] = z
@@ -41,7 +44,7 @@ func initArcVAO() {
 	gl.BufferData(
 		gl.ARRAY_BUFFER,
 		4*len(vertexAttributes),
-		gl.Ptr(vertexAttributes)<
+		gl.Ptr(vertexAttributes),
 		gl.STATIC_DRAW,
 	)
 	gl.VertexAttribPointer(0, 3, gl.FLOAT, false, 5*4, gl.PtrOffset(0))
