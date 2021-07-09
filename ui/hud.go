@@ -9,16 +9,18 @@ import (
 	"github.com/skycoin/cx-game/cxmath"
 )
 
+const healthBarDividerWidth = float32(0.1)
+
 type HealthBar struct {
-	verticalDivider spriteloader.SpriteID
-	horizontalDivider spriteloader.SpriteID
+	filledDivider spriteloader.SpriteID
+	unfilledDivider spriteloader.SpriteID
 	nineslice StretchingNineSlice
 }
 func NewHealthBar() HealthBar {
 	return HealthBar{
-		verticalDivider: spriteloader.LoadSingleSprite(
+		filledDivider: spriteloader.LoadSingleSprite(
 			"./assets/hud/hud_hp_bar_div1.png", "hp-bar-vertical-divider" ),
-		horizontalDivider: spriteloader.LoadSingleSprite(
+		unfilledDivider: spriteloader.LoadSingleSprite(
 			"./assets/hud/hud_hp_bar_div2.png", "hp-bar-horizontal-divider" ),
 		nineslice: NewStretchingNineSlice(
 			spriteloader.LoadSingleSprite(
@@ -29,7 +31,23 @@ func NewHealthBar() HealthBar {
 }
 
 func (bar HealthBar) Draw(ctx render.Context,hp,maxHP int) {
-	bar.nineslice.Draw(ctx.PushLocal(mgl32.Translate3D(-0.5,0.5,0)))
+	topLeftCtx := ctx.PushLocal(mgl32.Translate3D(-0.5,0.5,0))
+	for i := float32(0) ; i < bar.nineslice.Width; i++ {
+		hpAtDivider := int(i*float32(maxHP)/bar.nineslice.Width)
+		var divider spriteloader.SpriteID
+		if hp > hpAtDivider {
+			divider = bar.filledDivider
+		} else {
+			divider = bar.unfilledDivider
+		}
+		spriteloader.DrawSpriteQuadContext(
+			topLeftCtx.
+				PushLocal(mgl32.Translate3D(i,-0.5,0)).
+				PushLocal(mgl32.Scale3D(healthBarDividerWidth,1,1)),
+			divider,
+		)
+	}
+	bar.nineslice.Draw(topLeftCtx)
 	text := fmt.Sprintf("%d/%d",hp,maxHP)
 	DrawString(
 		text, mgl32.Vec4{1,1,1,1}, AlignRight,
@@ -38,7 +56,7 @@ func (bar HealthBar) Draw(ctx render.Context,hp,maxHP int) {
 	//utility.DrawColorQuad(ctx, mgl32.Vec4{1,0,0,1})
 	/*
 	spriteloader.DrawSpriteQuadContext(
-		ctx.PushLocal(mgl32.Scale3D(0.1,1,1)), bar.verticalDivider)
+		ctx.PushLocal(mgl32.Scale3D(0.1,1,1)), bar.filledDivider)
 	*/
 	// TODO
 }
