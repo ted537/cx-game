@@ -100,7 +100,9 @@ func Init() {
 	// Cam.SetCameraZoomPosition(0)
 	player.Pos.X = float32(spawnX)
 	player.Pos.Y = float32(CurrentPlanet.GetHeight(spawnX) + 10)
-	enemies.SpawnBasicEnemy(player.Pos.X+6, player.Pos.Y)
+	//enemies.SpawnBasicEnemy(player.Pos.X+6, player.Pos.Y)
+	CurrentPlanet.WorldState.AgentList.
+		CreateAgent(enemies.NewBasicEnemy(player.Pos.X+6, player.Pos.Y))
 	enemies.SpawnLeapingEnemy(player.Pos.X-6, player.Pos.Y)
 
 	sound.LoadSound("player_jump", "jump.wav")

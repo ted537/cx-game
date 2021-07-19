@@ -1,6 +1,8 @@
 package agent_draw
 
 import (
+	"log"
+
 	"github.com/skycoin/cx-game/constants"
 	"github.com/skycoin/cx-game/agents"
 	"github.com/skycoin/cx-game/spriteloader"
@@ -23,6 +25,8 @@ func QuadDrawHandler(agents []*agents.Agent) {
 	drawOpts := spriteloader.NewDrawOptions()
 	for _, agent := range agents {
 		drawOpts.Alpha = alphaForAgent(agent)
+		log.Printf("alpha is %v",drawOpts.Alpha)
+		log.Printf("drawing agent with physics state \n%+v",agent.PhysicsState)
 		spriteloader.DrawSpriteQuadOptions(
 			agent.PhysicsState.Pos.X,
 			agent.PhysicsState.Pos.Y,

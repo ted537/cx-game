@@ -80,12 +80,12 @@ func DrawBasicEnemies(cam *camera.Camera) {
 }
 
 // TODO either create enemy as a side effect or return instance
-func SpawnBasicEnemy(x, y float32) {
+func NewBasicEnemy(x, y float32) *agents.Agent {
 	agent := agents.Agent {
 		AgentType: constants.AGENT_ENEMY_MOB,
 		// TODO replace with actual handlers
 		AiHandlerID: constants.AI_HANDLER_NULL,
-		DrawHandlerID: constants.DRAW_HANDLER_NULL,
+		DrawHandlerID: constants.DRAW_HANDLER_QUAD,
 		PhysicsState: physics.Body{
 			Size: cxmath.Vec2{X: 3.0, Y: 3.0},
 			Pos:  cxmath.Vec2{X: x, Y: y},
@@ -93,6 +93,7 @@ func SpawnBasicEnemy(x, y float32) {
 		HealthComponent: agents.NewHealthComponent(5),
 	}
 	physics.RegisterBody(&agent.PhysicsState)
+	return &agent
 }
 
 func SpawnLeapingEnemy(x,y float32) {
