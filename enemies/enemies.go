@@ -1,6 +1,7 @@
 package enemies
 
 import (
+	"github.com/skycoin/cx-game/agents"
 	"github.com/skycoin/cx-game/camera"
 	"github.com/skycoin/cx-game/cxmath"
 	"github.com/skycoin/cx-game/models"
@@ -78,20 +79,20 @@ func DrawBasicEnemies(cam *camera.Camera) {
 }
 
 func SpawnBasicEnemy(x, y float32) {
-	enemy := Enemy{
-		Body: physics.Body{
+	agent := agents.Agent {
+		AgentType: AGENT_TYPE_ENEMY,
+		// TODO replace with actual handlers
+		AiHandlerID: AI_HANDLER_BASIC_NULL,
+		DrawHandlerID: DRAW_HANDLER_BASIC_NULL,
+		PhysicsState: physics.Body{
 			Size: cxmath.Vec2{X: 3.0, Y: 3.0},
 			Pos:  cxmath.Vec2{X: x, Y: y},
 		},
-		Health: 5,
-		SpriteID: uint32(basicEnemySpriteId),
-		PathfindingBehaviourID: pathfinding.WalkingBehaviourID,
-	}
-	enemy.Damage = func(damage int) {
-		enemy.Health -= 1
+		HealthComponent: NewHealthComponent(5)
 	}
 	physics.RegisterBody(&enemy.Body)
-	basicEnemies = append(basicEnemies, &enemy)
+	//basicEnemies = append(basicEnemies, &enemy)
+	agent
 }
 
 func SpawnLeapingEnemy(x,y float32) {

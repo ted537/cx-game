@@ -17,9 +17,12 @@ type Agent struct {
 }
 
 type HealthComponent struct {
-	Health_amount int
-	Health_max    int
+	Current int
+	Max    int
 	Died          bool
+}
+func NewHealthComponent(max int) HealthComponent {
+	return HealthComponent { Current: max, Max: max, Died: false }
 }
 
 func newAgent() *Agent {
@@ -52,8 +55,8 @@ func (a *Agent) SetVelocity(x, y float32) {
 }
 
 func (a *Agent) TakeDamage(amount int) {
-	a.HealthComponent.Health_amount -= amount
-	if a.HealthComponent.Health_amount <= 0 {
+	a.HealthComponent.Current -= amount
+	if a.HealthComponent.Current <= 0 {
 		a.HealthComponent.Died = true
 	}
 }
