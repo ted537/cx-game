@@ -15,8 +15,10 @@ var ParticleDrawHandlerList [constants.NUM_PARTICLE_DRAW_HANDLERS]ParticleDrawHa
 func Init() {
 
 	// particleShader := render.NewShader("./assets/shader/particles/shader.vert", "./assets/shader/particles/shader.vert")
-	RegisterDrawHandler(constants.PARTICLE_DRAW_HANDLER_1, DrawSolid)
-	RegisterDrawHandler(constants.PARTICLE_DRAW_HANDLER_2, DrawTransparent)
+	RegisterDrawHandler(
+		constants.PARTICLE_DRAW_HANDLER_SOLID, DrawSolid )
+	RegisterDrawHandler(
+		constants.PARTICLE_DRAW_HANDLER_TRANSPARENT, DrawTransparent )
 
 	AssertAllDrawHandlersRegistered()
 }

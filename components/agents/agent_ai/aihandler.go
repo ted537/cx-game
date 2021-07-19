@@ -1,14 +1,27 @@
 package agent_ai
 
-import "github.com/skycoin/cx-game/agents"
+import (
+	"log"
+	"github.com/skycoin/cx-game/agents"
+	"github.com/skycoin/cx-game/constants"
+	"github.com/skycoin/cx-game/components/types"
+)
 
-var AiHandlerList []func(*agents.Agent)
+type AiHandler func(*agents.Agent)
+var aiHandlers [constants.NUM_AI_HANDLERS]AiHandler
 
 func Init() {
-	RegisterAiHandler(AiHandler_1)
-	RegisterAiHandler(AiHandler_2)
+	RegisterAiHandler(constants.AI_HANDLER_NULL,AiHandlerNull)
 }
 
-func RegisterAiHandler(newHandler func(*agents.Agent)) {
-	AiHandlerList = append(AiHandlerList, newHandler)
+func assertAllAiHandlersRegistered() {
+	for _, handler := range aiHandlers {
+		if handler == nil {
+			log.Fatalf("Did not initialize all agent ai handlers")
+		}
+	}
+}
+
+func RegisterAiHandler(id types.AgentAiHandlerID, newHandler AiHandler) {
+	aiHandlers[id] = newHandler
 }

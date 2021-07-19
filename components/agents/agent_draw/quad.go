@@ -1,8 +1,6 @@
 package agent_draw
 
 import (
-	"log"
-
 	"github.com/skycoin/cx-game/constants"
 	"github.com/skycoin/cx-game/agents"
 	"github.com/skycoin/cx-game/spriteloader"
@@ -18,18 +16,16 @@ func alphaForAgent(agent *agents.Agent) float32 {
 	return 1 - x / TimeDuringFadeout
 }
 
-func QuadDrawHandler(agents []*agents.Agent) {
+func QuadDrawHandler(agents []*agents.Agent, ctx DrawHandlerContext) {
 	// TODO is this assumed??? can we omit this check?
 	if len(agents)==0 { return }
 	spriteID := getSpriteID(agents[0].AgentType)
 	drawOpts := spriteloader.NewDrawOptions()
 	for _, agent := range agents {
 		drawOpts.Alpha = alphaForAgent(agent)
-		log.Printf("alpha is %v",drawOpts.Alpha)
-		log.Printf("drawing agent with physics state \n%+v",agent.PhysicsState)
 		spriteloader.DrawSpriteQuadOptions(
-			agent.PhysicsState.Pos.X,
-			agent.PhysicsState.Pos.Y,
+			agent.PhysicsState.Pos.X-ctx.Camera.X,
+			agent.PhysicsState.Pos.Y-ctx.Camera.Y,
 			agent.PhysicsState.Size.X,
 			agent.PhysicsState.Size.Y,
 			spriteID, drawOpts,

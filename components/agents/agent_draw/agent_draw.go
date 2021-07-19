@@ -11,8 +11,10 @@ func DrawAgents(allAgents *agents.AgentList, cam *camera.Camera) {
 
 	bins := BinByDrawHandlerID(agentsToDraw)
 
+	ctx := DrawHandlerContext{Camera:cam}
+
 	for drawHandlerID, agentsForHandler := range bins {
-		GetDrawHandler(drawHandlerID)(agentsForHandler)
+		GetDrawHandler(drawHandlerID)(agentsForHandler,ctx)
 	}
 
 }
