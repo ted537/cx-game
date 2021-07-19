@@ -13,6 +13,7 @@ type Agent struct {
 	PhysicsParameters physics.PhysicsParameters
 	DrawHandlerID     types.AgentDrawHandlerID
 	HealthComponent   HealthComponent
+	TimeSinceDeath    float32
 }
 
 type HealthComponent struct {
