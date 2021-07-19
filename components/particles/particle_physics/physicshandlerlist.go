@@ -20,6 +20,9 @@ var ParticlePhysicsHandlerList [constants.NUM_PARTICLE_PHYSICS_HANDLERS]Particle
 
 func Init() {
 	RegisterPhysicsHandler(
+		constants.PARTICLE_PHYSICS_HANDLER_NULL,
+		PhysicsHandlerNull )
+	RegisterPhysicsHandler(
 		constants.PARTICLE_PHYSICS_HANDLER_BOUNCE_GRAVITY,
 		PhysicsHandlerBounceGravity )
 	RegisterPhysicsHandler(
