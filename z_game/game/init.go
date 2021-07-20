@@ -70,7 +70,6 @@ func Init() {
 	world.RegisterTileTypes()
 	item.InitWorldItem()
 	ui.Init()
-	enemies.InitBasicEnemies()
 	particles.InitParticles()
 	item.RegisterItemTypes()
 
