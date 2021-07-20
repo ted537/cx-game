@@ -4,6 +4,7 @@ import "github.com/skycoin/cx-game/components/types"
 
 const (
 	AI_HANDLER_NULL types.AgentAiHandlerID = iota
+	AI_HANDLER_WALK
 
 	NUM_AI_HANDLERS
 )

@@ -84,7 +84,7 @@ func NewBasicEnemy(x, y float32) *agents.Agent {
 	agent := agents.Agent {
 		AgentType: constants.AGENT_ENEMY_MOB,
 		// TODO replace with actual handlers
-		AiHandlerID: constants.AI_HANDLER_NULL,
+		AiHandlerID: constants.AI_HANDLER_WALK,
 		DrawHandlerID: constants.DRAW_HANDLER_QUAD,
 		PhysicsState: physics.Body{
 			Size: cxmath.Vec2{X: 3.0, Y: 3.0},

@@ -11,7 +11,8 @@ type AiHandler func(*agents.Agent)
 var aiHandlers [constants.NUM_AI_HANDLERS]AiHandler
 
 func Init() {
-	RegisterAiHandler(constants.AI_HANDLER_NULL,AiHandlerNull)
+	RegisterAiHandler(constants.AI_HANDLER_NULL, AiHandlerNull )
+	RegisterAiHandler(constants.AI_HANDLER_WALK, AiHandlerWalk )
 }
 
 func assertAllAiHandlersRegistered() {
