@@ -103,7 +103,8 @@ func Init() {
 	//enemies.SpawnBasicEnemy(player.Pos.X+6, player.Pos.Y)
 	CurrentPlanet.WorldState.AgentList.
 		CreateAgent(enemies.NewBasicEnemy(player.Pos.X+6, player.Pos.Y))
-	enemies.SpawnLeapingEnemy(player.Pos.X-6, player.Pos.Y)
+	CurrentPlanet.WorldState.AgentList.
+		CreateAgent(enemies.NewLeapingEnemy(player.Pos.X-6, player.Pos.Y))
 
 	sound.LoadSound("player_jump", "jump.wav")
 

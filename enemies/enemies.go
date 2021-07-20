@@ -83,7 +83,6 @@ func DrawBasicEnemies(cam *camera.Camera) {
 func NewBasicEnemy(x, y float32) *agents.Agent {
 	agent := agents.Agent {
 		AgentType: constants.AGENT_ENEMY_MOB,
-		// TODO replace with actual handlers
 		AiHandlerID: constants.AI_HANDLER_WALK,
 		DrawHandlerID: constants.DRAW_HANDLER_QUAD,
 		PhysicsState: physics.Body{
@@ -96,22 +95,19 @@ func NewBasicEnemy(x, y float32) *agents.Agent {
 	return &agent
 }
 
-func SpawnLeapingEnemy(x,y float32) {
-	enemy := Enemy{
-		Body: physics.Body{
+func NewLeapingEnemy(x,y float32) *agents.Agent {
+	agent := agents.Agent {
+		AgentType: constants.AGENT_ENEMY_MOB,
+		AiHandlerID: constants.AI_HANDLER_LEAP,
+		DrawHandlerID: constants.DRAW_HANDLER_QUAD,
+		PhysicsState: physics.Body{
 			Size: cxmath.Vec2{X:2.0, Y: 2.0},
 			Pos:  cxmath.Vec2{X: x, Y: y},
 		},
-		Health:5,
-		// TODO swap out sprite
-		SpriteID: uint32(basicEnemySpriteId),
-		PathfindingBehaviourID: pathfinding.LeapingBehaviourID,
+		HealthComponent: agents.NewHealthComponent(5),
 	}
-	enemy.Damage = func(damage int) {
-		enemy.Health -= 1
-	}
-	physics.RegisterBody(&enemy.Body)
-	basicEnemies = append(basicEnemies, &enemy)
+	physics.RegisterBody(&agent.PhysicsState)
+	return &agent
 }
 
 func (enemy Enemy) isStuck() bool {
