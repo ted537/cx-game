@@ -32,7 +32,7 @@ func main() {
 	window.SetKeyCallback(keyCallBack)
 	spriteloader.InitSpriteloader(&win)
 	spriteAnimated = spriteloader.
-		NewSpriteAnimated("./assets/spiderDrill.json", &win)
+		NewSpriteAnimated("./assets/spiderDrill.json")
 	action := spriteAnimated.Action("Walk")
 	time := glfw.GetTime()
 	for !window.ShouldClose() {

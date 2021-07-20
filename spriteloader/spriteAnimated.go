@@ -14,7 +14,6 @@ import (
 	"runtime"
 
 	"github.com/mitchellh/mapstructure"
-	"github.com/skycoin/cx-game/render"
 )
 
 func init() {
@@ -83,7 +82,7 @@ type SpriteAnimated struct {
 	spriteSheetId SpritesheetID
 }
 
-func NewSpriteAnimated(fileName string, lwin *render.Window) *SpriteAnimated {
+func NewSpriteAnimated(fileName string) *SpriteAnimated {
 	spriteAnimated := SpriteAnimated{}
 	jsonFile, err := os.Open(fileName)
 	if err != nil {
@@ -113,11 +112,12 @@ func NewSpriteAnimated(fileName string, lwin *render.Window) *SpriteAnimated {
 		frames = append(frames, frame)
 	}
 	spriteAnimated.FrameArr = frames
-	// load sprite
-	InitSpriteloader(lwin)
-	// spriteAnimated.spriteSheetId = LoadSpriteSheetByFrames("./assets/"+spriteAnimated.Meta.Image, spriteAnimated.FrameArr)
-	spriteAnimated.spriteSheetId = LoadSpriteSheetByColRow("./assets/"+spriteAnimated.Meta.Image, 5, 7)
-	// spriteAnimated.spriteSheetId = LoadSpriteSheetByColRow("./assets/"+spriteAnimated.Meta.Image, 3, 4)
+	// assuming uniform dimensions
+	log.Printf("Meta size is %+v",spriteAnimated.Meta.Size)
+	cols := spriteAnimated.Meta.Size.W / spriteAnimated.FrameArr[0].Frame.W
+	rows := spriteAnimated.Meta.Size.H / spriteAnimated.FrameArr[0].Frame.H
+	spriteAnimated.spriteSheetId =
+		LoadSpriteSheetByColRow("./assets/"+spriteAnimated.Meta.Image,rows,cols)
 	// sorting frame by Action and Order
 	sort.SliceStable(spriteAnimated.FrameArr, func(i, j int) bool {
 		frI, frJ := spriteAnimated.FrameArr[i], spriteAnimated.FrameArr[j]
@@ -128,7 +128,6 @@ func NewSpriteAnimated(fileName string, lwin *render.Window) *SpriteAnimated {
 			return frI.Order < frJ.Order
 		}
 	})
-	// fmt.Println(spriteAnimated.FrameArr)
 	return &spriteAnimated
 }
 
@@ -159,8 +158,10 @@ func (spriteAnimated SpriteAnimated) Action(name string) Action {
 	actionframes := make([]ActionFrame,len(framess))
 	for idx,frames := range framess {
 		actionframes[idx] = ActionFrame {
-			SpriteID: LoadSprite(spriteAnimated.spriteSheetId,
-				frames.Name, frames.Frame.X, frames.Frame.Y ),
+			SpriteID: LoadSprite(
+				spriteAnimated.spriteSheetId,frames.Name,
+				frames.Frame.X / frames.Frame.W,
+				frames.Frame.Y / frames.Frame.H ),
 			Duration: float32(frames.Duration)/1000,
 		}
 	}

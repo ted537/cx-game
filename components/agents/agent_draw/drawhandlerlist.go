@@ -25,6 +25,7 @@ func Init() {
 
 	RegisterDrawHandler(constants.DRAW_HANDLER_NULL, NullDrawHandler)
 	RegisterDrawHandler(constants.DRAW_HANDLER_QUAD, QuadDrawHandler)
+	RegisterDrawHandler(constants.DRAW_HANDLER_ANIM, AnimatedDrawHandler)
 
 	AssertAllDrawHandlersRegistered()
 }
