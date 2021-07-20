@@ -7,9 +7,6 @@ import (
 	"github.com/skycoin/cx-game/physics"
 )
 
-const TimeBeforeFadeout = float32(1.0) // in seconds
-const TimeDuringFadeout = float32(1.0) // in seconds
-
 // TODO either create enemy as a side effect or return instance
 func NewBasicEnemy(x, y float32) *agents.Agent {
 	agent := agents.Agent {
