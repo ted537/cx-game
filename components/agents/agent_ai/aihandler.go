@@ -2,12 +2,18 @@ package agent_ai
 
 import (
 	"log"
+
+	"github.com/go-gl/mathgl/mgl32"
+
 	"github.com/skycoin/cx-game/agents"
 	"github.com/skycoin/cx-game/constants"
 	"github.com/skycoin/cx-game/components/types"
 )
 
-type AiHandler func(*agents.Agent)
+type AiContext struct {
+	PlayerPos mgl32.Vec2
+}
+type AiHandler func(*agents.Agent, AiContext)
 var aiHandlers [constants.NUM_AI_HANDLERS]AiHandler
 
 func Init() {
