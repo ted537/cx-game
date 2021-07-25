@@ -1,6 +1,7 @@
 package mapgen
 
 import (
+	"log"
 	"math/rand"
 
 	perlin "github.com/skycoin/cx-game/procgen"
@@ -60,6 +61,18 @@ func placeBgTile(
 	planet.PlaceTileType(tileTypeID, int(pos.X),int(pos.Y))
 }
 
+func placePoles(planet *world.Planet) {
+	w := float32(planet.Width)
+	north := int( w*(1.0/2.0 + 1.0/4.0) )
+	south := int( w*(1.0/2.0 - 1.0/4.0) )
+	placePole(planet,north)
+	placePole(planet,south)
+}
+
+func placePole(planet *world.Planet, x int) {
+	log.Printf("placing pole at x=%v",x)
+}
+
 
 func GeneratePlanet() *world.Planet {
 	planet := world.NewPlanet(100, 100)
@@ -73,6 +86,8 @@ func GeneratePlanet() *world.Planet {
 	for _,pos := range stonePositions {
 		placeBgTile(planet,world.TileTypeIDs.DirtWall, pos)
 	}
+
+	placePoles(planet)
 
 	return planet
 }
