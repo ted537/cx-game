@@ -1,6 +1,7 @@
 package constants
 
 type AgentCategory int
+type AgentTypeID int
 
 const (
 	MAX_AGENTS int = 64
@@ -9,4 +10,11 @@ const (
 	AGENT_CATEGORY_PLAYER
 	AGENT_CATEGORY_FRIENDLY_MOB
 	AGENT_CATEGORY_ENEMY_MOB
+)
+
+const (
+	AGENT_TYPE_SLIME AgentTypeID = iota
+	AGENT_TYPE_SPIDER_DRILL
+
+	NUM_AGENT_TYPES // DO NOT SET THIS MANUALLY
 )
