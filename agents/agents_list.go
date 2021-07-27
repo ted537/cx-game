@@ -15,16 +15,16 @@ func NewAgentList() *AgentList {
 func NewDevAgentList() *AgentList {
 	agentList := NewAgentList()
 	player := newAgent(len(agentList.Agents))
-	player.AgentType = constants.AGENT_PLAYER
+	player.AgentCategory = constants.AGENT_CATEGORY_PLAYER
 	agentList.CreateAgent(player)
 	enemy := newAgent(len(agentList.Agents))
-	enemy.AgentType = constants.AGENT_ENEMY_MOB
+	enemy.AgentCategory = constants.AGENT_CATEGORY_ENEMY_MOB
 	agentList.CreateAgent(enemy)
 
 	return agentList
 }
 
-//  agentType - constants.AGENT_*desired type*
+//  agentType - constants.AGENT_CATEGORY_*desired type*
 func (al *AgentList) CreateAgent(agent *Agent) bool {
 	//for now
 	if len(al.Agents) > constants.MAX_AGENTS {

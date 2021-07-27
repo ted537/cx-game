@@ -9,7 +9,7 @@ import (
 
 type Agent struct {
 	AgentId           int
-	AgentType         constants.AgentType
+	AgentCategory         constants.AgentCategory
 	AiHandlerID       types.AgentAiHandlerID
 	PhysicsState      physics.Body
 	PhysicsParameters physics.PhysicsParameters
@@ -37,7 +37,7 @@ func NewHealthComponent(max int) HealthComponent {
 
 func newAgent(id int) *Agent {
 	agent := Agent{
-		AgentType:         constants.AGENT_UNDEFINED,
+		AgentCategory:     constants.AGENT_CATEGORY_UNDEFINED,
 		AiHandlerID:       constants.AI_HANDLER_NULL,
 		DrawHandlerID:     constants.DRAW_HANDLER_NULL,
 		PhysicsState:      physics.Body{},
