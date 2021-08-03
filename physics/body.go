@@ -28,7 +28,13 @@ type Body struct {
 	IsIgnoringPlatforms bool
 }
 
-func (body Body) Transform() mgl32.Mat4 {
+func (body *Body) Contains(x,y float32) bool {
+	pos := mgl32.Vec2 { x,y }
+	disp := pos.Sub(body.Pos.Mgl32())
+	return disp.X() < body.Size.X && disp.Y() < body.Size.Y
+}
+
+func (body *Body) Transform() mgl32.Mat4 {
 	return mgl32.Translate3D(body.Pos.X, body.Pos.Y, 0)
 }
 

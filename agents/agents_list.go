@@ -56,3 +56,10 @@ func (al *AgentList) Spawn(
 }
 
 func (al *AgentList) Get() []*Agent { return al.Agents }
+
+func (al *AgentList) TileIsClear(x,y int) bool {
+	for _,agent := range al.Get() {
+		if agent.PhysicsState.Contains(float32(x), float32(y)) { return false }
+	}
+	return true
+}
