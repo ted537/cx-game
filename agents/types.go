@@ -92,6 +92,20 @@ func createSpiderDrill(opts AgentCreationOptions) *Agent {
 	return &agent
 }
 
+func createPlayer(opts AgentCreationOptions) *Agent {
+	agent := Agent {
+		AgentCategory: constants.AGENT_CATEGORY_PLAYER,
+		AiHandlerID:   constants.AI_HANDLER_PLAYER,
+		DrawHandlerID: constants.DRAW_HANDLER_PLAYER,
+		PhysicsState: physics.Body {
+			Size: cxmath.Vec2 { X: 2, Y: 3 },
+			Direction: 1,
+		},
+	}
+	physics.RegisterBody(&agent.PhysicsState)
+	return &agent
+}
+
 func assertAllAgentTypesRegistered() {
 	for id,agentType := range agentTypes {
 		if !agentType.Valid() {
