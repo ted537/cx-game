@@ -6,6 +6,7 @@ import (
 	"github.com/skycoin/cx-game/spriteloader/anim"
 	"github.com/skycoin/cx-game/physics"
 	"github.com/skycoin/cx-game/cxmath"
+	"github.com/skycoin/cx-game/spriteloader"
 )
 
 type AgentCreationOptions struct {
@@ -101,13 +102,17 @@ func createPlayer(opts AgentCreationOptions) *Agent {
 	agent := Agent {
 		AgentCategory: constants.AGENT_CATEGORY_PLAYER,
 		AiHandlerID:   constants.AI_HANDLER_PLAYER,
-		DrawHandlerID: constants.DRAW_HANDLER_COLOR,
+		DrawHandlerID: constants.DRAW_HANDLER_PLAYER,
 		PhysicsState: physics.Body {
 			Pos: cxmath.Vec2{X: opts.X, Y: opts.Y},
 			Size: cxmath.Vec2 { X: 2, Y: 3 },
 			Direction: 1,
 		},
 		HealthComponent: NewHealthComponent(5),
+		PlayerData: PlayerData {
+			HelmetSpriteID: spriteloader.GetSpriteIdByName("helmet/1"),
+			SuitSpriteID: spriteloader.GetSpriteIdByName("suit/1"),
+		},
 	}
 	//physics.RegisterBody(&agent.PhysicsState)
 	return &agent
