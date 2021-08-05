@@ -10,7 +10,6 @@ const (
 )
 
 func PlayerDrawHandler(agents []*agents.Agent, ctx DrawHandlerContext) {
-	// TODO is this assumed??? can we omit this check?
 	if len(agents)==0 { return }
 	drawOpts := spriteloader.NewDrawOptions()
 	for _, agent := range agents {

@@ -9,16 +9,16 @@ import (
 )
 
 const (
-	playerWalkSpeed float32 = 5
+	playerWalkAccel float32 = 5
+	maxPlayerWalkSpeed float32 = 7
 	playerJumpSpeed float32 = 25
 	frictionFactor float32 = 3
 )
 
 func AiHandlerPlayer(player *agents.Agent, ctx AiContext) {
-	// TODO
 	inputXAxis := input.GetAxis(input.HORIZONTAL)
 	player.PhysicsState.Vel.X +=
-		inputXAxis * playerWalkSpeed
+		inputXAxis * playerWalkAccel
 
 	if inputXAxis != 0 {
 		player.PhysicsState.Direction = math32.Sign(inputXAxis)
@@ -31,6 +31,11 @@ func AiHandlerPlayer(player *agents.Agent, ctx AiContext) {
 		player.PhysicsState.Vel.X -= friction
 	} else {
 		player.PhysicsState.Vel.X = 0
+	}
+
+	if math32.Abs(player.PhysicsState.Vel.X) > maxPlayerWalkSpeed {
+		player.PhysicsState.Vel.X =
+			math32.Sign(player.PhysicsState.Vel.X) * maxPlayerWalkSpeed
 	}
 
 	if player.PhysicsState.IsOnGround() && input.GetButtonDown("jump") {
