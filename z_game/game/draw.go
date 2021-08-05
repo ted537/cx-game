@@ -35,7 +35,7 @@ func Draw() {
 	item.DrawWorldItems(Cam)
 	components.Draw(&World.Entities, Cam)
 	//player.Draw(Cam, &World.Planet)
-	//ui.DrawHUD(player.GetHUDState())
+	ui.DrawAgentHUD(player)
 
 	ui.DrawString(
 		fmt.Sprint(fps.CurFps),
