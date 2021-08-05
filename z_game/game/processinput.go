@@ -12,12 +12,14 @@ import (
 
 func ProcessInput() {
 	if Console.IsActive() { return }
+	/*
 	if input.GetButtonDown("switch-helmet") {
 		player.SetHelmNext()
 	}
 	if input.GetButtonDown("switch-suit") {
 		player.SetSuitNext()
 	}
+	*/
 	/*
 	if input.GetButtonDown("jump") {
 		didJump := player.Jump()
@@ -33,10 +35,10 @@ func ProcessInput() {
 			sound.PlaySound("player_jump", sound.SoundOptions{Pitch: 1.5})
 		}
 	}
-	*/
 	if input.GetButtonDown("fly") {
 		player.ToggleFlying()
 	}
+	*/
 	if input.GetButtonDown("mute") {
 		sound.ToggleMute()
 	}

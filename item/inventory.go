@@ -14,7 +14,6 @@ import (
 	"github.com/skycoin/cx-game/render"
 	"github.com/skycoin/cx-game/camera"
 	"github.com/skycoin/cx-game/world"
-	"github.com/skycoin/cx-game/models"
 )
 
 type InventorySlot struct {
@@ -318,7 +317,7 @@ func (inventory *Inventory) getGridClickPosition(
 
 func (inventory *Inventory) TryClickSlot(
 		screenX,screenY float32, cam *camera.Camera,
-		planet *world.Planet, player *models.Player,
+		planet *world.Planet, player *agents.Agent,
 ) bool {
 	if !inventory.IsOpen { return false }
 	idx,ok := inventory.getGridClickPosition(screenX,screenY)
@@ -331,7 +330,7 @@ func (inventory *Inventory) TryClickSlot(
 
 func (inventory *Inventory) OnReleaseMouse(
 		screenX,screenY float32, cam *camera.Camera,
-		planet *world.Planet, player *models.Player,
+		planet *world.Planet, player *agents.Agent,
 ) bool {
 	if !inventory.IsOpen { return false }
 	idx,ok := inventory.getGridClickPosition(screenX,screenY)

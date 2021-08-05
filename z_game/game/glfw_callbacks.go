@@ -33,6 +33,7 @@ func mouseReleaseCallback(
 	screenX,screenY := screenPos()
 
 	inventory := item.GetInventoryById(inventoryId)
+	player := findPlayer()
 	inventory.OnReleaseMouse(screenX, screenY, Cam, &World.Planet, player)
 }
 
