@@ -8,6 +8,7 @@ import (
 	"github.com/go-gl/mathgl/mgl32"
 
 	"github.com/skycoin/cx-game/agents"
+	"github.com/skycoin/cx-game/components/types"
 	"github.com/skycoin/cx-game/spriteloader"
 	"github.com/skycoin/cx-game/cxmath"
 	"github.com/skycoin/cx-game/ui"
@@ -22,7 +23,6 @@ type InventorySlot struct {
 	Durability uint32
 }
 
-type InventoryID uint32
 type Inventory struct {
 	Width, Height int
 	Slots []InventorySlot
@@ -38,17 +38,17 @@ var bgColor = mgl32.Vec4{0.3,0.3,0.3,1}
 var borderColor = mgl32.Vec4{0.8,0.8,0.8,1}
 var selectedBorderColor = mgl32.Vec4{0.8,0,0,1}
 
-func NewInventory(width, height int) InventoryID {
+func NewInventory(width, height int) types.InventoryID {
 	inventories = append(inventories, Inventory {
 		Width: width, Height: height,
 		Slots: make([]InventorySlot, width*height),
 		SelectedBarSlotIndex: 3,
 		PlacementGrid: NewPlacementGrid(),
 	})
-	return InventoryID(len(inventories)-1)
+	return types.InventoryID(len(inventories)-1)
 }
 
-func NewDevInventory() InventoryID {
+func NewDevInventory() types.InventoryID {
 	inventoryId := NewInventory(10, 8)
 	inventory := GetInventoryById(inventoryId)
 	inventory.Slots[inventory.ItemSlotIndexForPosition(1, 0)] =
@@ -94,11 +94,11 @@ func NewDevInventory() InventoryID {
 	return inventoryId
 }
 
-func GetInventoryById(id InventoryID) *Inventory {
+func GetInventoryById(id types.InventoryID) *Inventory {
 	return &inventories[id]
 }
 
-func (id InventoryID) Get() *Inventory { return &inventories[id] }
+//func (id types.InventoryID) Get() *Inventory { return &inventories[id] }
 
 func (inventory Inventory) getBarSlots() []InventorySlot {
 	return inventory.Slots[:inventory.Width]

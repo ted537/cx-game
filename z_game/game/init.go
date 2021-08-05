@@ -48,8 +48,6 @@ var (
 	DrawCollisionBoxes = false
 	FPS                int
 
-	inventoryId item.InventoryID
-
 	//unused
 	isTileSelectorVisible = false
 	worldItem             *item.WorldItem
@@ -99,7 +97,6 @@ func Init() {
 
 	starfield.InitStarField(&win, Cam)
 
-	inventoryId = item.NewDevInventory()
 
 	worldTiles := World.Planet.GetAllTilesUnique()
 	log.Printf("Found [%v] unique tiles in the world", len(worldTiles))
@@ -128,6 +125,7 @@ func Init() {
 		},
 	)
 	player = findPlayer()
+	player.InventoryID = item.NewDevInventory()
 	components.Init(&World, Cam, player)
 
 	sound.LoadSound("player_jump", "jump.wav")

@@ -22,6 +22,7 @@ type Agent struct {
 	WaitingFor        float32
 	AnimationPlayback anim.Playback
 	Direction         int
+	InventoryID       types.InventoryID
 	// only relevant to player agents - should probably refactor
 	PlayerData
 }

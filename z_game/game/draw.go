@@ -66,7 +66,7 @@ func Draw() {
 	// FIXME: draw dialogue boxes uses alternate projection matrix;
 	// restore original projection matrix
 
-	inventory := item.GetInventoryById(inventoryId)
+	inventory := item.GetInventoryById(player.InventoryID)
 	inventory.Draw(win.DefaultRenderContext())
 
 	Console.Draw(win.DefaultRenderContext())

@@ -46,7 +46,7 @@ func ProcessInput() {
 		Cam.ToggleFreeCam()
 	}
 	if input.GetButtonDown("inventory-grid") {
-		inventory := item.GetInventoryById(inventoryId)
+		inventory := item.GetInventoryById(player.InventoryID)
 		inventory.IsOpen = !inventory.IsOpen
 	}
 	if input.GetKeyDown(glfw.KeyL) {
@@ -61,6 +61,6 @@ func ProcessInput() {
 	if input.GetButtonDown("enemy-tool-scroll-up") {
 		ui.EnemyToolScrollUp()
 	}
-	inventory := item.GetInventoryById(inventoryId)
+	inventory := item.GetInventoryById(player.InventoryID)
 	inventory.TrySelectSlot(input.GetLastKey())
 }
