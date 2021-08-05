@@ -44,6 +44,7 @@ func Draw() {
 		win.DefaultRenderContext().PushLocal(mgl32.Translate3D(-11.5, 5, 0)),
 	)
 
+	/*
 	// tile - air line (green)
 	collidingTileLines := World.Planet.GetCollidingTilesLinesRelative(
 		int(player.Pos.X), int(player.Pos.Y))
@@ -59,6 +60,7 @@ func Draw() {
 	if len(collidingLines) > 2 {
 		Cam.DrawLines(collidingLines, mgl32.Vec3{1.0, 0.0, 0.0}, baseCtx)
 	}
+	*/
 
 	ui.DrawDialogueBoxes(camCtx)
 	// FIXME: draw dialogue boxes uses alternate projection matrix;

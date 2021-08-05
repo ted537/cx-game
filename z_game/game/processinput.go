@@ -2,7 +2,7 @@ package game
 
 import (
 	"github.com/go-gl/glfw/v3.3/glfw"
-	"github.com/go-gl/mathgl/mgl32"
+
 	"github.com/skycoin/cx-game/input"
 	"github.com/skycoin/cx-game/item"
 	"github.com/skycoin/cx-game/sound"
@@ -18,6 +18,7 @@ func ProcessInput() {
 	if input.GetButtonDown("switch-suit") {
 		player.SetSuitNext()
 	}
+	/*
 	if input.GetButtonDown("jump") {
 		didJump := player.Jump()
 		if didJump {
@@ -32,6 +33,7 @@ func ProcessInput() {
 			sound.PlaySound("player_jump", sound.SoundOptions{Pitch: 1.5})
 		}
 	}
+	*/
 	if input.GetButtonDown("fly") {
 		player.ToggleFlying()
 	}
