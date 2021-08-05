@@ -18,8 +18,10 @@ func Update(dt float32) {
 		Cam.MoveCam(dt)
 	} else {
 		player.Controlled = true
-		playerPos := player.InterpolatedTransform.Col(3).Vec2()
-		Cam.SetCameraPosition(playerPos.X(), playerPos.Y())
+		//playerPos := player.InterpolatedTransform.Col(3).Vec2()
+		playerPos :=
+			World.Entities.Agents.FromID(playerAgentID).PhysicsState.Pos
+		Cam.SetCameraPosition(playerPos.X, playerPos.Y)
 	}
 	World.Planet.Update(dt)
 	Cam.Tick(dt)

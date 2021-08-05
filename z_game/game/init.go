@@ -42,6 +42,7 @@ var (
 	window *glfw.Window
 	player *models.Player
 	fps    *models.Fps
+	playerAgentID int
 
 	World  world.World
 	DrawCollisionBoxes = false
@@ -120,7 +121,7 @@ func Init() {
 			X: player.Pos.X+6, Y: player.Pos.Y,
 		},
 	)
-	World.Entities.Agents.Spawn(
+	playerAgentID = World.Entities.Agents.Spawn(
 		constants.AGENT_TYPE_PLAYER, agents.AgentCreationOptions {
 			X: player.Pos.X, Y: player.Pos.Y,
 		},
