@@ -111,7 +111,7 @@ func createPlayer(opts AgentCreationOptions) *Agent {
 		HealthComponent: NewHealthComponent(5),
 		PlayerData: PlayerData {
 			HelmetSpriteID: spriteloader.GetSpriteIdByName("helmet/1"),
-			SuitSpriteID: spriteloader.GetSpriteIdByName("suit/1"),
+			SuitSpriteID: spriteloader.GetSpriteIdByName("suit:0"),
 		},
 	}
 	//physics.RegisterBody(&agent.PhysicsState)

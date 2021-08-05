@@ -4,7 +4,7 @@ width: 640
 height: 288
 
 cellwidth: 64
-cellheight: 48
+cellheight: 96
 
 sprites:
     helmet/1:
