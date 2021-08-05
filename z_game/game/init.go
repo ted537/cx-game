@@ -120,6 +120,11 @@ func Init() {
 			X: player.Pos.X+6, Y: player.Pos.Y,
 		},
 	)
+	World.Entities.Agents.Spawn(
+		constants.AGENT_TYPE_PLAYER, agents.AgentCreationOptions {
+			X: player.Pos.X, Y: player.Pos.Y,
+		},
+	)
 
 	sound.LoadSound("player_jump", "jump.wav")
 	Console = console.New()
