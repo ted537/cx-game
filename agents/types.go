@@ -40,6 +40,11 @@ func init() {
 		Category: constants.AGENT_CATEGORY_ENEMY_MOB,
 		CreateAgent: createSpiderDrill,
 	})
+	RegisterAgentType(constants.AGENT_TYPE_PLAYER, AgentType {
+		Name: "Player",
+		Category: constants.AGENT_CATEGORY_PLAYER,
+		CreateAgent: createPlayer,
+	})
 }
 
 func RegisterAgentType(id constants.AgentTypeID, agentType AgentType) {
@@ -96,13 +101,15 @@ func createPlayer(opts AgentCreationOptions) *Agent {
 	agent := Agent {
 		AgentCategory: constants.AGENT_CATEGORY_PLAYER,
 		AiHandlerID:   constants.AI_HANDLER_PLAYER,
-		DrawHandlerID: constants.DRAW_HANDLER_PLAYER,
+		DrawHandlerID: constants.DRAW_HANDLER_COLOR,
 		PhysicsState: physics.Body {
+			Pos: cxmath.Vec2{X: opts.X, Y: opts.Y},
 			Size: cxmath.Vec2 { X: 2, Y: 3 },
 			Direction: 1,
 		},
+		HealthComponent: NewHealthComponent(5),
 	}
-	physics.RegisterBody(&agent.PhysicsState)
+	//physics.RegisterBody(&agent.PhysicsState)
 	return &agent
 }
 
