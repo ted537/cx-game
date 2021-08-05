@@ -108,7 +108,7 @@ func createPlayer(opts AgentCreationOptions) *Agent {
 			Size: cxmath.Vec2 { X: 2, Y: 3 },
 			Direction: 1,
 		},
-		HealthComponent: NewHealthComponent(5),
+		HealthComponent: NewHealthComponent(100),
 		PlayerData: PlayerData {
 			HelmetSpriteID: spriteloader.GetSpriteIdByName("helmet/1"),
 			SuitSpriteID: spriteloader.GetSpriteIdByName("suit:0"),
