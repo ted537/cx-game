@@ -20,6 +20,10 @@ func AiHandlerPlayer(player *agents.Agent, ctx AiContext) {
 	player.PhysicsState.Vel.X +=
 		inputXAxis * playerWalkSpeed
 
+	if inputXAxis != 0 {
+		player.PhysicsState.Direction = math32.Sign(inputXAxis)
+	}
+
 	friction :=
 		cxmath.Sign(player.PhysicsState.Vel.X) * frictionFactor
 
