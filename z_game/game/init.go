@@ -40,7 +40,6 @@ var (
 	Cam    *camera.Camera
 	win    render.Window
 	window *glfw.Window
-	player *models.Player
 	fps    *models.Fps
 	playerAgentID int
 
@@ -78,7 +77,7 @@ func Init() {
 	item.RegisterItemTypes()
 
 	models.Init()
-	player = models.NewPlayer()
+	//player = models.NewPlayer()
 
 	fps = models.NewFps(false)
 	Cam = camera.NewCamera(&win)
