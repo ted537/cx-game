@@ -7,6 +7,7 @@ import (
 	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/go-gl/mathgl/mgl32"
 
+	"github.com/skycoin/cx-game/agents"
 	"github.com/skycoin/cx-game/spriteloader"
 	"github.com/skycoin/cx-game/cxmath"
 	"github.com/skycoin/cx-game/ui"
@@ -266,7 +267,7 @@ func (inventory *Inventory) SelectedItemSlot() *InventorySlot {
 
 func (inventory *Inventory) TryUseItem(
 		screenX,screenY float32, cam *camera.Camera,
-		World *world.World, player *models.Player,
+		World *world.World, player *agents.Agent,
 ) bool {
 	itemSlot := inventory.SelectedItemSlot()
 	// don't use empty items

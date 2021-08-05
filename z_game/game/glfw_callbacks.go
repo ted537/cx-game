@@ -51,6 +51,7 @@ func mousePressCallback(
 		inventory.TryClickSlot(screenX, screenY, Cam, &World.Planet, player)
 	if clickedSlot { return }
 
+	player := World.Entities.Agents.FromID(playerAgentID)
 	item.GetInventoryById(inventoryId).
 		TryUseItem(screenX, screenY, Cam, &World, player)
 }
