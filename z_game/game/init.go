@@ -111,12 +111,12 @@ func Init() {
 
 	World.Entities.Agents.Spawn(
 		constants.AGENT_TYPE_SLIME, agents.AgentCreationOptions{
-			X: player.Pos.X - 6, Y: player.Pos.Y,
+			X: spawnPos.X - 6, Y: spawnPos.Y,
 		},
 	)
 	World.Entities.Agents.Spawn(
 		constants.AGENT_TYPE_SPIDER_DRILL, agents.AgentCreationOptions{
-			X: player.Pos.X + 6, Y: player.Pos.Y,
+			X: spawnPos.X + 6, Y: spawnPos.Y,
 		},
 	)
 	playerAgentID = World.Entities.Agents.Spawn(
