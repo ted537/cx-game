@@ -12,26 +12,26 @@ import (
 	"github.com/skycoin/cx-game/components/agents/agent_health"
 	"github.com/skycoin/cx-game/components/particles"
 	"github.com/skycoin/cx-game/components/particles/particle_draw"
-	"github.com/skycoin/cx-game/components/particles/particle_emitter"
 	"github.com/skycoin/cx-game/components/particles/particle_physics"
+	"github.com/skycoin/cx-game/particle_emitter"
 	"github.com/skycoin/cx-game/world"
 )
 
 var (
-	//currentWorldState *world.WorldState
-	//currentPlanet     *world.Planet
-	currentWorld      *world.World
-	currentCamera     *camera.Camera
-	currentPlayer     *agents.Agent
+	currentWorld  *world.World
+	currentCamera *camera.Camera
+	currentPlayer *agents.Agent
 
-	emitter *particle_emitter.ParticleEmitter
+	emitter       *particle_emitter.ParticleEmitter
+	sparkEmitter  *particle_emitter.SparkEmitter
+	bulletEmitter *particle_emitter.BulletEmitter
 )
 
 func Init(World *world.World, cam *camera.Camera, player *agents.Agent) {
 	/*
-	currentWorldState = planet.WorldState
-	currentPlanet = planet
-	currentCamera = cam
+		currentWorldState = planet.WorldState
+		currentPlanet = planet
+		currentCamera = cam
 	*/
 	currentPlayer = player
 	emitter = particle_emitter.
@@ -45,6 +45,7 @@ func Init(World *world.World, cam *camera.Camera, player *agents.Agent) {
 	particle_draw.Init()
 
 	particles.Init()
+	particle_emitter.Init(&World.Entities.Particles)
 
 }
 

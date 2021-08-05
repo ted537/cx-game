@@ -20,17 +20,18 @@ func mouseButtonCallback(
 }
 
 // mouse position relative to screen
-func screenPos() (float32,float32) {
-	screenX := float32(((input.GetMouseX()-float64(widthOffset))/float64(scale) - float64(win.Width)/2)) / Cam.Zoom // adjust mouse position with zoom
-	screenY := float32(((input.GetMouseY()-float64(heightOffset))/float64(scale)-float64(win.Height)/2)*-1) / Cam.Zoom
-	return screenX,screenY
+func screenPos() (float32, float32) {
+	// screenX := ((input.GetMouseX()-float32(widthOffset))/float32(scale) - float32(win.Width)/2) / Cam.Zoom // adjust mouse position with zoom
+	screenX := input.GetScreenX()
+	// screenY := (((input.GetMouseY()-float32(heightOffset))/float32(scale) - float32(win.Height)/2) * -1) / Cam.Zoom
+	screenY := input.GetScreenY()
+	return screenX, screenY
 }
-
 
 func mouseReleaseCallback(
 	w *glfw.Window, b glfw.MouseButton, a glfw.Action, mk glfw.ModifierKey,
 ) {
-	screenX,screenY := screenPos()
+	screenX, screenY := screenPos()
 
 	inventory := item.GetInventoryById(player.InventoryID)
 	player := findPlayer()
@@ -45,12 +46,14 @@ func mousePressCallback(
 		return
 	}
 
-	screenX,screenY := screenPos()
+	screenX, screenY := screenPos()
 
 	inventory := item.GetInventoryById(player.InventoryID)
 	clickedSlot :=
 		inventory.TryClickSlot(screenX, screenY, Cam, &World.Planet, player)
-	if clickedSlot { return }
+	if clickedSlot {
+		return
+	}
 
 	player := World.Entities.Agents.FromID(playerAgentID)
 	item.GetInventoryById(player.InventoryID).
@@ -81,4 +84,5 @@ func windowSizeCallback(window *glfw.Window, width, height int) {
 
 func scrollCallback(w *glfw.Window, xOff, yOff float64) {
 	Cam.SetCameraZoomPosition(float32(yOff))
+	input.SetCamZoom(Cam.Zoom)
 }

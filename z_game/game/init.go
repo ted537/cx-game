@@ -44,7 +44,7 @@ var (
 	fps    *models.Fps
 	player *agents.Agent
 
-	World  world.World
+	World              world.World
 	DrawCollisionBoxes = false
 	FPS                int
 
@@ -63,7 +63,7 @@ func Init() {
 	window.SetScrollCallback(scrollCallback)
 	window.SetSizeCallback(windowSizeCallback)
 
-	input.Init(win.Window)
+	input.Init(&win)
 	sound.Init()
 	spriteloader.DEBUG = false
 	spriteloader.InitSpriteloader(&win)
@@ -83,8 +83,8 @@ func Init() {
 	//World.Planet = world.NewDevPlanet()
 
 	// TODO move this to the world package or similar
-	World = world.World {
-		Entities: world.Entities {
+	World = world.World{
+		Entities: world.Entities{
 			Agents: *agents.NewAgentList(),
 		},
 		Planet: *mapgen.GeneratePlanet(),
@@ -110,13 +110,13 @@ func Init() {
 	}
 
 	World.Entities.Agents.Spawn(
-		constants.AGENT_TYPE_SLIME, agents.AgentCreationOptions {
-			X: spawnPos.X-6, Y: spawnPos.Y,
+		constants.AGENT_TYPE_SLIME, agents.AgentCreationOptions{
+			X: player.Pos.X - 6, Y: player.Pos.Y,
 		},
 	)
 	World.Entities.Agents.Spawn(
-		constants.AGENT_TYPE_SPIDER_DRILL, agents.AgentCreationOptions {
-			X: spawnPos.X+6, Y: spawnPos.Y,
+		constants.AGENT_TYPE_SPIDER_DRILL, agents.AgentCreationOptions{
+			X: player.Pos.X + 6, Y: player.Pos.Y,
 		},
 	)
 	playerAgentID = World.Entities.Agents.Spawn(
