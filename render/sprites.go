@@ -4,18 +4,18 @@ import (
 	"log"
 )
 
-var atlases = []Texture{}
-var sprites = make(map[string]Sprite)
+var sprites = []Sprite{}
+var spriteNamesToIDs = map[string]int{}
+
+func addSprite(sprite Sprite) int {
+	id := len(sprites)
+	sprites = append(sprites, sprite)
+	return id
+}
 
 func RegisterSprite(sprite Sprite) {
 	if sprite.Name=="" {
 		log.Fatal("cannot register sprite with empty name")
 	}
-	sprites[sprite.Name] = sprite
-}
-
-func GetSprite(name string) Sprite {
-	sprite,ok := sprites[name]
-	if !ok { log.Fatalf("cannot get sprite with name [%v]", name) }
-	return sprite
+	spriteNamesToIDs[sprite.Name] = addSprite(sprite)
 }

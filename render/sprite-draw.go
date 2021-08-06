@@ -52,6 +52,8 @@ func DrawUISprite(transform mgl32.Mat4, id SpriteID) {
 func DrawWorldSprite(transform mgl32.Mat4, id SpriteID) {
 	position := transform.Col(3)
 	positiveXPosition := math32.PositiveModulo(position.X(), worldWidth)
+	// TODO
+	_ = position; _ = positiveXPosition
 }
 
 func Flush() {
@@ -77,8 +79,9 @@ func drawAtlasSprites(atlas Texture, spriteDraws []SpriteDraw) {
 
 func extractUniforms(spriteDraws []SpriteDraw) Uniforms {
 	uniforms := NewUniforms(len(spriteDraws))
-	for _,spriteDraw := range spriteDraws {
-
+	for idx,spriteDraw := range spriteDraws {
+		uniforms.ModelViews[idx] = spriteDraw.ModelView
+		uniforms.UVTransforms[idx] = spriteDraw.UVTransform
 	}
 	return uniforms
 }
