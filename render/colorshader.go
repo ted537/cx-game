@@ -1,6 +1,7 @@
 // super simple shader for drawing colors directly.
 // intended for UI.
 package render;
+
 import (
 	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/mathgl/mgl32"

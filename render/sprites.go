@@ -4,6 +4,7 @@ import (
 	"log"
 )
 
+var atlases = []Texture{}
 var sprites = make(map[string]Sprite)
 
 func RegisterSprite(sprite Sprite) {
