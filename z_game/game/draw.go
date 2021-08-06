@@ -20,6 +20,8 @@ func Draw() {
 	gl.ClearColor(7.0/255.0, 8.0/255.0, 25.0/255.0, 1.0)
 	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 
+	render.SetCameraTransform(Cam.GetTransform())
+
 	baseCtx := win.DefaultRenderContext()
 	baseCtx.Projection = Cam.GetProjectionMatrix()
 	camCtx := baseCtx.PushView(Cam.GetView())
@@ -54,7 +56,7 @@ func Draw() {
 
 	Console.Draw(win.DefaultRenderContext())
 
-	render.Flush()
+	render.Flush( Cam.GetProjectionMatrix() )
 
 	glfw.PollEvents()
 	win.Window.SwapBuffers()

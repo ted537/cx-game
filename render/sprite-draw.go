@@ -19,7 +19,9 @@ type SpriteID int
 // Flush()
 
 var worldWidth float32
+var cameraTransform mgl32.Mat4
 func SetWorldWidth(w float32) { worldWidth = w }
+func SetCameraTransform(mat mgl32.Mat4) { cameraTransform = mat }
 
 type SpriteDrawOptions struct {
 
@@ -60,15 +62,15 @@ func DrawWorldSprite(transform mgl32.Mat4, id SpriteID, opts SpriteDrawOptions) 
 	_ = position; _ = positiveXPosition
 }
 
-func Flush() {
-	flushSpriteDraws()
+func Flush(projection mgl32.Mat4) {
+	flushSpriteDraws(projection)
 }
 
-func flushSpriteDraws() {
+func flushSpriteDraws(projection mgl32.Mat4) {
 	spriteProgram.Use()
 	defer spriteProgram.StopUsing()
 
-	spriteProgram.SetMat4("projection", &Projection)
+	spriteProgram.SetMat4("projection", &projection)
 
 	for atlas,spriteDraws := range spriteDrawsPerAtlas {
 		drawAtlasSprites(atlas, spriteDraws)
@@ -142,5 +144,5 @@ func drawInstancedQuads(batch Uniforms) {
 	log.Printf("trying to draw %v instanced quads",batch.Count)
 	spriteProgram.SetMat4s("modelviews", batch.ModelViews)
 	spriteProgram.SetMat3s("uvtransforms", batch.UVTransforms)
-	gl.DrawArraysInstanced(gl.TRIANGLES, 0,6, constants.DRAW_SPRITE_BATCH_SIZE)
+	gl.DrawArraysInstanced(gl.TRIANGLES, 0,6, batch.Count)
 }
