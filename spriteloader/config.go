@@ -8,8 +8,8 @@ import (
 	"strings"
 
 	"github.com/go-yaml/yaml"
-	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/mathgl/mgl32"
+	"github.com/go-gl/gl/v4.1-core/gl"
 
 	"github.com/skycoin/cx-game/render"
 )
