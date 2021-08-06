@@ -19,3 +19,11 @@ func RegisterSprite(sprite Sprite) {
 	}
 	spriteNamesToIDs[sprite.Name] = addSprite(sprite)
 }
+
+func GetSpriteIDByName(name string) SpriteID {
+	id,ok := spriteNamesToIDs[name]
+	if !ok {
+		log.Fatalf("render: cannot find sprite [%v]", name)
+	}
+	return SpriteID(id)
+}

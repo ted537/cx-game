@@ -2,12 +2,10 @@ package world
 
 import (
 	"github.com/go-gl/gl/v4.1-core/gl"
-	"github.com/go-gl/mathgl/mgl32"
 
 	"github.com/skycoin/cx-game/camera"
 	"github.com/skycoin/cx-game/cxmath"
 	"github.com/skycoin/cx-game/cxmath/mathi"
-	"github.com/skycoin/cx-game/spriteloader"
 	"github.com/skycoin/cx-game/render"
 )
 
@@ -42,10 +40,13 @@ func (planet *Planet) DrawHemisphere(
 	layer Layer, cam *camera.Camera, left,right int,
 ) {
 	center := float32( (left+right)/2 )
+	_ = center
 
+	/*
 	camToCenter := planet.ShortestDisplacement(
 		mgl32.Vec2{ cam.X, cam.Y },
 		mgl32.Vec2 { center, 0 } ) // to.y doesn't matter here
+	*/
 
 	projection := cam.GetProjectionMatrix()
 	planet.program.Use()
@@ -58,6 +59,7 @@ func (planet *Planet) DrawHemisphere(
 	planet.liquidProgram.StopUsing()
 	planet.program.Use()
 
+	/*
 	visible := planet.visibleTiles(layer, cam, left, right)
 	bins := planet.binTilesBySpritesheet(visible)
 
@@ -73,6 +75,7 @@ func (planet *Planet) DrawHemisphere(
 			camToCenter.X(), cam.Y, center,
 		)
 	}
+	*/
 }
 
 func filterLiquidTiles(all []PositionedTile) []PositionedTile {
@@ -112,6 +115,7 @@ func (planet *Planet) visibleTiles(
 	return positionedTiles
 }
 
+/*
 // bin SOLID tiles only
 func (planet *Planet) binTilesBySpritesheet(
 		positionedTiles []PositionedTile,
@@ -229,3 +233,4 @@ func (planet *Planet) drawLiquidTiles(
 	planet.liquidProgram.SetVec2s("texOffsets",texOffsets[:])
 	gl.DrawArraysInstanced(gl.TRIANGLES,0,6, instance)
 }
+*/

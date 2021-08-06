@@ -2,8 +2,8 @@ package item
 
 import (
 	"github.com/skycoin/cx-game/agents"
-	"github.com/skycoin/cx-game/spriteloader"
 	"github.com/skycoin/cx-game/ui"
+	"github.com/skycoin/cx-game/render"
 )
 
 func UseBuildTool(info ItemUseInfo) {
@@ -14,9 +14,7 @@ func UseBuildTool(info ItemUseInfo) {
 }
 
 func RegisterBuildToolItemType() ItemTypeID {
-	sprite := spriteloader.LoadSingleSprite(
-		"./assets/item/dev-build.png", "dev-build-tool" )
-	itemtype := NewItemType(sprite)
+	itemtype := NewItemType(render.GetSpriteIDByName("dev-build-tool"))
 	itemtype.Name = "Dev Build Tool"
 	itemtype.Category = BuildTool
 	itemtype.Use = UseBuildTool
@@ -33,9 +31,7 @@ func UseEnemyTool(info ItemUseInfo) {
 }
 
 func RegisterEnemyToolItemType() ItemTypeID {
-	sprite := spriteloader.LoadSingleSprite(
-		"./assets/item/dev-enemy.png", "dev-enemy-tool" )
-	itemtype := NewItemType(sprite)
+	itemtype := NewItemType(render.GetSpriteIDByName("dev-enemy-tool"))
 	itemtype.Name = "Dev Enemy Tool"
 	itemtype.Use = UseEnemyTool
 	return AddItemType(itemtype)

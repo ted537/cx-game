@@ -7,7 +7,6 @@ import (
 	"github.com/skycoin/cx-game/cxmath/math32i"
 	"github.com/skycoin/cx-game/render"
 	"github.com/skycoin/cx-game/world"
-	"github.com/skycoin/cx-game/spriteloader"
 )
 
 const PlacementGridWidth = 5
@@ -123,10 +122,13 @@ func (ig PlacementGrid) DrawSlot(
 	render.DrawColorQuad(bgCtx,bgColor)
 	// draw tiletype on top of bg
 	itemCtx := slotCtx.PushLocal(cxmath.Scale(itemSize))
+	_ = itemCtx
+	/*
 	spriteloader.DrawSpriteQuadContext(itemCtx,
 		positionedTileTypeID.TileTypeID.Get().ItemSpriteID,
 		spriteloader.NewDrawOptions(),
 	)
+	*/
 }
 
 func (grid *PlacementGrid) TrySelect(camCoords mgl32.Vec2) bool {

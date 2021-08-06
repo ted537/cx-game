@@ -208,9 +208,10 @@ func RegisterSpritesFromConfig(cfgPath string) []SpriteID {
 	imgPath := strings.TrimSuffix(cfgPath, ".yaml") + ".png"
 	sheet := LoadSpriteSheetFromConfig(imgPath, cfgPath)
 	// TODO deprecate this
-	spriteloadersheet := AddSpritesheetFromTexture(sheet.Texture.Texture)
+	//spriteloadersheet := AddSpritesheetFromTexture(sheet.Texture.Texture)
 	for _,sprite := range sheet.Sprites {
 		render.RegisterSprite(sprite)
+		/*
 		offset := sprite.Transform.Col(2)
 		xScale := sprite.Transform.At(0,0)
 		yScale := sprite.Transform.At(1,1)
@@ -222,6 +223,7 @@ func RegisterSpritesFromConfig(cfgPath string) []SpriteID {
 			sprite.Name, offset.X(), offset.Y(),
 			xScale, yScale, worldXScale, worldYScale,
 		)
+		*/
 	}
 	return []SpriteID{}
 }

@@ -4,19 +4,19 @@ import (
 	"log"
 
 	"github.com/skycoin/cx-game/render/blob"
+	"github.com/skycoin/cx-game/render"
 	"github.com/skycoin/cx-game/cxmath"
-	"github.com/skycoin/cx-game/spriteloader"
 )
 
 type Placer interface {
 	CreateTile(TileType,TileCreationOptions) Tile
 	UpdateTile(TileType,TileUpdateOptions)
-	ItemSpriteID() spriteloader.SpriteID
+	ItemSpriteID() render.SpriteID
 }
 
 // place tiles for a tiletype which has a single sprite
 type DirectPlacer struct {
-	SpriteID spriteloader.SpriteID
+	SpriteID render.SpriteID
 	TileCollisionType TileCollisionType
 	Category TileCategory
 }
@@ -37,7 +37,7 @@ func (placer DirectPlacer) CreateTile(
 func (placer DirectPlacer) UpdateTile(
 	tt TileType, opts TileUpdateOptions ) {}
 
-func (placer DirectPlacer) ItemSpriteID() spriteloader.SpriteID {
+func (placer DirectPlacer) ItemSpriteID() render.SpriteID {
 	return placer.SpriteID
 }
 
@@ -51,7 +51,7 @@ type TileType struct {
 	MaterialID MaterialID
 	Width,Height int32
 	Drops Drops
-	ItemSpriteID spriteloader.SpriteID
+	ItemSpriteID render.SpriteID
 }
 
 func (tt TileType) Size() cxmath.Vec2i {

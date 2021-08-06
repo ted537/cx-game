@@ -9,7 +9,6 @@ import (
 
 	"github.com/skycoin/cx-game/agents"
 	"github.com/skycoin/cx-game/components/types"
-	"github.com/skycoin/cx-game/spriteloader"
 	"github.com/skycoin/cx-game/cxmath"
 	"github.com/skycoin/cx-game/ui"
 	"github.com/skycoin/cx-game/render"
@@ -191,8 +190,11 @@ func (inventory Inventory) DrawSlot(
 	// TODO write number for quantity
 	if slot.Quantity > 0 {
 		spriteId := itemTypes[slot.ItemTypeID].SpriteID
+		_ = spriteId
+		/*
 		spriteloader.DrawSpriteQuadContext(
 			itemCtx, (spriteId), spriteloader.NewDrawOptions() )
+		*/
 
 		textCtx := itemCtx.PushLocal(
 			mgl32.Translate3D(0.5,-0.05,0).

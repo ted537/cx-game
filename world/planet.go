@@ -10,7 +10,6 @@ import (
 	"github.com/skycoin/cx-game/camera"
 	"github.com/skycoin/cx-game/cxmath"
 	"github.com/skycoin/cx-game/cxmath/math32"
-	"github.com/skycoin/cx-game/particles"
 	"github.com/skycoin/cx-game/render"
 	"github.com/skycoin/cx-game/render/blob"
 	"github.com/skycoin/cx-game/spriteloader"
@@ -450,7 +449,7 @@ func (planet *Planet) DamageTile(
 	tile := &planet.GetLayerTiles(layerID)[tileIdx]
 	_tileCopy := *tile
 	// TODO create tile chunk from collision point rather than tile center
-	particles.CreateTileChunks(float32(x), float32(y), tile.SpriteID)
+	//particles.CreateTileChunks(float32(x), float32(y), tile.SpriteID)
 	// TODO use more robust system
 	tileType, ok := GetTileTypeByID(tile.TileTypeID)
 	if ok && !tileType.Invulnerable {
