@@ -1,17 +1,18 @@
 package agent_draw
 
 import (
-	"github.com/go-gl/mathgl/mgl32"
+	//"github.com/go-gl/mathgl/mgl32"
 
 	"github.com/skycoin/cx-game/agents"
-	"github.com/skycoin/cx-game/spriteloader"
-	"github.com/skycoin/cx-game/render"
+	//"github.com/skycoin/cx-game/spriteloader"
+	//"github.com/skycoin/cx-game/render"
 )
 
 const (
 	playerHeadSize float32 = 1.5
 )
 
+/*
 func drawPlayerSprite(
 		agent *agents.Agent, ctx DrawHandlerContext, 
 		spriteID spriteloader.SpriteID,
@@ -32,12 +33,15 @@ func drawPlayerSprite(
 	drawOpts := spriteloader.NewDrawOptions()
 	spriteloader.DrawSpriteQuadContext(renderCtx, spriteID, drawOpts)
 }
+*/
 
 func PlayerDrawHandler(agents []*agents.Agent, ctx DrawHandlerContext) {
 	if len(agents)==0 { return }
+	/*
 	for _, agent := range agents {
 
 		drawPlayerSprite(agent, ctx, agent.PlayerData.SuitSpriteID)
 		drawPlayerSprite(agent, ctx, agent.PlayerData.HelmetSpriteID)
 	}
+	*/
 }
