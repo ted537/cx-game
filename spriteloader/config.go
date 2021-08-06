@@ -210,6 +210,7 @@ func RegisterSpritesFromConfig(cfgPath string) []SpriteID {
 	// TODO deprecate this
 	//spriteloadersheet := AddSpritesheetFromTexture(sheet.Texture.Texture)
 	for _,sprite := range sheet.Sprites {
+		sprite.Texture = sheet.Texture
 		render.RegisterSprite(sprite)
 		/*
 		offset := sprite.Transform.Col(2)
