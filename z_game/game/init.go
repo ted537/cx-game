@@ -12,7 +12,6 @@ import (
 	"github.com/skycoin/cx-game/cxmath"
 	"github.com/skycoin/cx-game/input"
 	"github.com/skycoin/cx-game/item"
-	"github.com/skycoin/cx-game/models"
 	"github.com/skycoin/cx-game/particles"
 	"github.com/skycoin/cx-game/render"
 	"github.com/skycoin/cx-game/sound"
@@ -41,7 +40,7 @@ var (
 	Cam    *camera.Camera
 	win    render.Window
 	window *glfw.Window
-	fps    *models.Fps
+	fps    *render.Fps
 	player *agents.Agent
 
 	World              world.World
@@ -78,7 +77,7 @@ func Init() {
 	//models.Init()
 	//player = models.NewPlayer()
 
-	fps = models.NewFps(false)
+	fps = render.NewFps(false)
 	Cam = camera.NewCamera(&win)
 	//World.Planet = world.NewDevPlanet()
 

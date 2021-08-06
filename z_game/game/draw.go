@@ -44,24 +44,6 @@ func Draw() {
 		win.DefaultRenderContext().PushLocal(mgl32.Translate3D(-11.5, 5, 0)),
 	)
 
-	/*
-	// tile - air line (green)
-	collidingTileLines := World.Planet.GetCollidingTilesLinesRelative(
-		int(player.Pos.X), int(player.Pos.Y))
-	if len(collidingTileLines) > 2 {
-		Cam.DrawLines(collidingTileLines, mgl32.Vec3{0.0, 1.0, 0.0}, baseCtx)
-	}
-
-	// body bounding box (blue)
-	Cam.DrawLines(player.GetBBoxLines(), mgl32.Vec3{0.0, 0.0, 1.0}, baseCtx)
-
-	// colliding line from body (red)
-	collidingLines := player.GetCollidingLines()
-	if len(collidingLines) > 2 {
-		Cam.DrawLines(collidingLines, mgl32.Vec3{1.0, 0.0, 0.0}, baseCtx)
-	}
-	*/
-
 	ui.DrawDialogueBoxes(camCtx)
 	// FIXME: draw dialogue boxes uses alternate projection matrix;
 	// restore original projection matrix

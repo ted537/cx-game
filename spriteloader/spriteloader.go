@@ -204,11 +204,13 @@ func DrawSpriteQuadOptions(
 	DrawSpriteQuadMatrix(worldTransform, spriteId, opts)
 }
 
+/*
 func DrawSpriteQuad(
 	xpos, ypos, xwidth, yheight float32, spriteId SpriteID,
 ) {
 	DrawSpriteQuadOptions(xpos, ypos, xwidth, yheight, spriteId, NewDrawOptions())
 }
+*/
 
 func DrawSpriteQuadMatrix(
 	worldTransform mgl32.Mat4, spriteId SpriteID, opts DrawOptions,
