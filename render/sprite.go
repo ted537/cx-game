@@ -15,7 +15,7 @@ func initSprite() {
 		"./assets/shader/spritesheet.vert", "./assets/shader/spritesheet.frag",
 	)
 	config.Define("NUM_INSTANCES",
-		strconv.Itoa(constants.DRAW_SPRITE_BATCH_SIZE) )
+		strconv.Itoa(int(constants.DRAW_SPRITE_BATCH_SIZE)) )
 
 	spriteProgram = config.Compile()
 }

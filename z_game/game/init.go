@@ -73,6 +73,7 @@ func Init() {
 	ui.Init()
 	particles.InitParticles()
 	item.RegisterItemTypes()
+	render.Init()
 
 	//models.Init()
 	//player = models.NewPlayer()

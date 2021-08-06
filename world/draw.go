@@ -1,6 +1,7 @@
 package world
 
 import (
+	"github.com/go-gl/mathgl/mgl32"
 	"github.com/go-gl/gl/v4.1-core/gl"
 
 	"github.com/skycoin/cx-game/camera"
@@ -12,6 +13,12 @@ import (
 type PositionedTile struct {
 	Tile Tile
 	Position cxmath.Vec2i
+}
+
+func (pt PositionedTile) Transform() mgl32.Mat4 {
+	return mgl32.Translate3D(
+		float32(pt.Position.X), float32(pt.Position.Y), 0,
+	)
 }
 
 func (planet *Planet) DrawLayer(layer Layer, cam *camera.Camera) {
@@ -59,8 +66,14 @@ func (planet *Planet) DrawHemisphere(
 	planet.liquidProgram.StopUsing()
 	planet.program.Use()
 
-	/*
 	visible := planet.visibleTiles(layer, cam, left, right)
+	for _,positionedTile := range visible {
+		render.DrawUISprite(
+			positionedTile.Transform(), positionedTile.Tile.SpriteID,
+			render.NewSpriteDrawOptions(),
+		)
+	}
+	/*
 	bins := planet.binTilesBySpritesheet(visible)
 
 	for tex,tiles := range bins {

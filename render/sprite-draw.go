@@ -1,9 +1,13 @@
 package render
 
 import (
+	"log"
+
+	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/mathgl/mgl32"
 
 	"github.com/skycoin/cx-game/cxmath/math32"
+	"github.com/skycoin/cx-game/cxmath/math32i"
 	"github.com/skycoin/cx-game/constants"
 )
 
@@ -43,13 +47,13 @@ func drawSprite(modelView mgl32.Mat4, id SpriteID, opts SpriteDrawOptions) {
 }
 
 // unaffected by camera movement
-func DrawUISprite(transform mgl32.Mat4, id SpriteID) {
-
+func DrawUISprite(transform mgl32.Mat4, id SpriteID, opts SpriteDrawOptions) {
+	drawSprite(transform, id, opts)
 }
 
 // affected by camera movement
 // TODO implement wrap-around in here
-func DrawWorldSprite(transform mgl32.Mat4, id SpriteID) {
+func DrawWorldSprite(transform mgl32.Mat4, id SpriteID, opts SpriteDrawOptions) {
 	position := transform.Col(3)
 	positiveXPosition := math32.PositiveModulo(position.X(), worldWidth)
 	// TODO
@@ -61,6 +65,11 @@ func Flush() {
 }
 
 func flushSpriteDraws() {
+	spriteProgram.Use()
+	defer spriteProgram.StopUsing()
+
+	spriteProgram.SetMat4("projection", &Projection)
+
 	for atlas,spriteDraws := range spriteDrawsPerAtlas {
 		drawAtlasSprites(atlas, spriteDraws)
 	}
@@ -78,7 +87,7 @@ func drawAtlasSprites(atlas Texture, spriteDraws []SpriteDraw) {
 }
 
 func extractUniforms(spriteDraws []SpriteDraw) Uniforms {
-	uniforms := NewUniforms(len(spriteDraws))
+	uniforms := NewUniforms(int32(len(spriteDraws)))
 	for idx,spriteDraw := range spriteDraws {
 		uniforms.ModelViews[idx] = spriteDraw.ModelView
 		uniforms.UVTransforms[idx] = spriteDraw.UVTransform
@@ -87,12 +96,12 @@ func extractUniforms(spriteDraws []SpriteDraw) Uniforms {
 }
 
 type Uniforms struct {
-	Count int
+	Count int32
 	ModelViews []mgl32.Mat4
 	UVTransforms []mgl32.Mat3
 }
 
-func NewUniforms(count int) Uniforms {
+func NewUniforms(count int32) Uniforms {
 	return Uniforms {
 		Count: count,
 		ModelViews: make([]mgl32.Mat4, count),
@@ -100,26 +109,28 @@ func NewUniforms(count int) Uniforms {
 	}
 }
 
-func (u Uniforms) Batch(batchSize int) []Uniforms {
+func (u Uniforms) Batch(batchSize int32) []Uniforms {
 	numBatches := divideRoundUp(u.Count, batchSize)
 	batches := make([]Uniforms,numBatches)
 
-	for i := batchSize ; i < u.Count ; i+= batchSize {
-		batches[i] = u.Range(i-batchSize,i)
+	for i := int32(0) ; i < numBatches ; i++ {
+		start := batchSize * i
+		stop := math32i.Min(batchSize * (i+1), u.Count)
+		batches[i] = u.Range(start,stop)
 	}
 
 	return batches
 }
 
-func (u Uniforms) Range(start,stop int) Uniforms {
+func (u Uniforms) Range(start,stop int32) Uniforms {
 	return Uniforms {
-		Count: stop-start+1,
+		Count: stop-start,
 		ModelViews: u.ModelViews[start:stop],
 		UVTransforms: u.UVTransforms[start:stop],
 	}
 }
 
-func divideRoundUp(a,b int) int {
+func divideRoundUp(a,b int32) int32 {
 	if a%b == 0 {
 		return a/b
 	} else {
@@ -128,5 +139,8 @@ func divideRoundUp(a,b int) int {
 }
 
 func drawInstancedQuads(batch Uniforms) {
-
+	log.Printf("trying to draw %v instanced quads",batch.Count)
+	spriteProgram.SetMat4s("modelviews", batch.ModelViews)
+	spriteProgram.SetMat3s("uvtransforms", batch.UVTransforms)
+	gl.DrawArraysInstanced(gl.TRIANGLES, 0,6, constants.DRAW_SPRITE_BATCH_SIZE)
 }

@@ -10,6 +10,7 @@ import (
 	"github.com/skycoin/cx-game/item"
 	"github.com/skycoin/cx-game/particles"
 	"github.com/skycoin/cx-game/render/worldctx"
+	"github.com/skycoin/cx-game/render"
 	"github.com/skycoin/cx-game/starfield"
 	"github.com/skycoin/cx-game/ui"
 	"github.com/skycoin/cx-game/world"
@@ -52,6 +53,8 @@ func Draw() {
 	inventory.Draw(win.DefaultRenderContext())
 
 	Console.Draw(win.DefaultRenderContext())
+
+	render.Flush()
 
 	glfw.PollEvents()
 	win.Window.SwapBuffers()

@@ -1,5 +1,5 @@
 package constants
 
 const (
-	DRAW_SPRITE_BATCH_SIZE int = 100
+	DRAW_SPRITE_BATCH_SIZE int32 = 100
 )
