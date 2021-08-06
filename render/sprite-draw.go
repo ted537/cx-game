@@ -1,8 +1,6 @@
 package render
 
 import (
-	"log"
-
 	"github.com/go-gl/mathgl/mgl32"
 
 	"github.com/skycoin/cx-game/cxmath/math32"
@@ -29,17 +27,19 @@ func NewSpriteDrawOptions() SpriteDrawOptions{
 type SpriteDraw struct {
 	Sprite Sprite
 	ModelView mgl32.Mat4
+	UVTransform mgl32.Mat3
 	Options SpriteDrawOptions
 }
-var spriteDraws = [][]SpriteDraw{}
+var spriteDrawsPerAtlas = map[Texture][]SpriteDraw{}
 
 func drawSprite(modelView mgl32.Mat4, id SpriteID, opts SpriteDrawOptions) {
 	sprite := sprites[id]
 	atlas := sprite.Texture
-	spriteDraws[atlas] = append( spriteDraws[atlas], SpriteDraw {
-		Sprite: sprite,
-		ModelView: modelView,
-	})
+	spriteDrawsPerAtlas[atlas] = append( spriteDrawsPerAtlas[atlas],
+		SpriteDraw {
+			Sprite: sprite,
+			ModelView: modelView,
+		} )
 }
 
 // unaffected by camera movement
@@ -59,31 +59,71 @@ func Flush() {
 }
 
 func flushSpriteDraws() {
-	for atlasIndex := range spriteDraws {
-		drawAtlasSprites(atlasIndex)
+	for atlas,spriteDraws := range spriteDrawsPerAtlas {
+		drawAtlasSprites(atlas, spriteDraws)
 	}
-	spriteDraws = make([][]SpriteDraw, len(atlases))
+	spriteDrawsPerAtlas = make(map[Texture][]SpriteDraw)
 }
 
-func drawAtlasSprites(atlasIndex int) {
-	atlases[atlasIndex].Bind()
-	defer atlases[atlasIndex].Unbind()
+func drawAtlasSprites(atlas Texture, spriteDraws []SpriteDraw) {
+	atlas.Bind()
+	defer atlas.Unbind()
 
-	uniforms := batchUniforms(spriteDraws[atlasIndex])
-	for _,batch := range uniforms {
+	uniforms := extractUniforms(spriteDraws)
+	for _,batch := range uniforms.Batch(constants.DRAW_SPRITE_BATCH_SIZE) {
 		drawInstancedQuads(batch)
 	}
 }
 
-type UniformBatch struct {
-	ModelViews [constants.DRAW_SPRITE_BATCH_SIZE]mgl32.Mat4
-	ModelTransforms [constants.DRAW_SPRITE_BATCH_SIZE]mgl32.Mat3
-}
-func batchUniforms(spriteDraws []SpriteDraw) []UniformBatch {
-	log.Fatal("batchUniforms() has not been implemented")
-	return nil
+func extractUniforms(spriteDraws []SpriteDraw) Uniforms {
+	uniforms := NewUniforms(len(spriteDraws))
+	for _,spriteDraw := range spriteDraws {
+
+	}
+	return uniforms
 }
 
-func drawInstancedQuads(batch UniformBatch) {
+type Uniforms struct {
+	Count int
+	ModelViews []mgl32.Mat4
+	UVTransforms []mgl32.Mat3
+}
+
+func NewUniforms(count int) Uniforms {
+	return Uniforms {
+		Count: count,
+		ModelViews: make([]mgl32.Mat4, count),
+		UVTransforms: make([]mgl32.Mat3, count),
+	}
+}
+
+func (u Uniforms) Batch(batchSize int) []Uniforms {
+	numBatches := divideRoundUp(u.Count, batchSize)
+	batches := make([]Uniforms,numBatches)
+
+	for i := batchSize ; i < u.Count ; i+= batchSize {
+		batches[i] = u.Range(i-batchSize,i)
+	}
+
+	return batches
+}
+
+func (u Uniforms) Range(start,stop int) Uniforms {
+	return Uniforms {
+		Count: stop-start+1,
+		ModelViews: u.ModelViews[start:stop],
+		UVTransforms: u.UVTransforms[start:stop],
+	}
+}
+
+func divideRoundUp(a,b int) int {
+	if a%b == 0 {
+		return a/b
+	} else {
+		return a/b+1
+	}
+}
+
+func drawInstancedQuads(batch Uniforms) {
 
 }
