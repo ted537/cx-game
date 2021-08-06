@@ -60,6 +60,9 @@ func DrawWorldSprite(transform mgl32.Mat4, id SpriteID, opts SpriteDrawOptions) 
 	positiveXPosition := math32.PositiveModulo(position.X(), worldWidth)
 	// TODO
 	_ = position; _ = positiveXPosition
+
+	modelview := cameraTransform.Inv().Mul4(transform)
+	drawSprite(modelview, id, opts)
 }
 
 func Flush(projection mgl32.Mat4) {

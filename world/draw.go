@@ -68,7 +68,7 @@ func (planet *Planet) DrawHemisphere(
 
 	visible := planet.visibleTiles(layer, cam, left, right)
 	for _,positionedTile := range visible {
-		render.DrawUISprite(
+		render.DrawWorldSprite(
 			positionedTile.Transform(), positionedTile.Tile.SpriteID,
 			render.NewSpriteDrawOptions(),
 		)
