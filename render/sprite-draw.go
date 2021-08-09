@@ -73,8 +73,9 @@ func flushSpriteDraws(projection mgl32.Mat4) {
 	defer spriteProgram.StopUsing()
 
 	gl.Enable(gl.DEPTH_TEST)
-	gl.Disable(gl.BLEND)
 	defer gl.Disable(gl.DEPTH_TEST)
+
+	gl.BlendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
 
 	gl.BindVertexArray(QuadVao)
 
