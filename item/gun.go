@@ -1,8 +1,12 @@
 package item
 
 import (
+	"github.com/skycoin/cx-game/engine/spriteloader"
 	"github.com/skycoin/cx-game/particle_emitter"
+<<<<<<< HEAD
 	"github.com/skycoin/cx-game/render"
+=======
+>>>>>>> main
 )
 
 const bulletSpeed float32 = 40

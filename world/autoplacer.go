@@ -3,21 +3,31 @@ package world
 import (
 	"math/rand"
 
+	"github.com/skycoin/cx-game/engine/spriteloader"
+	"github.com/skycoin/cx-game/engine/spriteloader/blobsprites"
 	"github.com/skycoin/cx-game/render/blob"
+<<<<<<< HEAD
 	"github.com/skycoin/cx-game/render"
 	"github.com/skycoin/cx-game/spriteloader/blobsprites"
+=======
+>>>>>>> main
 )
 
 // place tiles for a given tiletype using an auto-tiling mechanism
 type AutoPlacer struct {
 	blobSpritesIDs []blobsprites.BlobSpritesID
-	TileTypeID TileTypeID
-	TilingType blob.TilingType
+	TileTypeID     TileTypeID
+	TilingType     blob.TilingType
 }
 
 func (placer AutoPlacer) sprite(
+<<<<<<< HEAD
 		neighbours blob.Neighbours,
 ) render.SpriteID {
+=======
+	neighbours blob.Neighbours,
+) spriteloader.SpriteID {
+>>>>>>> main
 	blobspritesID :=
 		placer.blobSpritesIDs[rand.Intn(len(placer.blobSpritesIDs))]
 	sprites := blobsprites.GetBlobSpritesById(blobspritesID)
@@ -26,25 +36,25 @@ func (placer AutoPlacer) sprite(
 }
 
 func (placer AutoPlacer) CreateTile(
-		tt TileType, createOpts TileCreationOptions,
+	tt TileType, createOpts TileCreationOptions,
 ) Tile {
 	tile := Tile{}
-	updateOpts := TileUpdateOptions {
+	updateOpts := TileUpdateOptions{
 		Neighbours: createOpts.Neighbours,
-		Tile: &tile,
+		Tile:       &tile,
 	}
-	placer.UpdateTile(tt,updateOpts)
+	placer.UpdateTile(tt, updateOpts)
 	return tile
 }
 
 func (placer AutoPlacer) UpdateTile(
-		tt TileType, opts TileUpdateOptions,
+	tt TileType, opts TileUpdateOptions,
 ) {
-	*opts.Tile = Tile {
-		SpriteID: placer.sprite(opts.Neighbours),
-		Name: tt.Name,
+	*opts.Tile = Tile{
+		SpriteID:     placer.sprite(opts.Neighbours),
+		Name:         tt.Name,
 		TileCategory: TileCategoryNormal,
-		TileTypeID: tt.ID,
+		TileTypeID:   tt.ID,
 	}
 }
 

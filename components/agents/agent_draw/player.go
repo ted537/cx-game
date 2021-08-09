@@ -1,11 +1,16 @@
 package agent_draw
 
 import (
+<<<<<<< HEAD
 	//"github.com/go-gl/mathgl/mgl32"
 
 	"github.com/skycoin/cx-game/agents"
 	//"github.com/skycoin/cx-game/spriteloader"
 	//"github.com/skycoin/cx-game/render"
+=======
+	"github.com/skycoin/cx-game/components/agents"
+	"github.com/skycoin/cx-game/engine/spriteloader"
+>>>>>>> main
 )
 
 const (
@@ -36,8 +41,15 @@ func drawPlayerSprite(
 */
 
 func PlayerDrawHandler(agents []*agents.Agent, ctx DrawHandlerContext) {
+<<<<<<< HEAD
 	if len(agents)==0 { return }
 	/*
+=======
+	if len(agents) == 0 {
+		return
+	}
+	drawOpts := spriteloader.NewDrawOptions()
+>>>>>>> main
 	for _, agent := range agents {
 
 		drawPlayerSprite(agent, ctx, agent.PlayerData.SuitSpriteID)

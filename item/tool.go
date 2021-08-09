@@ -1,14 +1,17 @@
 package item
 
 import (
-	"github.com/skycoin/cx-game/agents"
 	"github.com/skycoin/cx-game/ui"
 	"github.com/skycoin/cx-game/render"
+	"github.com/skycoin/cx-game/components/agents"
+	"github.com/skycoin/cx-game/engine/ui"
 )
 
 func UseBuildTool(info ItemUseInfo) {
 	didSelect := info.Inventory.PlacementGrid.TrySelect(info.CamCoords())
-	if didSelect { return }
+	if didSelect {
+		return
+	}
 	didPlace := info.Inventory.PlacementGrid.TryPlace(info)
 	_ = didPlace
 }
@@ -24,7 +27,7 @@ func RegisterBuildToolItemType() ItemTypeID {
 func UseEnemyTool(info ItemUseInfo) {
 	id := ui.EnemyToolActiveAgentID()
 	world := info.WorldCoords()
-	opts := agents.AgentCreationOptions {
+	opts := agents.AgentCreationOptions{
 		X: world.X(), Y: world.Y(),
 	}
 	info.World.Entities.Agents.Spawn(id, opts)

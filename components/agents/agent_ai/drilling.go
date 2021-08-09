@@ -1,13 +1,14 @@
 package agent_ai
 
 import (
-	"github.com/skycoin/cx-game/agents"
+	"github.com/skycoin/cx-game/components/agents"
 	"github.com/skycoin/cx-game/constants"
 	"github.com/skycoin/cx-game/cxmath/math32"
+	"github.com/skycoin/cx-game/events"
 )
 
 const (
-	drillSpeed float32 = 3
+	drillSpeed     float32 = 3
 	drillJumpSpeed float32 = 15
 )
 
@@ -18,11 +19,19 @@ func AiHandlerDrill(agent *agents.Agent, ctx AiContext) {
 
 	doJump :=
 		agent.PhysicsState.Collisions.Horizontal() &&
-		agent.PhysicsState.IsOnGround()
+			agent.PhysicsState.IsOnGround()
 
 	if doJump {
+		events.OnSpiderBeforeJump.Trigger(events.SpiderEventData{
+			WaitingFor: agent.WaitingFor,
+		})
+
 		agent.PhysicsState.Vel.Y = drillJumpSpeed
+		// trigger an event when spiderdrill jump
+		events.OnSpiderJump.Trigger(events.SpiderEventData{
+			WaitingFor: agent.WaitingFor,
+		})
 	} else {
-		agent.PhysicsState.Vel.Y -= constants.Gravity*constants.TimeStep
+		agent.PhysicsState.Vel.Y -= constants.Gravity * constants.TimeStep
 	}
 }
