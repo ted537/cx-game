@@ -2,7 +2,7 @@ package world
 
 import (
 	"github.com/go-gl/mathgl/mgl32"
-	"github.com/go-gl/gl/v4.1-core/gl"
+	//"github.com/go-gl/gl/v4.1-core/gl"
 
 	"github.com/skycoin/cx-game/cxmath"
 	"github.com/skycoin/cx-game/cxmath/mathi"
@@ -21,30 +21,21 @@ func (pt PositionedTile) Transform() mgl32.Mat4 {
 	)
 }
 
-func (planet *Planet) DrawLayer(layer Layer, cam *camera.Camera) {
-	//configureGlForPlanet()
+func (planet *Planet) DrawLayer(
+		layer Layer, cam *camera.Camera, layerID LayerID,
+) {
 	planet.program.Use()
 	defer planet.program.StopUsing()
 
 	w := int(planet.Width)
 	// split up planet into 2 hemispheres to achieve wrap around
 	// without calculating relative tile positions individually
-	planet.DrawHemisphere(layer, cam, 0, w/2)
-	planet.DrawHemisphere(layer, cam, w/2, w)
-}
-
-func configureGlForPlanet() {
-	gl.BindVertexArray(render.QuadVao)
-	gl.Enable(gl.TEXTURE_2D)
-	gl.Enable(gl.BLEND)
-	gl.BlendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
-	gl.Disable(gl.DEPTH_TEST)
-	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST)
-	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST)
+	planet.DrawHemisphere(layer, cam, 0, w/2, layerID)
+	planet.DrawHemisphere(layer, cam, w/2, w, layerID)
 }
 
 func (planet *Planet) DrawHemisphere(
-	layer Layer, cam *camera.Camera, left, right int,
+	layer Layer, cam *camera.Camera, left, right int, layerID LayerID,
 ) {
 	center := float32((left + right) / 2)
 	_ = center
@@ -69,8 +60,11 @@ func (planet *Planet) DrawHemisphere(
 
 	visible := planet.visibleTiles(layer, cam, left, right)
 	for _,positionedTile := range visible {
+		z := -1*(1-float32(layerID)/4)
+		transform := positionedTile.Transform().
+			Mul4(mgl32.Translate3D(0,0,z))
 		render.DrawWorldSprite(
-			positionedTile.Transform(), positionedTile.Tile.SpriteID,
+			transform, positionedTile.Tile.SpriteID,
 			render.NewSpriteDrawOptions(),
 		)
 	}
@@ -103,7 +97,7 @@ func filterLiquidTiles(all []PositionedTile) []PositionedTile {
 }
 
 func (planet *Planet) Draw(cam *camera.Camera, layerID LayerID) {
-	planet.DrawLayer(planet.Layers[layerID], cam)
+	planet.DrawLayer(planet.Layers[layerID], cam, layerID)
 }
 
 func (planet *Planet) visibleTiles(

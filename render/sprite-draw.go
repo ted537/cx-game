@@ -72,6 +72,10 @@ func flushSpriteDraws(projection mgl32.Mat4) {
 	spriteProgram.Use()
 	defer spriteProgram.StopUsing()
 
+	gl.Enable(gl.DEPTH_TEST)
+	gl.Disable(gl.BLEND)
+	defer gl.Disable(gl.DEPTH_TEST)
+
 	gl.BindVertexArray(QuadVao)
 
 	spriteProgram.SetMat4("projection", &projection)
