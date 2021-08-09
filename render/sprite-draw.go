@@ -73,6 +73,8 @@ func flushSpriteDraws(projection mgl32.Mat4) {
 	spriteProgram.Use()
 	defer spriteProgram.StopUsing()
 
+	gl.BindVertexArray(QuadVao)
+
 	spriteProgram.SetMat4("projection", &projection)
 
 	for atlas,spriteDraws := range spriteDrawsPerAtlas {

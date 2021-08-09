@@ -212,9 +212,9 @@ func RegisterSpritesFromConfig(cfgPath string) []SpriteID {
 	for _,sprite := range sheet.Sprites {
 		sprite.Texture = sheet.Texture
 		render.RegisterSprite(sprite)
+		//xScale := sprite.Transform.At(0,0)
 		/*
 		offset := sprite.Transform.Col(2)
-		xScale := sprite.Transform.At(0,0)
 		yScale := sprite.Transform.At(1,1)
 		worldXScale := sprite.Model.At(0,0)
 		worldYScale := sprite.Model.At(1,1)
