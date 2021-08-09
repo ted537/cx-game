@@ -45,6 +45,7 @@ func drawSprite(modelView mgl32.Mat4, id SpriteID, opts SpriteDrawOptions) {
 		SpriteDraw {
 			Sprite: sprite,
 			ModelView: modelView,
+			UVTransform: sprite.Transform,
 		} )
 }
 
@@ -146,7 +147,6 @@ func divideRoundUp(a,b int32) int32 {
 }
 
 func drawInstancedQuads(batch Uniforms) {
-	log.Printf("trying to draw %v instanced quads",batch.Count)
 	spriteProgram.SetMat4s("modelviews", batch.ModelViews)
 	spriteProgram.SetMat3s("uvtransforms", batch.UVTransforms)
 	gl.DrawArraysInstanced(gl.TRIANGLES, 0,6, batch.Count)

@@ -10,6 +10,6 @@ void main() {
 		vec2 texCoord =
 			 vec2(uvtransforms[instance] * vec3(spriteCoord,1) );
 
-		frag_colour = texture(tex, texCoord) + vec4(spriteCoord.x,0,0,1);
+		frag_colour = texture(tex, texCoord);//+ vec4(spriteCoord.x,0,0,1);
 		//frag_colour = vec4(mod(instance,2),mod(instance+1,2),0,1);
 }
