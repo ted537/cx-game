@@ -7,7 +7,6 @@ import (
 	"github.com/go-yaml/yaml"
 
 	"github.com/skycoin/cx-game/config"
-	"github.com/skycoin/cx-game/engine/spriteloader"
 	"github.com/skycoin/cx-game/engine/spriteloader/blobsprites"
 	"github.com/skycoin/cx-game/render/blob"
 	"github.com/skycoin/cx-game/render"

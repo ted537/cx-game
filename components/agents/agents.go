@@ -5,14 +5,9 @@ import (
 
 	"github.com/skycoin/cx-game/components/types"
 	"github.com/skycoin/cx-game/constants"
-	"github.com/skycoin/cx-game/engine/spriteloader"
 	"github.com/skycoin/cx-game/engine/spriteloader/anim"
 	"github.com/skycoin/cx-game/physics"
-<<<<<<< HEAD:agents/agents.go
-	"github.com/skycoin/cx-game/spriteloader/anim"
 	"github.com/skycoin/cx-game/render"
-=======
->>>>>>> main:components/agents/agents.go
 )
 
 type Agent struct {
@@ -33,13 +28,8 @@ type Agent struct {
 }
 
 type PlayerData struct {
-<<<<<<< HEAD:agents/agents.go
-	SuitSpriteID render.SpriteID
+	SuitSpriteID   render.SpriteID
 	HelmetSpriteID render.SpriteID
-=======
-	SuitSpriteID   spriteloader.SpriteID
-	HelmetSpriteID spriteloader.SpriteID
->>>>>>> main:components/agents/agents.go
 }
 
 type HealthComponent struct {

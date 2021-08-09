@@ -6,11 +6,7 @@ import (
 
 	"github.com/skycoin/cx-game/cxmath"
 	"github.com/skycoin/cx-game/cxmath/mathi"
-<<<<<<< HEAD
-=======
 	"github.com/skycoin/cx-game/engine/camera"
-	"github.com/skycoin/cx-game/engine/spriteloader"
->>>>>>> main
 	"github.com/skycoin/cx-game/render"
 )
 
@@ -50,12 +46,8 @@ func configureGlForPlanet() {
 func (planet *Planet) DrawHemisphere(
 	layer Layer, cam *camera.Camera, left, right int,
 ) {
-<<<<<<< HEAD
-	center := float32( (left+right)/2 )
-	_ = center
-=======
 	center := float32((left + right) / 2)
->>>>>>> main
+	_ = center
 
 	/*
 	camToCenter := planet.ShortestDisplacement(
@@ -63,10 +55,6 @@ func (planet *Planet) DrawHemisphere(
 		mgl32.Vec2{ cam.X, cam.Y },
 		mgl32.Vec2 { center, 0 } ) // to.y doesn't matter here
 	*/
-=======
-		mgl32.Vec2{cam.X, cam.Y},
-		mgl32.Vec2{center, 0}) // to.y doesn't matter here
->>>>>>> main
 
 	projection := cam.GetProjectionMatrix()
 	planet.program.Use()

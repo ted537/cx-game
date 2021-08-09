@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/skycoin/cx-game/render"
-	"github.com/skycoin/cx-game/engine/spriteloader"
 )
 
 type TileCategory uint32

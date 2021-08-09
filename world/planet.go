@@ -11,7 +11,6 @@ import (
 	"github.com/skycoin/cx-game/cxmath/math32"
 	"github.com/skycoin/cx-game/engine/camera"
 	"github.com/skycoin/cx-game/engine/spriteloader"
-	"github.com/skycoin/cx-game/particles"
 	"github.com/skycoin/cx-game/render"
 	"github.com/skycoin/cx-game/render/blob"
 )

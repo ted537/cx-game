@@ -11,7 +11,6 @@ import (
 	"github.com/skycoin/cx-game/components/types"
 	"github.com/skycoin/cx-game/cxmath"
 	"github.com/skycoin/cx-game/engine/camera"
-	"github.com/skycoin/cx-game/engine/spriteloader"
 	"github.com/skycoin/cx-game/engine/ui"
 	"github.com/skycoin/cx-game/render"
 	"github.com/skycoin/cx-game/world"

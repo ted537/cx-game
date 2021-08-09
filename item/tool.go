@@ -1,7 +1,6 @@
 package item
 
 import (
-	"github.com/skycoin/cx-game/ui"
 	"github.com/skycoin/cx-game/render"
 	"github.com/skycoin/cx-game/components/agents"
 	"github.com/skycoin/cx-game/engine/ui"

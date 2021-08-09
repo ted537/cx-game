@@ -12,14 +12,6 @@ var debugAgentColor = mgl32.Vec4{0, 1, 0, 1}
 
 // for debugging
 func ColorDrawHandler(agents []*agents.Agent, ctx DrawHandlerContext) {
-<<<<<<< HEAD
-=======
-	if len(agents) == 0 {
-		return
-	}
-	spriteID := getSpriteID(agents[0].AgentCategory)
-	drawOpts := spriteloader.NewDrawOptions()
->>>>>>> main
 	for _, agent := range agents {
 		translate := mgl32.Translate3D(
 			agent.PhysicsState.Pos.X-ctx.Camera.X,

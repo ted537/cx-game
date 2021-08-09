@@ -1,18 +1,12 @@
 package agent_draw
 
 import (
-<<<<<<< HEAD
 	"github.com/go-gl/mathgl/mgl32"
 
-	"github.com/skycoin/cx-game/constants"
-	"github.com/skycoin/cx-game/agents"
-	"github.com/skycoin/cx-game/spriteloader"
 	"github.com/skycoin/cx-game/render"
-=======
 	"github.com/skycoin/cx-game/components/agents"
 	"github.com/skycoin/cx-game/constants"
 	"github.com/skycoin/cx-game/engine/spriteloader"
->>>>>>> main
 )
 
 const TimeBeforeFadeout = float32(1.0) // in seconds

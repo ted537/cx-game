@@ -5,13 +5,9 @@ import (
 
 	"github.com/skycoin/cx-game/constants"
 	"github.com/skycoin/cx-game/cxmath"
-<<<<<<< HEAD:agents/types.go
 	"github.com/skycoin/cx-game/render"
-=======
-	"github.com/skycoin/cx-game/engine/spriteloader"
 	"github.com/skycoin/cx-game/engine/spriteloader/anim"
 	"github.com/skycoin/cx-game/physics"
->>>>>>> main:components/agents/types.go
 )
 
 type AgentCreationOptions struct {
@@ -116,15 +112,9 @@ func createPlayer(opts AgentCreationOptions) *Agent {
 			Direction: 1,
 		},
 		HealthComponent: NewHealthComponent(100),
-<<<<<<< HEAD:agents/types.go
-		PlayerData: PlayerData {
-			HelmetSpriteID: render.GetSpriteIDByName("helmet/1"),
-			SuitSpriteID: render.GetSpriteIDByName("suit:0"),
-=======
 		PlayerData: PlayerData{
-			HelmetSpriteID: spriteloader.GetSpriteIdByName("helmet/1"),
-			SuitSpriteID:   spriteloader.GetSpriteIdByName("suit:0"),
->>>>>>> main:components/agents/types.go
+			HelmetSpriteID: render.GetSpriteIDByName("helmet/1"),
+			SuitSpriteID:   render.GetSpriteIDByName("suit:0"),
 		},
 	}
 	//physics.RegisterBody(&agent.PhysicsState)

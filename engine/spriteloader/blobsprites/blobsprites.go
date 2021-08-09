@@ -3,7 +3,6 @@ package blobsprites
 import (
 	"fmt"
 
-<<<<<<< HEAD:spriteloader/blobsprites/blobsprites.go
 	"github.com/skycoin/cx-game/render"
 )
 
@@ -17,22 +16,6 @@ func LoadBlobSprites(fname string, w,h int, name string) BlobSpritesID {
 		fname, h, w )
 	blobSprites := []render.SpriteID{}
 	for idx:=0; idx < w*h; idx++ {
-=======
-	"github.com/skycoin/cx-game/engine/spriteloader"
-	"github.com/skycoin/cx-game/render/blob"
-)
-
-type BlobSpritesID uint32
-
-var allBlobSprites = make(map[BlobSpritesID]([]spriteloader.SpriteID))
-var nextBlobSpriteId = BlobSpritesID(1)
-
-func LoadBlobSprites(fname string, w, h int, name string) BlobSpritesID {
-	spritesheetId := spriteloader.LoadSpriteSheetByColRow(
-		fname, h, w)
-	blobSprites := []spriteloader.SpriteID{}
-	for idx := 0; idx < w*h; idx++ {
->>>>>>> main:engine/spriteloader/blobsprites/blobsprites.go
 		y := idx / w
 		x := idx % w
 		name := fmt.Sprint("blob_%d", idx)
@@ -67,13 +50,8 @@ func GetBlobSpritesById(id BlobSpritesID) []render.SpriteID {
 func LoadIDFromSpritename(name string, n int) BlobSpritesID {
 	sprites := make([]render.SpriteID, n)
 	for idx := 0; idx < n; idx++ {
-<<<<<<< HEAD:spriteloader/blobsprites/blobsprites.go
-		spritename := fmt.Sprintf("%v:%d",name,idx)
-		sprites[idx] = render.GetSpriteIDByName(spritename)
-=======
 		spritename := fmt.Sprintf("%v:%d", name, idx)
-		sprites[idx] = spriteloader.GetSpriteIdByName(spritename)
->>>>>>> main:engine/spriteloader/blobsprites/blobsprites.go
+		sprites[idx] = render.GetSpriteIDByName(spritename)
 	}
 	id := nextBlobSpriteId
 	allBlobSprites[id] = sprites

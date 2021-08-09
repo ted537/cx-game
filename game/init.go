@@ -37,19 +37,11 @@ const (
 
 var (
 	Console console.Console
-<<<<<<< HEAD:z_game/game/init.go
-	Cam    *camera.Camera
-	win    render.Window
-	window *glfw.Window
-	fps    *render.Fps
-	player *agents.Agent
-=======
 	Cam     *camera.Camera
 	win     render.Window
 	window  *glfw.Window
-	fps     *models.Fps
+	fps     *render.Fps
 	player  *agents.Agent
->>>>>>> main:game/init.go
 
 	World              world.World
 	DrawCollisionBoxes = false

@@ -6,10 +6,8 @@ import (
 	"github.com/skycoin/cx-game/components/agents"
 	"github.com/skycoin/cx-game/components/types"
 	"github.com/skycoin/cx-game/engine/camera"
-	"github.com/skycoin/cx-game/engine/spriteloader"
 	"github.com/skycoin/cx-game/render"
 	"github.com/skycoin/cx-game/world"
-	"github.com/skycoin/cx-game/ids"
 )
 
 type Category uint32
