@@ -1,9 +1,7 @@
 package render
 
 import (
-	"fmt"
 	"log"
-	"strings"
 
 	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
@@ -11,12 +9,13 @@ import (
 )
 
 type Window struct {
-	Height    int
-	Width     int
+	Width,Height    int
+	PhysicalWidth,PhysicalHeight int
 	Resizable bool
 	Window    *glfw.Window
 	context   Context
 }
+
 
 func NewWindow(width, height int, resizable bool) Window {
 	glfwWindow := initGlfw(width, height, resizable)
@@ -77,6 +76,7 @@ func initOpenGL() {
 		"./assets/shader/line.vert", "./assets/shader/line.frag")
 }
 
+/*
 func CreateProgram(vertexShaderSource string, fragmentShaderSource string) uint32 {
 	vertexShader, err := CompileShader(vertexShaderSource, gl.VERTEX_SHADER)
 	if err != nil {
@@ -120,6 +120,7 @@ func CompileShader(source string, shaderType uint32) (uint32, error) {
 
 	return shader, nil
 }
+*/
 
 var Projection mgl32.Mat4
 
