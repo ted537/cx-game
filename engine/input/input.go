@@ -39,8 +39,6 @@ func Init(window *render.Window) {
 	KeysPressedUp = make(map[glfw.Key]bool)
 	ButtonsToKeys = make(map[string]glfw.Key)
 
-	mouseCoords = &MouseCoords{}
-
 	window_ = window
 	registerCallbacks()
 	registerKeyMaps()

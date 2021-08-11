@@ -65,7 +65,8 @@ func mousePressCallback(
 }
 
 var (
-	widthOffset, heightOffset int32
+	// what actually are these???
+	widthOffset, heightOffset int32 
 	scale                     float32 = 1
 )
 
