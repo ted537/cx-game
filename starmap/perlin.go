@@ -97,8 +97,8 @@ func Draw() {
 	program.Use()
 	defer program.StopUsing()
 
-	program.SetUint("nebulaTexture", 0)
-	program.SetUint("gradientTexture", 1)
+	program.SetInt("nebulaTexture", 0)
+	program.SetInt("gradientTexture", 1)
 	program.SetVec2F("texScale",1,1)
 	program.SetVec2F("texOffset",0,0)
 
