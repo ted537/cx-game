@@ -21,8 +21,14 @@ func mouseButtonCallback(
 
 // mouse position relative to screen
 func screenPos() (float32, float32) {
-	screenX := ((input.GetMouseX()-float32(widthOffset))/float32(scale) - float32(win.Width)/2) / Cam.Zoom // adjust mouse position with zoom
-	screenY := (((input.GetMouseY()-float32(heightOffset))/float32(scale) - float32(win.Height)/2) * -1) / Cam.Zoom
+	w := float32(win.Width)
+	h := float32(win.Height)
+
+	// adjust mouse position with zoom
+	screenX :=
+		((input.GetMouseX()-float32(widthOffset))/scale - w/2) / Cam.Zoom
+	screenY :=
+		-((input.GetMouseY()-float32(heightOffset))/scale - h/2) / Cam.Zoom
 	return screenX, screenY
 }
 
@@ -65,7 +71,6 @@ var (
 
 func windowSizeCallback(window *glfw.Window, width, height int) {
 
-	// gl.Viewport(0, 0, int32(width), int32(height))
 	scaleToFitWidth := float32(width) / float32(win.Width)
 	scaleToFitHeight := float32(height) / float32(win.Height)
 	scale = cxmath.Min(scaleToFitHeight, scaleToFitWidth)
@@ -75,9 +80,9 @@ func windowSizeCallback(window *glfw.Window, width, height int) {
 	//correct mouse offsets
 	input.UpdateMouseCoords(widthOffset, heightOffset, scale)
 
-	gl.Viewport(widthOffset, heightOffset, int32(float32(win.Width)*scale), int32(float32(win.Height)*scale))
-	// win.Width = width
-	// win.Height = height
+	viewportWidth := int32(float32(win.Width)*scale)
+	viewportHeight := int32(float32(win.Height)*scale)
+	gl.Viewport( widthOffset, heightOffset, viewportWidth, viewportHeight )
 }
 
 func scrollCallback(w *glfw.Window, xOff, yOff float64) {
