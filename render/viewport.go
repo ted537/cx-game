@@ -50,3 +50,10 @@ func composePhysicalToViewportTransform(
 	// TODO
 	return mgl32.Ident4()
 }
+
+// returns a transformation matrix which maps coordinates 
+// on the physical window to the virtual window
+func (v Viewport) Transform() mgl32.Mat4 {
+	// TODO
+	return mgl32.Ident4()
+}

@@ -9,18 +9,25 @@ import (
 )
 
 type Window struct {
+	// note that the virtual dimensions have no prefix.
+	// i.e. "Window.Width" is really the virtual width
+	// it is assumed that the vast majority of the time,
+	// the virtual dimensions are what the programmer wants.
 	Width,Height    int
 	PhysicalWidth,PhysicalHeight int
 	Resizable bool
 	Window    *glfw.Window
 	context   Context
+
+	// used for mouse events
+	PhysicalToViewportTransform mgl32.Mat4
 }
 
 func (win *Window) windowSizeCallback(
 		window *glfw.Window, physicalWidth, physicalHeight int,
 ) {
 	virtualWidth := float32(win.Width)
-	virtualHeight := float32(win.Heght)
+	virtualHeight := float32(win.Height)
 	viewport := fitCentered(
 		mgl32.Vec2 { virtualWidth, virtualHeight },
 		mgl32.Vec2 { float32(physicalWidth), float32(physicalHeight) },
