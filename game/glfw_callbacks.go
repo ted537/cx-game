@@ -71,18 +71,29 @@ var (
 )
 
 func windowSizeCallback(window *glfw.Window, width, height int) {
+	// "physical" dimensions describe actual window size
+	// "virtual" dimensions describe scaling of both world and UI
+	// physical determines resolution.
+	// virtual determines how big things are.
+	physicalWidth := float32(width)
+	physicalHeight := float32(height)
+	virtualWidth := float32(win.Width)
+	virtualHeight := float32(win.Height)
 
-	scaleToFitWidth := float32(width) / float32(win.Width)
-	scaleToFitHeight := float32(height) / float32(win.Height)
+	scaleToFitWidth := physicalWidth / virtualWidth
+	scaleToFitHeight := physicalHeight / virtualHeight
 	scale = cxmath.Min(scaleToFitHeight, scaleToFitWidth)
 
 	widthOffset = int32((float32(width) - float32(win.Width)*scale) / 2)
 	heightOffset = int32((float32(height) - float32(win.Height)*scale) / 2)
 	//correct mouse offsets
+	// WARNING - DOES NOT DO ANYTHING RIGHT NOW
 	input.UpdateMouseCoords(widthOffset, heightOffset, scale)
 
-	viewportWidth := int32(float32(win.Width)*scale)
-	viewportHeight := int32(float32(win.Height)*scale)
+	// scale up virtual dimensions to fit in physical dimensions.
+	// in case of aspect ratio mismatch, black bars will appear
+	viewportWidth := int32(virtualWidth*scale)
+	viewportHeight := int32(virtualHeight*scale)
 	gl.Viewport( widthOffset, heightOffset, viewportWidth, viewportHeight )
 }
 
