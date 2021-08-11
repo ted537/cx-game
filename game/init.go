@@ -21,7 +21,7 @@ import (
 	"github.com/skycoin/cx-game/render"
 	"github.com/skycoin/cx-game/starfield"
 	"github.com/skycoin/cx-game/world"
-	"github.com/skycoin/cx-game/world/mapgen"
+	"github.com/skycoin/cx-game/world/worldgen"
 )
 
 func init() {
@@ -75,20 +75,11 @@ func Init() {
 	item.RegisterItemTypes()
 	render.Init()
 
-	//models.Init()
-	//player = models.NewPlayer()
-
 	fps = render.NewFps(false)
 	Cam = camera.NewCamera(&win)
-	//World.Planet = world.NewDevPlanet()
 
 	// TODO move this to the world package or similar
-	World = world.World{
-		Entities: world.Entities{
-			Agents: *agents.NewAgentList(),
-		},
-		Planet: *mapgen.GeneratePlanet(),
-	}
+	World = worldgen.GenerateWorld()
 	components.ChangeWorld(&World)
 
 	//World.Planet = *mapgen.GeneratePlanet()
