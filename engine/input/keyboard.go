@@ -6,11 +6,11 @@ import (
 
 var (
 	//for actions
-	KeysPressed     map[glfw.Key]bool
-	KeysPressedDown map[glfw.Key]bool
-	KeysPressedUp   map[glfw.Key]bool
+	KeysPressed     = make(map[glfw.Key]bool)
+	KeysPressedDown = make(map[glfw.Key]bool)
+	KeysPressedUp   = make(map[glfw.Key]bool)
 	//for
-	ButtonsToKeys  map[string]glfw.Key
+	ButtonsToKeys   = make(map[string]glfw.Key)
 	lastKeyPressed glfw.Key
 )
 

@@ -34,11 +34,6 @@ const (
 )
 
 func Init(window *render.Window) {
-	KeysPressed = make(map[glfw.Key]bool)
-	KeysPressedDown = make(map[glfw.Key]bool)
-	KeysPressedUp = make(map[glfw.Key]bool)
-	ButtonsToKeys = make(map[string]glfw.Key)
-
 	window_ = window
 	registerCallbacks()
 	registerKeyMaps()
