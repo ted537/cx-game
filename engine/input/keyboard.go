@@ -25,7 +25,10 @@ func Reset() {
 
 }
 
-func keyCallback(w *glfw.Window, key glfw.Key, s int, action glfw.Action, mk glfw.ModifierKey) {
+func keyCallback(
+		w *glfw.Window,
+		key glfw.Key, scancode int, action glfw.Action, mk glfw.ModifierKey,
+) {
 	for key := range KeysPressed {
 		delete(KeysPressedUp, key)
 	}
