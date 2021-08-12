@@ -7,6 +7,7 @@ import (
 	"github.com/skycoin/cx-game/cxmath/math32i"
 	"github.com/skycoin/cx-game/render"
 	"github.com/skycoin/cx-game/world"
+	"github.com/skycoin/cx-game/engine/input"
 )
 
 const PlacementGridWidth = 5
@@ -110,11 +111,23 @@ func (grid *PlacementGrid) Transform() mgl32.Mat4 {
 	return mgl32.Translate3D(-10, grid.Scroll, 0)
 }
 
-func (ig *PlacementGrid) Draw(ctx render.Context) {
-	ctx = ctx.PushLocal(ig.Transform())
-	for _, positionedTileTypeID := range ig.PositionedTileTypeIDs {
-		ig.DrawSlot(positionedTileTypeID, ctx)
+func (grid *PlacementGrid) Draw(ctx render.Context) {
+	ctx = ctx.PushLocal(grid.Transform())
+	for _, positionedTileTypeID := range grid.PositionedTileTypeIDs {
+		grid.DrawSlot(positionedTileTypeID, ctx)
 	}
+	grid.DrawPreview(ctx)
+}
+
+var previewColor = mgl32.Vec4 { 0,1,0,1 } // green
+func (grid *PlacementGrid) DrawPreview(ctx render.Context) {
+	mousePos := input.GetMousePos()
+	quadCtx := render.Context {
+		World: mgl32.Translate3D(mousePos.X()/32, mousePos.Y()/32, 0),
+		Projection: ctx.Projection,
+	}
+	render.DrawColorQuad(quadCtx, previewColor)
+	//worldCoords := 
 }
 
 func (ig PlacementGrid) DrawSlot(
