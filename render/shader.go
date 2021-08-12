@@ -183,6 +183,18 @@ func (p Program) SetVec2s(name string, values []mgl32.Vec2) {
 	gl.Uniform2fv(location, count, &values[0][0])
 }
 
+func (p Program) SetVec3s(name string, values []mgl32.Vec3) {
+	location := p.Locate(name)
+	count := int32(len(values))
+	gl.Uniform3fv(location, count, &values[0][0])
+}
+
+func (p Program) SetVec4s(name string, values []mgl32.Vec4) {
+	location := p.Locate(name)
+	count := int32(len(values))
+	gl.Uniform4fv(location, count, &values[0][0])
+}
+
 func (s Shader) GetInt(name uint32) int32 {
 	var x int32
 	gl.GetShaderiv(s.gl(), name, &x)
