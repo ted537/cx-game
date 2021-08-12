@@ -7,6 +7,13 @@ import (
 	"github.com/skycoin/cx-game/cxmath"
 )
 
+type WindowDimensions struct {
+	PhysicalWidth, PhysicalHeight float32
+	VirtualWidth, VirtualHeight float32
+	Viewport Viewport
+	Scale float32
+}
+
 type Viewport struct {
 	X,Y,Width,Height int32
 }
@@ -17,7 +24,7 @@ func (v Viewport) Use() {
 
 // fits target into frame, centered with black bars
 // returns a transformation matrix
-func fitCentered( virtualDims, physicalDims mgl32.Vec2) Viewport {
+func fitCentered( virtualDims, physicalDims mgl32.Vec2) WindowDimensions {
 	// "physical" dimensions describe actual window size
 	// "virtual" dimensions describe scaling of both world and UI
 	// physical determines resolution.
@@ -41,7 +48,13 @@ func fitCentered( virtualDims, physicalDims mgl32.Vec2) Viewport {
 	x := (int32(physicalWidth) - viewportWidth)/2
 	y := (int32(physicalHeight) - viewportHeight)/2
 
-	return Viewport { x, y, viewportWidth, viewportHeight }
+	viewport := Viewport { x, y, viewportWidth, viewportHeight }
+	return WindowDimensions {
+		physicalWidth, physicalHeight,
+		virtualWidth, virtualHeight,
+		viewport,
+		scale,
+	}
 }
 
 func composePhysicalToViewportTransform(
@@ -53,7 +66,16 @@ func composePhysicalToViewportTransform(
 
 // returns a transformation matrix which maps coordinates 
 // on the physical window to the virtual window
-func (v Viewport) Transform() mgl32.Mat4 {
+func (d WindowDimensions) Transform() mgl32.Mat4 {
 	// TODO
-	return mgl32.Ident4()
+	centeredPhysical := mgl32.Translate3D(
+		-float32(d.PhysicalWidth)/2, -float32(d.PhysicalHeight)/2, 0,
+	)
+	centeredVirtual := centeredPhysical.Mul4(
+		mgl32.Scale3D(1/d.Scale, 1/d.Scale, 1),
+	)
+	// TODO cam zoom should only be applied to world coords.
+	// UI coords should not be affected.
+	// move this logic to the "item" package or similar.
+	return centeredVirtual
 }

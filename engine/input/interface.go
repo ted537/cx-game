@@ -4,6 +4,8 @@ import (
 	"log"
 
 	"github.com/go-gl/glfw/v3.3/glfw"
+	"github.com/go-gl/mathgl/mgl32"
+	
 	"github.com/skycoin/cx-game/cxmath"
 )
 
@@ -109,4 +111,21 @@ func GetMouseX() float32 {
 }
 func GetMouseY() float32 {
 	return float32(mouseCoords.Y)
+}
+
+func GetMousePos() mgl32.Vec2 {
+	log.Printf("mouseCoords is %+v", mouseCoords)
+	physicalX := float32(mouseCoords.X)
+	physicalY := float32(mouseCoords.Y)
+
+	physicalPos := mgl32.Vec2 { physicalX, physicalY }
+	physicalPosHomogenous :=
+		mgl32.Vec4 { physicalPos.X(), physicalPos.Y(), 0, 1 }
+
+	virtualPos := window_.
+		PhysicalToViewportTransform.Mul4x1(physicalPosHomogenous).Vec2()
+
+	log.Printf("mousePos is %v", virtualPos)
+
+	return virtualPos
 }

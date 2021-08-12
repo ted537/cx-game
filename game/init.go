@@ -60,7 +60,7 @@ func Init() {
 
 	window.SetMouseButtonCallback(mouseButtonCallback)
 	window.SetScrollCallback(scrollCallback)
-	window.SetSizeCallback(windowSizeCallback)
+	//window.SetSizeCallback(windowSizeCallback)
 
 	input.Init(&win)
 	sound.Init()

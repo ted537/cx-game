@@ -23,18 +23,18 @@ type Window struct {
 	PhysicalToViewportTransform mgl32.Mat4
 }
 
-func (win *Window) windowSizeCallback(
+func (win *Window) sizeCallback(
 		window *glfw.Window, physicalWidth, physicalHeight int,
 ) {
 	virtualWidth := float32(win.Width)
 	virtualHeight := float32(win.Height)
-	viewport := fitCentered(
+	windowDimensions := fitCentered(
 		mgl32.Vec2 { virtualWidth, virtualHeight },
 		mgl32.Vec2 { float32(physicalWidth), float32(physicalHeight) },
 	)
-	viewport.Use()
+	windowDimensions.Viewport.Use()
 
-	win.PhysicalToViewportTransform = viewport.Transform()
+	win.PhysicalToViewportTransform = windowDimensions.Transform()
 
 	/*
 	// "physical" dimensions describe actual window size
@@ -81,6 +81,8 @@ func NewWindow(width, height int, resizable bool) Window {
 		Window:    glfwWindow,
 	}
 	window.context = window.DefaultRenderContext()
+
+	glfwWindow.SetSizeCallback(window.sizeCallback)
 
 	return window
 }
