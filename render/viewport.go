@@ -23,7 +23,6 @@ func (v Viewport) Use() {
 }
 
 // fits target into frame, centered with black bars
-// returns a transformation matrix
 func fitCentered( virtualDims, physicalDims mgl32.Vec2) WindowDimensions {
 	// "physical" dimensions describe actual window size
 	// "virtual" dimensions describe scaling of both world and UI
@@ -55,13 +54,6 @@ func fitCentered( virtualDims, physicalDims mgl32.Vec2) WindowDimensions {
 		viewport,
 		scale,
 	}
-}
-
-func composePhysicalToViewportTransform(
-		physicalDims, viewportDims mgl32.Vec2,
-) mgl32.Mat4 {
-	// TODO
-	return mgl32.Ident4()
 }
 
 // returns a transformation matrix which maps coordinates 
