@@ -52,7 +52,7 @@ func registerKeyMaps() {
 	MapKeyToButton("down", glfw.KeyS)
 	MapKeyToButton("jump", glfw.KeySpace)
 	MapKeyToButton("mute", glfw.KeyM)
-	MapKeyToButton("freecam", glfw.KeyF2)
+	MapKeyToButton("freecam", glfw.KeyKP0)
 	MapKeyToButton("cycle-palette", glfw.KeyF3)
 	MapKeyToButton("inventory-grid", glfw.KeyI)
 	MapKeyToButton("fly", glfw.KeyT)
@@ -61,6 +61,7 @@ func registerKeyMaps() {
 	MapKeyToButton("switch-helmet", glfw.Key0)
 	MapKeyToButton("switch-suit", glfw.Key9)
 	MapKeyToButton("shoot", glfw.KeyP)
+	MapKeyToButton("toggle-zoom", glfw.KeyF2)
 
 	MapKeyToButton("enemy-tool-scroll-down", glfw.KeyDown)
 	MapKeyToButton("enemy-tool-scroll-up", glfw.KeyUp)
