@@ -54,6 +54,7 @@ var (
 
 func Init() {
 	win = render.NewWindow(INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT, true)
+	win.SetCallbacks()
 	// defer glfw.Terminate()
 
 	window = win.Window

@@ -82,9 +82,13 @@ func NewWindow(width, height int, resizable bool) Window {
 	}
 	window.context = window.DefaultRenderContext()
 
-	glfwWindow.SetSizeCallback(window.sizeCallback)
+	//glfwWindow.SetSizeCallback(window.sizeCallback)
 
 	return window
+}
+
+func (w *Window) SetCallbacks() {
+	w.Window.SetSizeCallback(w.sizeCallback)
 }
 
 // initGlfw initializes glfw and returns a Window to use.

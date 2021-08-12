@@ -68,14 +68,12 @@ func composePhysicalToViewportTransform(
 // on the physical window to the virtual window
 func (d WindowDimensions) Transform() mgl32.Mat4 {
 	// TODO
-	centeredPhysical := mgl32.Translate3D(
+	translateToCenter := mgl32.Translate3D(
 		-float32(d.PhysicalWidth)/2, -float32(d.PhysicalHeight)/2, 0,
 	)
-	centeredVirtual := centeredPhysical.Mul4(
-		mgl32.Scale3D(1/d.Scale, 1/d.Scale, 1),
-	)
+	scaleToVirtual := mgl32.Scale3D(1/d.Scale, -1/d.Scale, 1)
 	// TODO cam zoom should only be applied to world coords.
 	// UI coords should not be affected.
 	// move this logic to the "item" package or similar.
-	return centeredVirtual
+	return mgl32.Mat4.Mul4(scaleToVirtual,translateToCenter)
 }

@@ -114,7 +114,6 @@ func GetMouseY() float32 {
 }
 
 func GetMousePos() mgl32.Vec2 {
-	log.Printf("mouseCoords is %+v", mouseCoords)
 	physicalX := float32(mouseCoords.X)
 	physicalY := float32(mouseCoords.Y)
 
@@ -122,10 +121,8 @@ func GetMousePos() mgl32.Vec2 {
 	physicalPosHomogenous :=
 		mgl32.Vec4 { physicalPos.X(), physicalPos.Y(), 0, 1 }
 
-	virtualPos := window_.
-		PhysicalToViewportTransform.Mul4x1(physicalPosHomogenous).Vec2()
-
-	log.Printf("mousePos is %v", virtualPos)
+	transform := window_.PhysicalToViewportTransform
+	virtualPos := transform.Mul4x1(physicalPosHomogenous).Vec2()
 
 	return virtualPos
 }
