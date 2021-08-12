@@ -70,29 +70,15 @@ func (c ColorUniforms) Set(program Program) {
 
 func DrawColorQuad(modelView mgl32.Mat4, color mgl32.Vec4) {
 	colorUniforms.Add(modelView,color)
-	/*
-	if !colorProgramInit {
-		colorProgram = NewColorShader()
-		colorProgramInit = true
-	}
-	// setup features
-	gl.Enable(gl.DEPTH_TEST)
-	gl.Enable(gl.BLEND)
-	gl.BlendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
-	// update uniforms
-	colorProgram.Use()
-	defer colorProgram.StopUsing()
-	colorProgram.SetVec4("colour",&color)
-	colorProgram.SetMat4("mvp",&mvp)
-	// draw
-	gl.BindVertexArray(QuadVao)
-	gl.DrawArrays(gl.TRIANGLES,0,6)
-	*/
 }
 
 func flushColorDraws(projection mgl32.Mat4) {
 	colorProgram.Use()
 	defer colorProgram.StopUsing()
+
+	gl.Enable(gl.DEPTH_TEST)
+	gl.Enable(gl.BLEND)
+	defer gl.Disable(gl.DEPTH_TEST)
 
 	colorProgram.SetMat4("projection", &projection)
 	gl.BindVertexArray(QuadVao)
