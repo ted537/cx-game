@@ -117,7 +117,7 @@ func (grid *PlacementGrid) Draw(ctx render.Context, camPos mgl32.Vec2) {
 	for _, positionedTileTypeID := range grid.PositionedTileTypeIDs {
 		grid.DrawSlot(positionedTileTypeID, ctx)
 	}
-	grid.DrawPreview(ctx, camPos)
+	if grid.HasSelected { grid.DrawPreview(ctx, camPos) }
 }
 
 var previewColor = mgl32.Vec4 { 0,1,0,0.5 } // green
@@ -142,7 +142,6 @@ func (grid *PlacementGrid) DrawPreview(ctx render.Context, camPos mgl32.Vec2) {
 }
 
 func (grid *PlacementGrid) previewTransform() mgl32.Mat4 {
-	if !grid.HasSelected { return mgl32.Mat4{} }
 	tiletype := grid.Selected.Get()
 
 	unCenter :=
