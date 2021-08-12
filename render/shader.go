@@ -66,7 +66,7 @@ func (config *ShaderConfig) compileShader(
 	gl.ShaderSource(glShader, 1, csources, nil)
 	gl.CompileShader(glShader)
 	shader := Shader(glShader)
-	shader.checkCompileErrors()
+	shader.checkCompileErrors(source)
 	return shader
 }
 
@@ -234,10 +234,12 @@ func (p Program) GetInfoLog() string {
 	return infolog
 }
 
-func (s Shader) checkCompileErrors() {
+func (s Shader) checkCompileErrors(source string) {
 	if !s.CompiledSuccessfully() {
 		log.Print("compile error")
-		log.Fatal(s.GetInfoLog())
+		log.Print(s.GetInfoLog())
+		log.Print("\n\nsource:\n")
+		log.Fatal(source)
 	}
 }
 

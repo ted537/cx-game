@@ -122,11 +122,8 @@ func (grid *PlacementGrid) Draw(ctx render.Context) {
 var previewColor = mgl32.Vec4 { 0,1,0,0.5 } // green
 func (grid *PlacementGrid) DrawPreview(ctx render.Context) {
 	mousePos := input.GetMousePos()
-	quadCtx := render.Context {
-		World: mgl32.Translate3D(mousePos.X()/32, mousePos.Y()/32, 0),
-		Projection: ctx.Projection,
-	}
-	render.DrawColorQuad(quadCtx, previewColor)
+	modelView := mgl32.Translate3D(mousePos.X()/32, mousePos.Y()/32, 0)
+	render.DrawColorQuad(modelView, previewColor)
 	//worldCoords := 
 }
 
@@ -135,11 +132,11 @@ func (ig PlacementGrid) DrawSlot(
 ) {
 	slotCtx := ctx.PushLocal(positionedTileTypeID.Transform())
 	// draw border
-	render.DrawColorQuad(slotCtx, borderColor)
+	render.DrawColorQuad(slotCtx.World, borderColor)
 	bgCtx := slotCtx.
 		PushLocal(mgl32.Translate3D(0,0,0.1)).
 		PushLocal(cxmath.Scale(1 - borderSize))
-	render.DrawColorQuad(bgCtx, bgColor)
+	render.DrawColorQuad(bgCtx.World, bgColor)
 	// draw tiletype on top of bg
 	itemCtx := slotCtx.PushLocal(cxmath.Scale(itemSize))
 

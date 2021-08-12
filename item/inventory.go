@@ -191,12 +191,12 @@ func (inventory Inventory) DrawSlot(
 	slot InventorySlot, ctx render.Context, isSelected bool,
 ) {
 	// draw border
-	render.DrawColorQuad(ctx, getBorderColor(isSelected))
+	render.DrawColorQuad(ctx.World, getBorderColor(isSelected))
 	// draw bg on top of border
 	bgCtx := ctx.
 		PushLocal(mgl32.Translate3D(0,0,0.1)).
 		PushLocal(cxmath.Scale(1 - borderSize))
-	render.DrawColorQuad(bgCtx, bgColor)
+	render.DrawColorQuad(bgCtx.World, bgColor)
 	// draw item on top of bg
 	itemCtx := ctx.
 		PushLocal(cxmath.Scale(itemSize))

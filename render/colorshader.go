@@ -3,6 +3,7 @@
 package render;
 
 import (
+	"strconv"
 	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/mathgl/mgl32"
 
@@ -11,13 +12,17 @@ import (
 )
 
 func NewColorShader() Program {
-	return CompileProgram(
-		"./assets/shader/color.vert",
-		"./assets/shader/color.frag",
-	)
+	config := NewShaderConfig(
+		"./assets/shader/color.vert", "./assets/shader/color.frag" )
+	config.Define("NUM_INSTANCES",
+		strconv.Itoa(int(constants.DRAW_COLOR_BATCH_SIZE)) )
+	return config.Compile()
 }
+
 var colorProgram Program
-var colorProgramInit bool = false
+func initColor() {
+	colorProgram = NewColorShader()
+}
 
 type ColorUniforms struct {
 	Count int32
@@ -42,7 +47,7 @@ func (c *ColorUniforms) Clear() {
 func (c ColorUniforms) Batch(n int32) []ColorUniforms {
 	batchCount := divideRoundUp(c.Count,n)
 	batches := make([]ColorUniforms, batchCount)
-	for i := int32(0) ; i < n ; i++ {
+	for i := int32(0) ; i < batchCount ; i++ {
 		start := n * i
 		stop := math32i.Min(n * (i+1), c.Count)
 		batches[i] = c.Range(start,stop)
@@ -90,11 +95,12 @@ func flushColorDraws(projection mgl32.Mat4) {
 	defer colorProgram.StopUsing()
 
 	colorProgram.SetMat4("projection", &projection)
+	gl.BindVertexArray(QuadVao)
 
 	batchSize := constants.DRAW_COLOR_BATCH_SIZE
 	for _,batch := range colorUniforms.Batch(batchSize) {
 		batch.Set(colorProgram)
-		gl.DrawArraysInstanced(gl.TRIANGLES, 0, 6, batchSize)
+		gl.DrawArraysInstanced(gl.TRIANGLES, 0, 6, batch.Count)
 	}
 	colorUniforms.Clear()
 }
