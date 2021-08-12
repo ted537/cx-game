@@ -5,6 +5,7 @@ import (
 
 	"github.com/skycoin/cx-game/cxmath"
 	"github.com/skycoin/cx-game/cxmath/math32i"
+	"github.com/skycoin/cx-game/cxmath/math32"
 	"github.com/skycoin/cx-game/render"
 	"github.com/skycoin/cx-game/world"
 	"github.com/skycoin/cx-game/engine/input"
@@ -111,18 +112,28 @@ func (grid *PlacementGrid) Transform() mgl32.Mat4 {
 	return mgl32.Translate3D(-10, grid.Scroll, 0)
 }
 
-func (grid *PlacementGrid) Draw(ctx render.Context) {
+func (grid *PlacementGrid) Draw(ctx render.Context, camPos mgl32.Vec2) {
 	ctx = ctx.PushLocal(grid.Transform())
 	for _, positionedTileTypeID := range grid.PositionedTileTypeIDs {
 		grid.DrawSlot(positionedTileTypeID, ctx)
 	}
-	grid.DrawPreview(ctx)
+	grid.DrawPreview(ctx, camPos)
 }
 
 var previewColor = mgl32.Vec4 { 0,1,0,0.5 } // green
-func (grid *PlacementGrid) DrawPreview(ctx render.Context) {
-	mousePos := input.GetMousePos()
-	modelView := mgl32.Translate3D(mousePos.X()/32, mousePos.Y()/32, 0)
+func (grid *PlacementGrid) DrawPreview(ctx render.Context, camPos mgl32.Vec2) {
+	mousePos := input.GetMousePos().
+		Mul(1.0/32).
+		Add(mgl32.Vec2{0.5,0.5})
+
+	mouseWorldPos := camPos.Add(mousePos)
+	offsetIntoTile := mgl32.Vec2 {
+		math32.Mod( mouseWorldPos.X(), 1),
+		math32.Mod( mouseWorldPos.Y(), 1),
+	}
+	// TODO formalize magic number "32" for pixels per tile
+	tilePos := mousePos.Sub(offsetIntoTile)
+	modelView := mgl32.Translate3D(tilePos.X(), tilePos.Y(), 0)
 	render.DrawColorQuad(modelView, previewColor)
 	//worldCoords := 
 }
