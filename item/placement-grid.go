@@ -133,9 +133,26 @@ func (grid *PlacementGrid) DrawPreview(ctx render.Context, camPos mgl32.Vec2) {
 	}
 	// TODO formalize magic number "32" for pixels per tile
 	tilePos := mousePos.Sub(offsetIntoTile)
-	modelView := mgl32.Translate3D(tilePos.X(), tilePos.Y(), 0)
+
+	translate := mgl32.Translate3D(tilePos.X(), tilePos.Y(), 0)
+	scaleAndShift := grid.previewTransform()
+	modelView := translate.Mul4(scaleAndShift)
+
 	render.DrawColorQuad(modelView, previewColor)
-	//worldCoords := 
+}
+
+func (grid *PlacementGrid) previewTransform() mgl32.Mat4 {
+	if !grid.HasSelected { return mgl32.Mat4{} }
+	tiletype := grid.Selected.Get()
+
+	unCenter :=
+		mgl32.Translate3D( 0.5, 0.5, 0)
+	scaleUp :=
+		mgl32.Scale3D( float32(tiletype.Width), float32(tiletype.Height), 1, )
+	reCenter :=
+		mgl32.Translate3D( -0.5, -0.5, 0)
+
+	return reCenter.Mul4(scaleUp).Mul4(unCenter)
 }
 
 func (ig PlacementGrid) DrawSlot(
