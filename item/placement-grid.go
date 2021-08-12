@@ -119,7 +119,7 @@ func (grid *PlacementGrid) Draw(ctx render.Context) {
 	grid.DrawPreview(ctx)
 }
 
-var previewColor = mgl32.Vec4 { 0,1,0,1 } // green
+var previewColor = mgl32.Vec4 { 0,1,0,0.5 } // green
 func (grid *PlacementGrid) DrawPreview(ctx render.Context) {
 	mousePos := input.GetMousePos()
 	quadCtx := render.Context {
