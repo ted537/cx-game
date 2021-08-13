@@ -198,18 +198,25 @@ func (planet *Planet) PlaceTileType(tileTypeID TileTypeID, x, y int) {
 		tileType.CreateTile(TileCreationOptions{
 			Neighbours: planet.GetNeighbours(tilesInLayer, x, y),
 		})
-	planet.updateSurroundingTiles(tilesInLayer, x, y)
+	// assume 1x1 tiletype for now
+	rect := cxmath.Rect {
+		cxmath.Vec2i{ int32(x), int32(y) },
+		cxmath.Vec2i{ 1,1 },
+	}
+	for _,neighbour := range rect.Neighbours() {
+		planet.updateTile(tilesInLayer, int(neighbour.X), int(neighbour.Y))
+	}
 }
 
 func (planet *Planet) updateSurroundingTiles(
 	tilesInLayer []Tile, x, y int,
 ) {
-	for xOffset := -1; xOffset <= 1; xOffset++ {
-		for yOffset := -1; yOffset <= 1; yOffset++ {
-			if xOffset != 0 || yOffset != 0 {
-				planet.updateTile(tilesInLayer, x+xOffset, y+yOffset)
-			}
-		}
+	rect := cxmath.Rect {
+		cxmath.Vec2i{ int32(x), int32(y) },
+		cxmath.Vec2i{ 1,1 },
+	}
+	for _,neighbour := range rect.Neighbours() {
+		planet.updateTile(tilesInLayer, int(neighbour.X), int(neighbour.Y))
 	}
 }
 
