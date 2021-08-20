@@ -243,7 +243,10 @@ func (body *ParticleBody) MoveSlowXAxis(planet worldcollider.WorldCollider, dt f
 }
 
 //for bullets
-func (body *ParticleBody) MoveNoBounceRaytrace(planet worldcollider.WorldCollider, dt float32, acceleration cxmath.Vec2) {
+func (body *ParticleBody) MoveNoBounceRaytrace(
+		planet worldcollider.WorldCollider, dt float32,
+		acceleration cxmath.Vec2,
+) {
 	body.PrevPos = body.Pos
 	body.PrevVel = body.Vel
 
@@ -253,8 +256,8 @@ func (body *ParticleBody) MoveNoBounceRaytrace(planet worldcollider.WorldCollide
 	body.Vel = body.Vel.Add(acceleration.Mult(0.5 * dt))
 	newPos := body.Pos.Add(body.Vel.Mult(dt))
 
-	collided := body.Raytrace(newPos, planet)
-	if collided {
+	willCollide := body.RaytracePlanet(newPos, planet)
+	if willCollide {
 		body.Vel = cxmath.Vec2{}
 	} else {
 		body.Pos = newPos
@@ -303,7 +306,9 @@ func getCloserGridLine(xLines, yLines *GridLine) *GridLine {
 	}
 }
 
-func (body *ParticleBody) Raytrace(newPos cxmath.Vec2, planet worldcollider.WorldCollider) bool {
+func (body *ParticleBody) RaytracePlanet(
+		newPos cxmath.Vec2, planet worldcollider.WorldCollider,
+) bool {
 	x0, y0 := float64(body.Pos.X+0.5), float64(body.Pos.Y+0.5)
 	x1, y1 := float64(newPos.X+0.5), float64(newPos.Y+0.5)
 
