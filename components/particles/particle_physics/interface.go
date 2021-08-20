@@ -38,10 +38,9 @@ func Init() {
 
 func Update(World *world.World) {
 	particleList := &World.Entities.Particles
-	planet := &World.Planet
 	bins := BinByPhysicsHandlerID(particleList.Particles)
 
 	for physicsType, par := range bins {
-		GetParticlePhysicsHandler(physicsType)(par, planet)
+		GetParticlePhysicsHandler(physicsType)(par, World)
 	}
 }
