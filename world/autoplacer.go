@@ -12,7 +12,7 @@ import (
 type AutoPlacer struct {
 	blobSpritesIDs []blobsprites.BlobSpritesID
 	TileTypeID     TileTypeID
-	TilingType     tiling.TilingType
+	TilingID     tiling.TilingID
 }
 
 func (placer AutoPlacer) sprite(
@@ -21,7 +21,7 @@ func (placer AutoPlacer) sprite(
 	blobspritesID :=
 		placer.blobSpritesIDs[rand.Intn(len(placer.blobSpritesIDs))]
 	sprites := blobsprites.GetBlobSpritesById(blobspritesID)
-	idx := tiling.ApplyTiling(placer.TilingType, neighbours)
+	idx := tiling.ApplyTiling(placer.TilingID, neighbours)
 	return sprites[idx]
 }
 

@@ -72,28 +72,15 @@ func (config *TileConfig) Placer(fname string, id TileTypeID) Placer {
 			TileCollisionType: tileCollisionTypeFromString(config.Collision),
 		}
 	}
-	if config.Blob == "full" {
-		ids := loadIDsFromSpritenames(config.Sprites,
-			tiling.BlobSheetWidth*tiling.BlobSheetHeight)
-
-		return AutoPlacer{
-			blobSpritesIDs: ids,
-			TileTypeID:     id, TilingType: tiling.FullBlobTiling,
-		}
+	tilingID,ok := tiling.ByName(config.Blob)
+	if !ok {
+		log.Fatalf("unrecognized blob type: %s", config.Blob)
 	}
-	if config.Blob == "simple" {
-		ids := loadIDsFromSpritenames(
-			config.Sprites,
-			tiling.SimpleBlobSheetWidth*tiling.SimpleBlobSheetHeight)
-
-		return AutoPlacer{
-			blobSpritesIDs: ids,
-			TileTypeID:     id, TilingType: tiling.SimpleBlobTiling,
-		}
+	ids := loadIDsFromSpritenames(config.Sprites, tilingID.Get().Count() )
+	return AutoPlacer {
+		blobSpritesIDs: ids,
+		TileTypeID: id, TilingID: tilingID,
 	}
-
-	log.Fatalf("unrecognized blob type: %s", config.Blob)
-	return DirectPlacer{}
 }
 
 var layerNamesToIDs = map[string]LayerID{
