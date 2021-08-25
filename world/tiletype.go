@@ -9,7 +9,7 @@ import (
 	"github.com/skycoin/cx-game/constants"
 	"github.com/skycoin/cx-game/cxmath"
 	"github.com/skycoin/cx-game/render"
-	"github.com/skycoin/cx-game/render/blob"
+	"github.com/skycoin/cx-game/world/tiling"
 )
 
 type Placer interface {

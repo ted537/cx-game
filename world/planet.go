@@ -14,7 +14,7 @@ import (
 	"github.com/skycoin/cx-game/engine/input"
 	"github.com/skycoin/cx-game/engine/spriteloader"
 	"github.com/skycoin/cx-game/render"
-	"github.com/skycoin/cx-game/render/blob"
+	"github.com/skycoin/cx-game/world/tiling"
 )
 
 const NUM_INSTANCES = 100

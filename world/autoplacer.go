@@ -4,7 +4,7 @@ import (
 	"math/rand"
 
 	"github.com/skycoin/cx-game/engine/spriteloader/blobsprites"
-	"github.com/skycoin/cx-game/render/blob"
+	"github.com/skycoin/cx-game/world/tiling"
 	"github.com/skycoin/cx-game/render"
 )
 

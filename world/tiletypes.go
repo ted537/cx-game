@@ -11,7 +11,7 @@ import (
 	"github.com/skycoin/cx-game/constants"
 	"github.com/skycoin/cx-game/engine/spriteloader/blobsprites"
 	"github.com/skycoin/cx-game/render"
-	"github.com/skycoin/cx-game/render/blob"
+	"github.com/skycoin/cx-game/world/tiling"
 )
 
 type TileConfig struct {
