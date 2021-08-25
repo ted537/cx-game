@@ -78,5 +78,5 @@ func (t FullTiling) Index(n Neighbours) int {
 		x = 8
 		y = 4
 	}
-	return fullTilingWidth*x + y
+	return fullTilingWidth*y + x
 }

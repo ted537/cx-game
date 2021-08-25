@@ -1,8 +1,8 @@
 package tiling
 
 const (
-	manhattanTilingWidth int = 11
-	manhattanTilingHeight int = 5
+	manhattanTilingWidth int = 4
+	manhattanTilingHeight int = 4
 )
 
 type ManhattanTiling struct {}
