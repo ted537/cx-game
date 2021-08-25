@@ -1,5 +1,31 @@
 package tiling
 
+type Neighbour int
+const (
+	None Neighbour = iota
+	Self
+	Solid
+	Platform
+)
+
+type DetailedNeighbours struct {
+	Left, Right, Up, Down Neighbour
+	UpLeft, UpRight, DownLeft, DownRight Neighbour
+}
+
+func (d DetailedNeighbours) Simplify() Neighbours {
+	return Neighbours {
+		Left: d.Left == Self,
+		Right: d.Right == Self,
+		Up: d.Up == Self,
+		Down: d.Down == Self,
+		UpLeft: d.UpLeft == Self,
+		UpRight: d.UpRight == Self,
+		DownLeft: d.DownLeft == Self,
+		DownRight: d.DownRight == Self,
+	}
+}
+
 // https://www.tilesetter.org/docs/generating_tilesets
 type Neighbours struct {
 	Left, Right, Up, Down bool

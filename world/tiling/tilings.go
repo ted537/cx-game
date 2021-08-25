@@ -14,7 +14,7 @@ func init() {
 	tilings[ManhattanTilingID] = ManhattanTiling{}
 }
 
-func ApplyTiling(id TilingID, neighbours Neighbours) int {
+func ApplyTiling(id TilingID, neighbours DetailedNeighbours) int {
 	return tilings[id].Index(neighbours)
 }
 

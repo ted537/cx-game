@@ -80,10 +80,10 @@ func (tt *TileType) Transform() mgl32.Mat4 {
 }
 
 type TileCreationOptions struct {
-	Neighbours tiling.Neighbours
+	Neighbours tiling.DetailedNeighbours
 }
 type TileUpdateOptions struct {
-	Neighbours tiling.Neighbours
+	Neighbours tiling.DetailedNeighbours
 	Tile       *Tile
 }
 

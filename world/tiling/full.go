@@ -9,7 +9,8 @@ type FullTiling struct {}
 
 func (t FullTiling) Count() int { return fullTilingWidth * fullTilingHeight }
 
-func (t FullTiling) Index(n Neighbours) int {
+func (t FullTiling) Index(detailed DetailedNeighbours) int {
+	n := detailed.Simplify()
 	innerCorners := n.countInnerCorners()
 	// default to the solid square
 	x := 1

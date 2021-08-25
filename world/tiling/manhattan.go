@@ -11,7 +11,8 @@ func (t ManhattanTiling) Count() int {
 	return manhattanTilingWidth * manhattanTilingHeight
 }
 
-func (t ManhattanTiling) Index(n Neighbours) int {
+func (t ManhattanTiling) Index(detailed DetailedNeighbours) int {
+	n := detailed.Simplify()
 	// block from (0,0) to (3,3)
 	x := 1 + boolToInt(n.Left) - boolToInt(n.Right)
 	y := 1 + boolToInt(n.Up) - boolToInt(n.Down)

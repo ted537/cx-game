@@ -16,7 +16,7 @@ type AutoPlacer struct {
 }
 
 func (placer AutoPlacer) sprite(
-	neighbours tiling.Neighbours,
+	neighbours tiling.DetailedNeighbours,
 ) render.SpriteID {
 	blobspritesID :=
 		placer.blobSpritesIDs[rand.Intn(len(placer.blobSpritesIDs))]
@@ -49,5 +49,5 @@ func (placer AutoPlacer) UpdateTile(
 }
 
 func (placer AutoPlacer) ItemSpriteID() render.SpriteID {
-	return placer.sprite(tiling.Neighbours{})
+	return placer.sprite(tiling.DetailedNeighbours{})
 }
