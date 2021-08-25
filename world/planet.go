@@ -88,8 +88,8 @@ func NewPlanet(x, y int32) *Planet {
 	return &planet
 }
 
-func (planet *Planet) GetNeighbours(layer []Tile, x, y int) blob.Neighbours {
-	return blob.Neighbours{
+func (planet *Planet) GetNeighbours(layer []Tile, x, y int) tiling.Neighbours {
+	return tiling.Neighbours{
 		Up:        planet.TileExists(layer, x, y+1),
 		UpRight:   planet.TileExists(layer, x+1, y+1),
 		Right:     planet.TileExists(layer, x+1, y),

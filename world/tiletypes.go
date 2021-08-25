@@ -74,21 +74,21 @@ func (config *TileConfig) Placer(fname string, id TileTypeID) Placer {
 	}
 	if config.Blob == "full" {
 		ids := loadIDsFromSpritenames(config.Sprites,
-			blob.BlobSheetWidth*blob.BlobSheetHeight)
+			tiling.BlobSheetWidth*tiling.BlobSheetHeight)
 
 		return AutoPlacer{
 			blobSpritesIDs: ids,
-			TileTypeID:     id, TilingType: blob.FullBlobTiling,
+			TileTypeID:     id, TilingType: tiling.FullBlobTiling,
 		}
 	}
 	if config.Blob == "simple" {
 		ids := loadIDsFromSpritenames(
 			config.Sprites,
-			blob.SimpleBlobSheetWidth*blob.SimpleBlobSheetHeight)
+			tiling.SimpleBlobSheetWidth*tiling.SimpleBlobSheetHeight)
 
 		return AutoPlacer{
 			blobSpritesIDs: ids,
-			TileTypeID:     id, TilingType: blob.SimpleBlobTiling,
+			TileTypeID:     id, TilingType: tiling.SimpleBlobTiling,
 		}
 	}
 
