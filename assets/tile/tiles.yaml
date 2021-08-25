@@ -16,8 +16,9 @@ regolith:
     layer : top
 
 platform:
-    #blob: manhattan
-    sprite: tiles/platform
+    blob: platform
+    sprites: 
+        - tiles/platform
     layer: top
 
 # stairs:

@@ -26,7 +26,7 @@ func (t PlatformTiling) Index(n DetailedNeighbours) int {
 		if n.Right == Self && n.Left == None { return 0 }
 		if n.Right == Self && n.Left == Self { return 1 }
 		if n.Right == None && n.Left == Self { return 2 }
-		if n.Right == Self && n.Left == None { return 3 }
+		if n.Right == None && n.Left == None { return 3 }
 	}
 	log.Fatalf("cannot find index for platform tiling")
 	return -1
