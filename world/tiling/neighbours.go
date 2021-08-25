@@ -5,7 +5,6 @@ const (
 	None Neighbour = iota
 	Self
 	Solid
-	Platform
 )
 
 type DetailedNeighbours struct {
