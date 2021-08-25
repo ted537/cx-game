@@ -80,6 +80,7 @@ func (config *TileConfig) Placer(fname string, id TileTypeID) Placer {
 	return AutoPlacer {
 		blobSpritesIDs: ids,
 		TileTypeID: id, TilingID: tilingID,
+		TileCollisionType: tileCollisionTypeFromString(config.Collision),
 	}
 }
 

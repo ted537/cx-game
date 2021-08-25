@@ -17,6 +17,7 @@ regolith:
 
 platform:
     blob: platform
+    collision: platform
     sprites: 
         - tiles/platform
     layer: top

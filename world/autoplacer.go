@@ -13,6 +13,7 @@ type AutoPlacer struct {
 	blobSpritesIDs []blobsprites.BlobSpritesID
 	TileTypeID     TileTypeID
 	TilingID     tiling.TilingID
+	TileCollisionType TileCollisionType
 }
 
 func (placer AutoPlacer) sprite(
@@ -45,6 +46,7 @@ func (placer AutoPlacer) UpdateTile(
 		Name:         tt.Name,
 		TileCategory: TileCategoryNormal,
 		TileTypeID:   tt.ID,
+		TileCollisionType: placer.TileCollisionType,
 	}
 }
 
