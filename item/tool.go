@@ -10,7 +10,7 @@ func RegisterFurnitureToolItemType() ItemTypeID {
 	itemtype := NewItemType(render.GetSpriteIDByName("dev-furniture-tool-2"))
 	itemtype.Name = "Dev Furniture Tool"
 	itemtype.Category = BuildTool
-	itemtype.Use = UseFurnitureTool
+	itemtype.Use = UseBuildTool
 	return AddItemType(itemtype)
 }
 
@@ -18,9 +18,16 @@ func RegisterTileToolItemType() ItemTypeID {
 	itemtype := NewItemType(render.GetSpriteIDByName("dev-tile-tool"))
 	itemtype.Name = "Dev Tile Tool"
 	itemtype.Category = BuildTool
-	itemtype.Use = UseTileTool
+	itemtype.Use = UseBuildTool
 	return AddItemType(itemtype)
+}
 
+func RegisterPipeToolItemType() ItemTypeID {
+	itemtype := NewItemType(render.GetSpriteIDByName("dev-tile-tool"))
+	itemtype.Name = "Dev Pipe Place Tool"
+	itemtype.Category = BuildTool
+	itemtype.Use = UseBuildTool
+	return AddItemType(itemtype)
 }
 
 func RegisterEnemyToolItemType() ItemTypeID {
@@ -30,21 +37,11 @@ func RegisterEnemyToolItemType() ItemTypeID {
 	return AddItemType(itemtype)
 }
 
-func UseFurnitureTool(info ItemUseInfo) {
+func UseBuildTool(info ItemUseInfo) {
 	didSelect := info.Inventory.PlacementGrid.TrySelect(info.CamCoords())
 	if didSelect {
 		return
 	}
-	didPlace := info.Inventory.PlacementGrid.TryPlace(info)
-	_ = didPlace
-}
-
-func UseTileTool(info ItemUseInfo) {
-	didSelect := info.Inventory.PlacementGrid.TrySelect(info.CamCoords())
-	if didSelect {
-		return
-	}
-
 	didPlace := info.Inventory.PlacementGrid.TryPlace(info)
 	_ = didPlace
 }

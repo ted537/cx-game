@@ -7,6 +7,7 @@ var (
 	FurnitureToolItemTypeID ItemTypeID
 	TileToolItemTypeID      ItemTypeID
 	EnemyToolItemTypeID     ItemTypeID
+	PipeToolItemTypeID      ItemTypeID
 )
 
 func RegisterItemTypes() {
@@ -15,6 +16,7 @@ func RegisterItemTypes() {
 	RockDustItemTypeID = RegisterRockDustItemType()
 	FurnitureToolItemTypeID = RegisterFurnitureToolItemType()
 	TileToolItemTypeID = RegisterTileToolItemType()
+	PipeToolItemTypeID = RegisterPipeToolItemType()
 	EnemyToolItemTypeID = RegisterEnemyToolItemType()
 
 	AddDrops()

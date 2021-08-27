@@ -85,7 +85,7 @@ func (config *TileConfig) Placer(fname string, id TileTypeID) Placer {
 }
 
 var layerNamesToIDs = map[string]LayerID{
-	"top": TopLayer, "mid": MidLayer, "bg": BgLayer,
+	"top": TopLayer, "mid": MidLayer, "bg": BgLayer, "pipe": PipeLayer,
 }
 
 func LayerIDFromName(name string) LayerID {
