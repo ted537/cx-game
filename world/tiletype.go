@@ -178,3 +178,13 @@ func AllTileIDs() []TileTypeID {
 	}
 	return ids
 }
+
+func TileTypeIDsForToolType(toolType types.ToolType) []TileTypeID {
+	ids := []TileTypeID{}
+	for i := TileTypeID(2); int(i) < len(tileTypes); i++ {
+		if tileTypes[i].ToolType == toolType {
+			ids = append(ids, i)
+		}
+	}
+	return ids
+}

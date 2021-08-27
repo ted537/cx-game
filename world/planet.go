@@ -23,6 +23,7 @@ type LayerID int
 
 const (
 	BgLayer LayerID = iota
+	PipeLayer
 	MidLayer
 	TopLayer
 
