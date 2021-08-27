@@ -109,18 +109,6 @@ func NewPlacementGrid() PlacementGrid {
 
 func (grid *PlacementGrid) Assemble(toolType types.ToolType) {
 	ids := world.TileTypeIDsForToolType(toolType)
-	/*
-	var ids []world.TileTypeID
-	if toolType == "tile" {
-		ids = world.AllTileIDs()
-	} else if toolType == "furniture" {
-		ids = world.AllFurnitureIDs()
-	} else if toolType == "pipe" {
-		ids = world.AllPipeIDs()
-	} else {
-		log.Fatalf("Unexpected tooltype: %v\n", toolType)
-	}
-	*/
 	grid.PositionedTileTypeIDs = LayoutTiletypes(ids)
 }
 
