@@ -6,7 +6,6 @@ import (
 	"github.com/go-gl/mathgl/mgl32"
 
 	"github.com/skycoin/cx-game/components/types"
-	"github.com/skycoin/cx-game/constants"
 	"github.com/skycoin/cx-game/cxmath"
 	"github.com/skycoin/cx-game/render"
 	"github.com/skycoin/cx-game/world/tiling"
@@ -155,26 +154,6 @@ func AllTileTypeIDs() []TileTypeID {
 	ids := make([]TileTypeID, 0, len(tileTypes))
 	for idx := TileTypeID(2); int(idx) < len(tileTypes); idx++ {
 		ids = append(ids, idx)
-	}
-	return ids
-}
-
-func AllFurnitureIDs() []TileTypeID {
-	ids := make([]TileTypeID, 0)
-	for i := TileTypeID(2); int(i) < len(tileTypes); i++ {
-		if tileTypes[i].ToolType == constants.FURNITURE_TOOL {
-			ids = append(ids, i)
-		}
-	}
-	return ids
-}
-
-func AllTileIDs() []TileTypeID {
-	ids := make([]TileTypeID, 0)
-	for i := TileTypeID(2); int(i) < len(tileTypes); i++ {
-		if tileTypes[i].ToolType == constants.TILE_TOOL {
-			ids = append(ids, i)
-		}
 	}
 	return ids
 }
