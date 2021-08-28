@@ -2,6 +2,7 @@ package world
 
 import (
 	"github.com/skycoin/cx-game/render"
+	"github.com/skycoin/cx-game/world/tiling"
 )
 
 type TileCategory uint32
@@ -26,6 +27,11 @@ func (tt TileCategory) ShouldRender() bool {
 }
 
 type Connections struct { Up, Left, Right, Down bool }
+
+func ConnectionsFromNeighbours(n tiling.DetailedNeighbours) Connections {
+	s := n.Simplify()
+	return Connections { Up: s.Up, Left: s.Left, Right: s.Right, Down: s.Down }
+}
 
 type Tile struct {
 	SpriteID          render.SpriteID

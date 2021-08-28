@@ -1,6 +1,7 @@
 package world
 
 import (
+	"log"
 	"math/rand"
 
 	"github.com/skycoin/cx-game/engine/spriteloader/blobsprites"
@@ -48,6 +49,8 @@ func (placer AutoPlacer) CreateTile(
 func (placer AutoPlacer) UpdateTile(
 	tt TileType, opts TileUpdateOptions,
 ) {
+	opts.Tile.Connections = ConnectionsFromNeighbours(opts.Neighbours)
+	log.Printf("tile connections look like \n%+v", opts.Tile.Connections)
 	opts.Tile.SpriteID = placer.sprite(opts.Neighbours)
 }
 
