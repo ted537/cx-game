@@ -3,14 +3,12 @@ package world
 import (
 	"fmt"
 	"log"
-	"math"
 	"strconv"
 
 	"github.com/go-gl/mathgl/mgl32"
 
 	"github.com/skycoin/cx-game/cxmath"
 	"github.com/skycoin/cx-game/cxmath/math32"
-	"github.com/skycoin/cx-game/engine/camera"
 	"github.com/skycoin/cx-game/engine/input"
 	"github.com/skycoin/cx-game/engine/spriteloader"
 	"github.com/skycoin/cx-game/render"
@@ -163,34 +161,6 @@ func (planet *Planet) GetAllTilesUnique() []Tile {
 	return tiles
 }
 
-func (planet *Planet) TryPlaceTile(
-	x, y float32,
-	layer LayerID,
-	tile Tile,
-	cam *camera.Camera,
-) bool {
-	// click relative to camera
-	camCoords := mgl32.Vec4{x / render.PixelsPerTile, y / render.PixelsPerTile, 0, 1}
-	// click relative to world
-	worldCoords := cam.GetTransform().Mul4x1(camCoords)
-	tileX := int32(math.Round((float64(worldCoords.X()))))
-	tileY := int32(math.Round((float64(worldCoords.Y()))))
-	if tileX >= 0 && tileX < planet.Width && tileY >= 0 && tileY < planet.Width {
-		tileIdx := planet.GetTileIndex(int(tileX), int(tileY))
-		if !layer.Valid() {
-			return false
-		}
-		planetLayer := planet.GetLayerTiles(layer)
-		if planetLayer[tileIdx].TileCategory == TileCategoryChild ||
-			planetLayer[tileIdx].TileCategory == TileCategoryMulti {
-			planet.RemoveParentTile(planetLayer, tileIdx)
-		}
-		planetLayer[tileIdx] = tile
-		return true
-	}
-	return false
-}
-
 func (planet *Planet) PlaceTileType(tileTypeID TileTypeID, x, y int) {
 	tileType, ok := GetTileTypeByID(tileTypeID)
 	if !ok {
@@ -258,101 +228,9 @@ func (planet *Planet) updateTile(tilesInLayer []Tile, x, y int) {
 	}
 }
 
-func (planet *Planet) TryPlaceMultiTile(
-	x, y float32, layerID LayerID, multiTile MultiTile, cam *camera.Camera,
-) bool {
-	// click relative to camera
-	camCoords := mgl32.Vec4{x / render.PixelsPerTile, y / render.PixelsPerTile, 0, 1}
-	// click relative to world
-	worldCoords := cam.GetTransform().Mul4x1(camCoords)
-	tileX := int32(math.Round((float64(worldCoords.X()))))
-	tileY := int32(math.Round((float64(worldCoords.Y()))))
-	if tileX >= 0 && tileX < planet.Width && tileY >= 0 && tileY < planet.Width {
-		tileIdx := planet.GetTileIndex(int(tileX), int(tileY))
-		planetLayer := planet.GetLayerTiles(layerID)
-		if len(planetLayer) == 0 {
-			return false
-		}
-		if planetLayer[tileIdx].TileCategory == TileCategoryChild ||
-			planetLayer[tileIdx].TileCategory == TileCategoryMulti {
-			planet.RemoveParentTile(planetLayer, tileIdx)
-		}
-		planet.PlaceMultiTile(int(tileX), int(tileY), layerID, multiTile)
-		return true
-	}
-	return false
-}
-
-// note that multi-tiles are assumed to be rectangular
-func (planet *Planet) getMultiTileWidth(layer []Tile, x, y int) int {
-	offsetX := 1
-	for layer[planet.GetTileIndex(x+offsetX, y)].OffsetX == int8(offsetX) {
-		offsetX++
-	}
-	return offsetX
-}
-
-func (planet *Planet) getMultiTileHeight(layer []Tile, x, y int) int {
-	offsetY := 1
-	for layer[planet.GetTileIndex(x, y+offsetY)].OffsetY == int8(offsetY) {
-		offsetY++
-	}
-	return offsetY
-}
-
-func (planet *Planet) RemoveParentTile(layer []Tile, idx int) {
-	tile := layer[idx]
-	parentY := idx/int(planet.Width) - int(tile.OffsetY)
-	parentX := idx%int(planet.Width) - int(tile.OffsetX)
-
-	width := planet.getMultiTileWidth(layer, parentX, parentY)
-	height := planet.getMultiTileHeight(layer, parentX, parentY)
-
-	for y := parentY; y < parentY+height; y++ {
-		for x := parentX; x < parentX+width; x++ {
-
-			layer[planet.GetTileIndex(x, y)] = Tile{
-				TileCategory: TileCategoryNone,
-			}
-
-		}
-	}
-
-}
 
 func (planet *Planet) GetLayerTiles(layerID LayerID) []Tile {
 	return planet.Layers[layerID].Tiles
-}
-
-func (planet *Planet) PlaceMultiTile(
-	left, bottom int, layerID LayerID, mt MultiTile,
-) {
-	planetLayer := planet.GetLayerTiles(layerID)
-
-	// place master tile
-	planetLayer[planet.GetTileIndex(left, bottom)] = Tile{
-		SpriteID:     mt.SpriteIDs[0],
-		TileCategory: TileCategoryMulti,
-		Name:         mt.Name,
-		// (0,0) offset indicates master / standalone tile
-		OffsetX: 0, OffsetY: 0,
-	}
-
-	for spriteIdIdx := 1; spriteIdIdx < len(mt.SpriteIDs); spriteIdIdx++ {
-		localY := spriteIdIdx / mt.Width
-		localX := spriteIdIdx % mt.Width
-
-		x := left + localX
-		y := bottom + localY
-		tileIdx := planet.GetTileIndex(x, y)
-
-		planetLayer[tileIdx] = Tile{
-			SpriteID:     mt.SpriteIDs[spriteIdIdx],
-			TileCategory: TileCategoryChild,
-			Name:         mt.Name,
-			OffsetX:      int8(localX), OffsetY: int8(localY),
-		}
-	}
 }
 
 // gets the y coordinate of the highest solid tile
