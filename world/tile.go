@@ -36,6 +36,7 @@ type Tile struct {
 	OffsetX           int8
 	OffsetY           int8
 	Durability        int8
+	PipeConnections   PipeConnections
 }
 
 func NewEmptyTile() Tile {
