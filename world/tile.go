@@ -27,6 +27,8 @@ func (tt TileCategory) ShouldRender() bool {
 	return tt != TileCategoryNone
 }
 
+type Connections struct { Up, Left, Right, Down bool }
+
 type Tile struct {
 	SpriteID          render.SpriteID
 	TileCategory      TileCategory
@@ -36,7 +38,7 @@ type Tile struct {
 	OffsetX           int8
 	OffsetY           int8
 	Durability        int8
-	PipeConnections   PipeConnections
+	Connections       Connections
 }
 
 func NewEmptyTile() Tile {
