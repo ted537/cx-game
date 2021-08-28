@@ -6,4 +6,5 @@ const (
 	NULL_TOOL types.ToolType = iota
 	FURNITURE_TOOL
 	TILE_TOOL
+	PIPE_PLACE_TOOL
 )

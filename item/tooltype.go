@@ -12,5 +12,8 @@ func toolTypeFromItemName(itemName string) (types.ToolType,bool) {
 	if itemName == "Dev Furniture Tool" {
 		return constants.FURNITURE_TOOL, true
 	}
+	if itemName == "Dev Pipe Place Tool" {
+		return constants.PIPE_PLACE_TOOL, true
+	}
 	return types.ToolType(0), false
 }

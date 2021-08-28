@@ -377,20 +377,10 @@ func (inv *Inventory) Draw(ctx render.Context, invCam mgl32.Mat4) {
 		item := slot.ItemTypeID.Get()
 		if item.Category == BuildTool {
 			// TODO do this less often
-			/*
-			var buildType string
-
-			if item.Name == "Dev Tile Tool" {
-				//todo add constants, this is quick hack
-				buildType = "tile"
-			} else if item.Name == "Dev Furniture Tool" {
-				buildType = "furniture"
-			}
-			*/
 			toolType,ok := toolTypeFromItemName(item.Name)
 			if !ok {
-				log.Fatalf("could not find tool type for string [%v]",
-					item.Name )
+				log.Fatalf(
+					"could not find tool type for string [%v]", item.Name )
 			}
 			inv.PlacementGrid.Assemble(toolType)
 			inv.PlacementGrid.Draw(ctx, invCam)

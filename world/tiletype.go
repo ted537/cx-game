@@ -100,7 +100,9 @@ var furnitureTileTypes = make([]TileType, 0)
 var tileTileTypes = make([]TileType, 0)
 var tileTypeIDsByName = make(map[string]TileTypeID)
 
-func RegisterTileType(name string, tileType TileType, ToolType types.ToolType) TileTypeID {
+func RegisterTileType(
+		name string, tileType TileType, ToolType types.ToolType,
+) TileTypeID {
 	id := TileTypeID(len(tileTypes))
 	tileType.ID = id
 	// fill in default size
