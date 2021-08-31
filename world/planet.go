@@ -201,6 +201,25 @@ func (planet *Planet) PlaceTileType(tileTypeID TileTypeID, x, y int) {
 	}
 }
 
+func (planet *Planet) TryCyclePipeConnection(x,y int) {
+	layerTiles := planet.GetLayerTiles(PipeLayer)
+	tileIdx := planet.GetTileIndex(x,y)
+	if tileIdx < 0 { return }
+	tile := &layerTiles[tileIdx]
+	tile.Connections =
+		tile.Connections.Next(planet.PipeConnectionCandidates(x,y))
+}
+
+func (planet *Planet) PipeConnectionCandidates(x,y int) Connections {
+	layerTiles := planet.GetLayerTiles(PipeLayer)
+	return Connections {
+		Up:    planet.TileExists(layerTiles, x, y+1),
+		Down:  planet.TileExists(layerTiles, x, y-1),
+		Left:  planet.TileExists(layerTiles, x-1, y),
+		Right: planet.TileExists(layerTiles, x+1, y),
+	}
+}
+
 func (planet *Planet) updateSurroundingTiles(
 	tilesInLayer []Tile, x, y int,
 ) {

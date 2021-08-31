@@ -1,13 +1,14 @@
 package item
 
 var (
-	LaserGunItemTypeID      ItemTypeID
-	GunItemTypeID           ItemTypeID
-	RockDustItemTypeID      ItemTypeID
-	FurnitureToolItemTypeID ItemTypeID
-	TileToolItemTypeID      ItemTypeID
-	EnemyToolItemTypeID     ItemTypeID
-	PipeToolItemTypeID      ItemTypeID
+	LaserGunItemTypeID        ItemTypeID
+	GunItemTypeID             ItemTypeID
+	RockDustItemTypeID        ItemTypeID
+	FurnitureToolItemTypeID   ItemTypeID
+	TileToolItemTypeID        ItemTypeID
+	EnemyToolItemTypeID       ItemTypeID
+	PipePlaceToolItemTypeID   ItemTypeID
+	PipeConnectToolItemTypeID ItemTypeID
 )
 
 func RegisterItemTypes() {
@@ -16,7 +17,8 @@ func RegisterItemTypes() {
 	RockDustItemTypeID = RegisterRockDustItemType()
 	FurnitureToolItemTypeID = RegisterFurnitureToolItemType()
 	TileToolItemTypeID = RegisterTileToolItemType()
-	PipeToolItemTypeID = RegisterPipeToolItemType()
+	PipePlaceToolItemTypeID = RegisterPipeToolItemType()
+	PipeConnectToolItemTypeID = RegisterPipeConnectToolItemType()
 	EnemyToolItemTypeID = RegisterEnemyToolItemType()
 
 	AddDrops()

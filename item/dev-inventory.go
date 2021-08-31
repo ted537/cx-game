@@ -7,7 +7,6 @@ import (
 	"github.com/skycoin/cx-game/components/types"
 )
 
-
 func NewDevInventory() types.InventoryID {
 	inventoryId := NewInventory(10, 8)
 	inventory := GetInventoryById(inventoryId)
@@ -31,7 +30,9 @@ func NewDevInventory() types.InventoryID {
 	inventory.Slots[inventory.ItemSlotIndexForPosition(6, 0)] =
 		InventorySlot{EnemyToolItemTypeID, 1, 0}
 	inventory.Slots[inventory.ItemSlotIndexForPosition(7, 0)] =
-		InventorySlot{PipeToolItemTypeID, 1, 0}
+		InventorySlot{PipePlaceToolItemTypeID, 1, 0}
+	inventory.Slots[inventory.ItemSlotIndexForPosition(8, 0)] =
+		InventorySlot{PipeConnectToolItemTypeID, 1, 0}
 
 	inventory.Slots[inventory.ItemSlotIndexForPosition(0, 1)] = InventorySlot{
 		GetItemTypeIdForTileTypeID(world.IDFor("stone")),
