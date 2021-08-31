@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	drillSpeed     float32 = 3
+	drillSpeed     float32 = 0.5
 	drillJumpSpeed float32 = 15
 )
 
@@ -19,9 +19,11 @@ func AiHandlerDrill(agent *agents.Agent, ctx AiContext) {
 		directionX *= -1
 	}
 	agent.PhysicsState.Direction = directionX * -1
-	if math32.Abs(dist) > 0.2 {
-		agent.PhysicsState.Vel.X = directionX * drillSpeed
+	if math32.Abs(dist) > 1 {
+		agent.AnimationPlayback.PlayRepeating("Walk")
+		agent.PhysicsState.Vel.X = directionX * walkSpeed
 	} else {
+		agent.AnimationPlayback.PlayRepeating("Attack")
 		agent.PhysicsState.Vel.X = 0
 	}
 
@@ -30,7 +32,13 @@ func AiHandlerDrill(agent *agents.Agent, ctx AiContext) {
 		events.OnSpiderCollisionHorizontal.Trigger(events.SpiderEventData{
 			Agent: agent,
 		})
-		// ctx.World.Planet.DamageTile(0, 0, world.TopLayer)
+		// spiderPos := agent.PhysicsState.Pos
+		// tile := ctx.World.Planet.GetTile(int(spiderPos.X+spiderPos.Length()), int(spiderPos.Y), world.TopLayer)
+		// if ctx.World.Planet.TileIsSolid(int(spiderPos.X), int(spiderPos.Y)) {
+		// tile, _ := ctx.World.Planet.DamageTile(int(spiderPos.X), int(spiderPos.Y), world.TopLayer)
+		// _ = tile
+		// }
+
 	}
 
 	doJump :=

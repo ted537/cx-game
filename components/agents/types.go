@@ -42,6 +42,16 @@ func init() {
 		Category:    constants.AGENT_CATEGORY_ENEMY_MOB,
 		CreateAgent: createSpiderDrill,
 	})
+	RegisterAgentType(constants.AGENT_TYPE_GRASS_HOPPER, AgentType{
+		Name:        "Grass Hopper",
+		Category:    constants.AGENT_CATEGORY_ENEMY_MOB,
+		CreateAgent: createGrassHopper,
+	})
+	RegisterAgentType(constants.AGENT_TYPE_ENEMY_SOLDIER, AgentType{
+		Name:        "Enemy Soldier",
+		Category:    constants.AGENT_CATEGORY_ENEMY_MOB,
+		CreateAgent: createEnemySoldier,
+	})
 	RegisterAgentType(constants.AGENT_TYPE_PLAYER, AgentType{
 		Name:        "Player",
 		Category:    constants.AGENT_CATEGORY_PLAYER,
@@ -98,6 +108,46 @@ func createSpiderDrill(opts AgentCreationOptions) *Agent {
 		AnimationPlayback: playback,
 	}
 	//physics.RegisterBody(&agent.PhysicsState)
+	return &agent
+}
+
+func createGrassHopper(opts AgentCreationOptions) *Agent {
+	x := opts.X
+	y := opts.Y
+	animation := anim.LoadAnimationFromJSON("./assets/grassHopper.json")
+	playback := animation.NewPlayback("Idle")
+	agent := Agent{
+		AgentCategory: constants.AGENT_CATEGORY_ENEMY_MOB,
+		AiHandlerID:   constants.AI_HANDLER_GRASSHOPPER,
+		DrawHandlerID: constants.DRAW_HANDLER_ANIM,
+		PhysicsState: physics.Body{
+			Size: cxmath.Vec2{X: 2.0, Y: 2.0},
+			Pos:  cxmath.Vec2{X: x, Y: y},
+		},
+		HealthComponent:   NewHealthComponent(5),
+		AnimationPlayback: playback,
+	}
+
+	return &agent
+}
+
+func createEnemySoldier(opts AgentCreationOptions) *Agent {
+	x := opts.X
+	y := opts.Y
+	animation := anim.LoadAnimationFromJSON("./assets/enemy_soldier.json")
+	playback := animation.NewPlayback("Idle")
+	agent := Agent{
+		AgentCategory: constants.AGENT_CATEGORY_ENEMY_MOB,
+		AiHandlerID:   constants.AI_HANDLER_ENEMYSOLDIER,
+		DrawHandlerID: constants.DRAW_HANDLER_ANIM,
+		PhysicsState: physics.Body{
+			Size: cxmath.Vec2{X: 2.0, Y: 2.0},
+			Pos:  cxmath.Vec2{X: x, Y: y},
+		},
+		HealthComponent:   NewHealthComponent(5),
+		AnimationPlayback: playback,
+	}
+
 	return &agent
 }
 
