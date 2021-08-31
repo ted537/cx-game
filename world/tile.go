@@ -38,6 +38,9 @@ func ConnectedNeighbours(
 ) tiling.DetailedNeighbours {
 	connectedNeighbours := neighbours // copy
 	if !connections.Up { connectedNeighbours.Up = tiling.None }
+	if !connections.Down { connectedNeighbours.Down = tiling.None }
+	if !connections.Left { connectedNeighbours.Left = tiling.None }
+	if !connections.Right { connectedNeighbours.Right = tiling.None }
 	return connectedNeighbours
 }
 
