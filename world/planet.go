@@ -215,6 +215,29 @@ func (planet *Planet) TryCyclePipeConnection(x,y int) {
 		Cycling: true,
 		Neighbours: planet.GetNeighbours(layerTiles, x,y, tileType.ID),
 	})
+
+	neighbours := manhattanNeighbours(x,y)
+	for _, neighbour := range neighbours {
+		neighbourTileIdx :=
+			planet.GetTileIndex(neighbour.X, neighbour.Y)
+		if neighbourTileIdx >= 0 {
+			neighbourTile := &layerTiles[neighbourTileIdx]
+			if neighbourTile.TileCategory != TileCategoryNone {
+				neighbourTile.Connections =
+					neighbourTile.Connections.AND(neighbour.Mask)
+				log.Printf("updating neighbour...")
+				neighbourTileType := neighbourTile.TileTypeID.Get()
+				neighbourTileType.UpdateTile(TileUpdateOptions{
+					Tile: neighbourTile,
+					Cycling: true,
+					Neighbours: planet.GetNeighbours(
+						layerTiles,
+						neighbour.X, neighbour.Y, tileType.ID,
+					),
+				})
+			}
+		}
+	}
 }
 
 func (planet *Planet) PipeConnectionCandidates(x,y int) Connections {

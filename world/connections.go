@@ -11,6 +11,15 @@ func (c Connections) Bits() [4]bool {
 	return [4]bool { c.Up, c.Left, c.Right, c.Down }
 }
 
+func (c Connections) AND(other Connections) Connections {
+	return Connections {
+		Up: c.Up && other.Up,
+		Left: c.Left && other.Left,
+		Right: c.Right && other.Right,
+		Down: c.Down && other.Down,
+	}
+}
+
 func (c Connections) Valid(possible Connections) bool {
 	isValid :=
 		( possible.Up || !c.Up  ) &&
