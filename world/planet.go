@@ -208,18 +208,20 @@ func (planet *Planet) TryCyclePipeConnection(x,y int) {
 	tile := &layerTiles[tileIdx]
 	tile.Connections =
 		tile.Connections.Next(planet.PipeConnectionCandidates(x,y))
+
 	tileType := tile.TileTypeID.Get()
 	tileType.UpdateTile(TileUpdateOptions{
 		Tile: tile,
 		Cycling: true,
+		Neighbours: planet.GetNeighbours(layerTiles, x,y, tileType.ID),
 	})
 }
 
 func (planet *Planet) PipeConnectionCandidates(x,y int) Connections {
 	layerTiles := planet.GetLayerTiles(PipeLayer)
 	return Connections {
-		Up:    planet.TileExists(layerTiles, x, y+1),
-		Down:  planet.TileExists(layerTiles, x, y-1),
+		Up:    planet.TileExists(layerTiles, x,   y+1),
+		Down:  planet.TileExists(layerTiles, x,   y-1),
 		Left:  planet.TileExists(layerTiles, x-1, y),
 		Right: planet.TileExists(layerTiles, x+1, y),
 	}
