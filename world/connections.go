@@ -7,6 +7,19 @@ import (
 
 type Connections struct { Up, Left, Right, Down bool }
 
+func (c Connections) Bits() [4]bool {
+	return [4]bool { c.Up, c.Left, c.Right, c.Down }
+}
+
+func (c Connections) Valid(possible Connections) bool {
+	isValid :=
+		( possible.Up || !c.Up  ) &&
+		( possible.Down || !c.Down  ) &&
+		( possible.Left || !c.Left  ) &&
+		( possible.Right || !c.Right  )
+	return isValid
+}
+
 func ConnectionsFromNeighbours(n tiling.DetailedNeighbours) Connections {
 	s := n.Simplify()
 	return Connections { Up: s.Up, Left: s.Left, Right: s.Right, Down: s.Down }
@@ -48,10 +61,13 @@ func (c Connections) Next(valid Connections) Connections {
 	bits := []bool { c.Up, c.Left, c.Right, c.Down }
 	log.Printf("bits=%v",bits)
 	i := composeBits(bits)
-	log.Printf("i=%v",i)
-	decomposed := [4]bool{}
-	decomposeBits(i+1,decomposed[:])
-	log.Printf("decomposed=%v",decomposed)
-	d := decomposed
-	return Connections { d[0], d[1], d[2], d[3] }
+	for true {
+		decomposed := [4]bool{}
+		decomposeBits(i+1,decomposed[:])
+		d := decomposed
+		candidate := Connections { d[0], d[1], d[2], d[3] }
+		if candidate.Valid(valid) { return candidate }
+		i = (i+1) % 16
+	}
+	return Connections{} // unreachable anyway
 }
