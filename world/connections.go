@@ -11,12 +11,21 @@ func (c Connections) Bits() [4]bool {
 	return [4]bool { c.Up, c.Left, c.Right, c.Down }
 }
 
-func (c Connections) AND(other Connections) Connections {
+func (c Connections) Diff(newC Connections) ConnectionDiff {
+	return ConnectionDiff {
+		Up: computeBoolDiff(c.Up, newC.Up),
+		Left: computeBoolDiff(c.Left, newC.Left),
+		Right: computeBoolDiff(c.Right, newC.Right),
+		Down: computeBoolDiff(c.Down, newC.Down),
+	}
+}
+
+func (c Connections) ApplyDiff(diff ConnectionDiff) Connections {
 	return Connections {
-		Up: c.Up && other.Up,
-		Left: c.Left && other.Left,
-		Right: c.Right && other.Right,
-		Down: c.Down && other.Down,
+		Up: applyBoolDiff(c.Up, diff.Up),
+		Left: applyBoolDiff(c.Left, diff.Left),
+		Right: applyBoolDiff(c.Right, diff.Right),
+		Down: applyBoolDiff(c.Down, diff.Down),
 	}
 }
 

@@ -1,27 +1,49 @@
 package world
 
-type ManhattanNeighbour struct {
-	X,Y int
-	Mask Connections
+type BoolDiff int
+const (
+	NO_CHANGE BoolDiff = iota
+	SET_ON
+	SET_OFF
+)
+func computeBoolDiff(x,y bool) BoolDiff {
+	if y && !x { return SET_ON }
+	if !y && x { return SET_OFF }
+	return NO_CHANGE
+}
+func applyBoolDiff(x bool, diff BoolDiff) bool {
+	if diff == SET_OFF { return false }
+	if diff == SET_ON { return true }
+	return x
 }
 
-func manhattanNeighbours(x,y int) []ManhattanNeighbour {
+type ConnectionDiff struct { Up,Left,Right,Down BoolDiff }
+
+type ManhattanNeighbour struct {
+	X,Y int
+	ConnectionDiff ConnectionDiff
+}
+
+func manhattanNeighbours(
+		x,y int, connections, oldConnections Connections,
+) []ManhattanNeighbour {
+	diff := oldConnections.Diff(connections)
 	return []ManhattanNeighbour {
 		ManhattanNeighbour {
 			x-1, y,
-			Connections { Up: true, Left: true, Down: true, Right: false },
+			ConnectionDiff { Right: diff.Left },
 		},
 		ManhattanNeighbour {
 			x+1, y,
-			Connections { Up: true, Left: false, Down: true, Right: true },
+			ConnectionDiff { Left: diff.Right },
 		},
 		ManhattanNeighbour {
 			x, y-1,
-			Connections { Up: false, Left: true, Down: true, Right: true },
+			ConnectionDiff { Up: diff.Down },
 		},
 		ManhattanNeighbour {
 			x, y+1,
-			Connections { Up: true, Left: true, Down: false, Right: true },
+			ConnectionDiff { Down: diff.Up },
 		},
 	}
 }

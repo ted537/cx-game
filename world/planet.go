@@ -206,6 +206,7 @@ func (planet *Planet) TryCyclePipeConnection(x,y int) {
 	tileIdx := planet.GetTileIndex(x,y)
 	if tileIdx < 0 { return }
 	tile := &layerTiles[tileIdx]
+	oldConnections := tile.Connections
 	tile.Connections =
 		tile.Connections.Next(planet.PipeConnectionCandidates(x,y))
 
@@ -216,16 +217,15 @@ func (planet *Planet) TryCyclePipeConnection(x,y int) {
 		Neighbours: planet.GetNeighbours(layerTiles, x,y, tileType.ID),
 	})
 
-	neighbours := manhattanNeighbours(x,y)
+	neighbours := manhattanNeighbours(x,y, tile.Connections, oldConnections)
 	for _, neighbour := range neighbours {
 		neighbourTileIdx :=
 			planet.GetTileIndex(neighbour.X, neighbour.Y)
 		if neighbourTileIdx >= 0 {
 			neighbourTile := &layerTiles[neighbourTileIdx]
 			if neighbourTile.TileCategory != TileCategoryNone {
-				neighbourTile.Connections =
-					neighbourTile.Connections.AND(neighbour.Mask)
-				log.Printf("updating neighbour...")
+				neighbourTile.Connections = neighbourTile.Connections.
+					ApplyDiff(neighbour.ConnectionDiff)
 				neighbourTileType := neighbourTile.TileTypeID.Get()
 				neighbourTileType.UpdateTile(TileUpdateOptions{
 					Tile: neighbourTile,
