@@ -84,6 +84,7 @@ type TileCreationOptions struct {
 type TileUpdateOptions struct {
 	Neighbours tiling.DetailedNeighbours
 	Tile       *Tile
+	Cycling    bool
 }
 
 func (tt TileType) CreateTile(opts TileCreationOptions) Tile {

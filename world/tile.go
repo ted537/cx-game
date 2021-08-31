@@ -33,6 +33,14 @@ func ConnectionsFromNeighbours(n tiling.DetailedNeighbours) Connections {
 	return Connections { Up: s.Up, Left: s.Left, Right: s.Right, Down: s.Down }
 }
 
+func ConnectedNeighbours(
+		connections Connections, neighbours tiling.DetailedNeighbours,
+) tiling.DetailedNeighbours {
+	connectedNeighbours := neighbours // copy
+	if !connections.Up { connectedNeighbours.Up = tiling.None }
+	return connectedNeighbours
+}
+
 func composeBits(bits []bool) int {
 	place := 1
 	sum := 0

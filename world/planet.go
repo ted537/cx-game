@@ -208,6 +208,11 @@ func (planet *Planet) TryCyclePipeConnection(x,y int) {
 	tile := &layerTiles[tileIdx]
 	tile.Connections =
 		tile.Connections.Next(planet.PipeConnectionCandidates(x,y))
+	tileType := tile.TileTypeID.Get()
+	tileType.UpdateTile(TileUpdateOptions{
+		Tile: tile,
+		Cycling: true,
+	})
 }
 
 func (planet *Planet) PipeConnectionCandidates(x,y int) Connections {
