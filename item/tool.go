@@ -32,14 +32,6 @@ func RegisterBgToolItemType() ItemTypeID {
 	return AddItemType(itemtype)
 }
 
-func RegisterPipeToolItemType() ItemTypeID {
-	itemtype := NewItemType(render.GetSpriteIDByName("dev-pipe-place-tool"))
-	itemtype.Name = "Dev Pipe Place Tool"
-	itemtype.Category = BuildTool
-	itemtype.Use = UseBuildTool
-	return AddItemType(itemtype)
-}
-
 func RegisterEnemyToolItemType() ItemTypeID {
 	itemtype := NewItemType(render.GetSpriteIDByName("dev-enemy-tool"))
 	itemtype.Name = "Dev Enemy Tool"

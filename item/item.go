@@ -23,6 +23,7 @@ type ItemType struct {
 	Category Category
 
 	Use func(ItemUseInfo)
+	OnDrag func(ItemUseInfo, mgl32.Vec2)
 }
 
 //type ItemTypeID uint32
