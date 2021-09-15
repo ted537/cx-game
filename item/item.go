@@ -69,8 +69,9 @@ var nextItemTypeID = ItemTypeID(1)
 func NewItemType(SpriteID render.SpriteID) ItemType {
 	return ItemType{
 		SpriteID: SpriteID,
-		Name:     "untitled",
+		Name:     "untitled-item",
 		Use:      func(ItemUseInfo) {},
+		OnDrag:     func(ItemUseInfo,mgl32.Vec2) {},
 	}
 }
 

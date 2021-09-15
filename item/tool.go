@@ -1,6 +1,8 @@
 package item
 
 import (
+	"github.com/go-gl/mathgl/mgl32"
+
 	"github.com/skycoin/cx-game/components/agents"
 	"github.com/skycoin/cx-game/cxmath"
 	"github.com/skycoin/cx-game/engine/ui"
@@ -8,11 +10,16 @@ import (
 	"github.com/skycoin/cx-game/world"
 )
 
+func dragBuildTool(info ItemUseInfo, lastPos mgl32.Vec2) {
+	UseBuildTool(info)
+}
+
 func RegisterFurnitureToolItemType() ItemTypeID {
 	itemtype := NewItemType(render.GetSpriteIDByName("dev-furniture-tool-2"))
 	itemtype.Name = "Dev Furniture Tool"
 	itemtype.Category = BuildTool
 	itemtype.Use = UseBuildTool
+	itemtype.OnDrag = dragBuildTool
 	return AddItemType(itemtype)
 }
 
@@ -21,6 +28,7 @@ func RegisterTileToolItemType() ItemTypeID {
 	itemtype.Name = "Dev Tile Tool"
 	itemtype.Category = BuildTool
 	itemtype.Use = UseBuildTool
+	itemtype.OnDrag = dragBuildTool
 	return AddItemType(itemtype)
 }
 
@@ -29,6 +37,7 @@ func RegisterBgToolItemType() ItemTypeID {
 	itemtype.Name = "Dev Background Tile Tool"
 	itemtype.Category = BuildTool
 	itemtype.Use = UseBuildTool
+	itemtype.OnDrag = dragBuildTool
 	return AddItemType(itemtype)
 }
 

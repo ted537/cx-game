@@ -289,33 +289,6 @@ func (inv *Inventory) TryDragItem(
 	return true
 }
 
-func (inventory *Inventory) TryUseBuildItem(
-	screenX, screenY float32, cam *camera.Camera,
-	World *world.World, player *agents.Agent) bool {
-	itemSlot := inventory.SelectedItemSlot()
-	if itemSlot == nil {
-		return false
-	}
-
-	if itemSlot.Quantity == 0 {
-		return false
-	}
-
-	itemType := GetItemTypeById(itemSlot.ItemTypeID)
-	if itemType.Category == BuildTool {
-		itemType.Use(ItemUseInfo{
-			Slot:    itemSlot,
-			ScreenX: screenX, ScreenY: screenY,
-			Camera:    cam,
-			World:     World,
-			Player:    player,
-			Inventory: inventory,
-		})
-		return true
-	}
-	return false
-}
-
 func (inventory *Inventory) getGridClickPosition(
 	screenX, screenY float32,
 ) (idx int, ok bool) {

@@ -118,10 +118,11 @@ func cursorPosCallback(w *glfw.Window, xpos, ypos float64) {
 
 	if leftMouseDown {
 		item.GetInventoryById(player.InventoryID).
-			TryUseBuildItem(mousePos.X(), mousePos.Y(), Cam, &World, player)
+			TryDragItem(mousePos.X(), mousePos.Y(), Cam, &World, player)
 	}
 
-	worldCoords := Cam.GetTransform().Mul4x1(mousePos.Mul(1.0/32).Vec4(0, 1)).Vec2()
+	worldCoords :=
+		Cam.GetTransform().Mul4x1(mousePos.Mul(1.0/32).Vec4(0, 1)).Vec2()
 
 	worldX, worldY := cxmath.RoundVec2(worldCoords)
 	tile := World.Planet.GetTile(int(worldX), int(worldY), world.TopLayer)
@@ -131,7 +132,7 @@ func cursorPosCallback(w *glfw.Window, xpos, ypos float64) {
 	}
 	tileText = fmt.Sprintf(
 		"%v   %v   %v   %v   %v   %v",
-		tile.TileCollisionType, tile.Name, 
+		tile.TileCollisionType, tile.Name,
 		World.Planet.LightingValues[idx].GetEnvLight(),
 		World.Planet.LightingValues[idx].GetSkyLight(),
 		worldX, worldY,
