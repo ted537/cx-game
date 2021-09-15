@@ -3,6 +3,8 @@ package item
 // TODO where to store state about previous mouse position
 
 import (
+	"log"
+
 	"github.com/go-gl/mathgl/mgl32"
 
 	"github.com/skycoin/cx-game/render"
@@ -13,7 +15,7 @@ func pipetoolMouseDown(info ItemUseInfo) {
 }
 
 func pipetoolMouseDrag(info ItemUseInfo, prev mgl32.Vec2) {
-
+	log.Printf("dragging pipe tool")
 }
 
 func RegisterPipeToolItemType() ItemTypeID {

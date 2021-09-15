@@ -39,7 +39,8 @@ type Inventory struct {
 	GridHoldingIndex     int
 	PlacementGrid        PlacementGrid
 
-	IsOpen bool
+	IsOpen               bool
+	lastMouseWorldPos    mgl32.Vec2
 }
 
 var (
@@ -252,13 +253,9 @@ func (inventory *Inventory) TryUseItem(
 	World *world.World, player *agents.Agent,
 ) bool {
 	itemSlot := inventory.SelectedItemSlot()
-	if itemSlot == nil {
-		return false
-	}
+	if itemSlot == nil { return false }
 	// don't use empty items
-	if itemSlot.Quantity == 0 {
-		return false
-	}
+	if itemSlot.Quantity == 0 { return false }
 	itemType := GetItemTypeById(itemSlot.ItemTypeID)
 	itemType.Use(ItemUseInfo{
 		Slot:    itemSlot,
@@ -268,6 +265,27 @@ func (inventory *Inventory) TryUseItem(
 		Player:    player,
 		Inventory: inventory,
 	})
+	return true
+}
+
+func (inv *Inventory) TryDragItem(
+	screenX, screenY float32, cam *camera.Camera,
+	World *world.World, player *agents.Agent,
+) bool {
+	itemSlot := inv.SelectedItemSlot()
+	if itemSlot == nil { return false }
+	// don't use empty items
+	if itemSlot.Quantity == 0 { return false }
+	itemType := GetItemTypeById(itemSlot.ItemTypeID)
+	info := ItemUseInfo{
+		Slot:    itemSlot,
+		ScreenX: screenX, ScreenY: screenY,
+		Camera:    cam,
+		World:     World,
+		Player:    player,
+		Inventory: inv,
+	}
+	itemType.OnDrag(info, inv.lastMouseWorldPos)
 	return true
 }
 
