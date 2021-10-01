@@ -303,7 +303,7 @@ func (grid *PlacementGrid) UpdatePreview(
 		tilesAreClear(World,layersToCheck,x,y,x+int(tt.Width),y+int(tt.Height))
 
 	grid.canPlace = occupyingTilesAreClear
-	if tt.Layer == world.MidLayer {
+	if tt.NeedsGround {
 		belowTilesAreSolid := tilesAreSolid(
 			World, []world.LayerID { world.TopLayer },
 			x,y-1,x+int(tt.Width),y,
