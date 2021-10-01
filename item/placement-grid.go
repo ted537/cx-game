@@ -220,6 +220,22 @@ func tilesAreClear(
 	return true
 }
 
+func tilesAreSolid(
+	World *world.World, layerIDs []world.LayerID,
+	xstart, ystart, xstop, ystop int,
+) bool {
+	for _,layerID := range layerIDs {
+		for x := xstart; x < xstop; x++ {
+			for y := ystart; y < ystop; y++ {
+				if World.TileIsClear(layerID, x, y) {
+					return false
+				}
+			}
+		}
+	}
+	return true
+}
+
 func (grid *PlacementGrid) TryPlace(info ItemUseInfo) bool {
 	if !grid.HasSelected || grid.Selected == 0 {
 		return false
@@ -287,5 +303,11 @@ func (grid *PlacementGrid) UpdatePreview(
 		tilesAreClear(World,layersToCheck,x,y,x+int(tt.Width),y+int(tt.Height))
 
 	grid.canPlace = occupyingTilesAreClear
-
+	if tt.Layer == world.MidLayer {
+		belowTilesAreSolid := tilesAreSolid(
+			World, []world.LayerID { world.TopLayer },
+			x,y-1,x+int(tt.Width),y,
+		)
+		grid.canPlace = grid.canPlace && belowTilesAreSolid
+	}
 }
