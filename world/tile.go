@@ -37,6 +37,7 @@ type Tile struct {
 	Connections       Connections
 	LightSource       bool
 	NeedsGround       bool
+	Powered           bool
 }
 
 func NewEmptyTile() Tile {
