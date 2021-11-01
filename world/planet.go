@@ -106,12 +106,13 @@ func (planet *Planet) ShortestDisplacement(from, to mgl32.Vec2) mgl32.Vec2 {
 	return disp
 }
 
-func (planet *Planet) GetTile(x, y int, layerID LayerID) *Tile {
+func (planet *Planet) GetTile(x, y int, layerID LayerID) (*Tile,bool) {
 	idx := planet.GetTileIndex(x, y)
 	if idx >= 0 {
-		return &planet.GetLayerTiles(layerID)[planet.GetTileIndex(x, y)]
+		tile := &planet.GetLayerTiles(layerID)[planet.GetTileIndex(x, y)]
+		return tile, true
 	} else {
-		return nil
+		return nil, false
 	}
 }
 

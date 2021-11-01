@@ -86,7 +86,7 @@ const poleRadius int = 4
 func placePole(planet *world.Planet, origin int) {
 	for x := origin - poleRadius; x < origin+poleRadius; x++ {
 		for y := 0; y < int(planet.Height); y++ {
-			tile := planet.GetTile(x, y, world.TopLayer)
+			tile,_ := planet.GetTile(x, y, world.TopLayer)
 			if tile.TileTypeID == idFor("regolith") {
 				planet.PlaceTileType(idFor("methane-ice"), x, y)
 			}

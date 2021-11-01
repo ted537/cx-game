@@ -13,5 +13,19 @@ func (placer *LightPlacer) CreateTile(
 	tt TileType, opts TileCreationOptions,
 ) Tile {
 	tile := placer.Tile
-	if tile.
+	updateOpts := TileUpdateOptions {
+		Tile: &tile,
+	}
+	placer.UpdateTile(tt, updateOpts)
+	return tile
+}
+
+func (placer *LightPlacer) UpdateTile(
+	tt TileType, opts TileUpdateOptions,
+) {
+	if opts.Tile.Power.On {
+		opts.Tile.SpriteID = placer.OnSpriteID
+	} else {
+		opts.Tile.SpriteID = placer.OffSpriteID
+	}
 }
