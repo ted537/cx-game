@@ -1,9 +1,7 @@
 package worldimport
 
 import (
-	"fmt"
 	"image"
-	"path"
 
 	"github.com/go-gl/mathgl/mgl32"
 	"github.com/lafriks/go-tiled"
@@ -11,51 +9,14 @@ import (
 	"github.com/skycoin/cx-game/world"
 	"github.com/skycoin/cx-game/components/types"
 	"github.com/skycoin/cx-game/constants"
-	"github.com/skycoin/cx-game/engine/spriteloader"
-	"github.com/skycoin/cx-game/cxmath/math32"
-	"github.com/skycoin/cx-game/render"
-	"github.com/go-gl/gl/v4.1-core/gl"
 )
+
 
 func defaltToolForLayer(layerID world.LayerID) types.ToolType {
 	if layerID == world.BgLayer {
 		return constants.BG_TOOL
 	}
 	return constants.FURNITURE_TOOL
-}
-
-func registerTilesetTile(
-	imgPath string, id uint32,
-	transform mgl32.Mat3, model mgl32.Mat4, layerID world.LayerID,
-) world.TileTypeID {
-	tex := spriteloader.LoadTextureFromFileToGPUCached(imgPath)
-	name := fmt.Sprintf("%v:%v", imgPath, id)
-	sprite := render.Sprite{
-		Name:      name,
-		Transform: transform,
-		Model:     model,
-		Texture:   render.Texture{Target: gl.TEXTURE_2D, Texture: tex.Gl},
-	}
-	spriteID := render.RegisterSprite(sprite)
-
-	mw := int32(math32.Round(model.At(0, 0)))
-	mh := int32(math32.Round(model.At(1, 1)))
-
-	tile := world.NewNormalTile()
-	tile.Name = name
-	tile.TileTypeID = world.NextTileTypeID()
-
-	tileType := world.TileType{
-		Name:   name,
-		Layer:  layerID,
-		Placer: world.DirectPlacer{SpriteID: spriteID, Tile: tile},
-		Width:  mw, Height: mh,
-	}
-
-	tileTypeID :=
-		world.RegisterTileType(name, tileType, defaltToolForLayer(layerID))
-
-	return tileTypeID
 }
 
 func findTilesetTileForLayerTile(
@@ -83,9 +44,6 @@ func rectTransform(here image.Rectangle, parentDims image.Point) mgl32.Mat3 {
 	return translate.Mul3(scale)
 }
 
-func modelFromSize(dx int, dy int) mgl32.Mat4 {
-	return mgl32.Scale2D(float32(dx)/16, float32(dy)/16).Mat4()
-}
 
 type TilesetIDKey struct {
 	tileset *tiled.Tileset
@@ -126,6 +84,8 @@ func getTileTypeID(
 	}
 
 	// did not find - register new tile type
+	return registerTilesetTile(layerTile)
+	/*
 	if foundTilesetTile && tilesetTile.Image != nil {
 		imgPath := path.Join(tmxPath, "..", tilesetTile.Image.Source)
 		w := tilesetTile.Image.Width
@@ -147,4 +107,5 @@ func getTileTypeID(
 		imgPath, layerTile.ID, transform, mgl32.Ident4(), layerID)
 	tilesetAndIDToCXTile[key] = tileTypeID
 	return tileTypeID
+	*/
 }
