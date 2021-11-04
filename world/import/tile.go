@@ -84,28 +84,9 @@ func getTileTypeID(
 	}
 
 	// did not find - register new tile type
-	return registerTilesetTile(layerTile)
-	/*
-	if foundTilesetTile && tilesetTile.Image != nil {
-		imgPath := path.Join(tmxPath, "..", tilesetTile.Image.Source)
-		w := tilesetTile.Image.Width
-		h := tilesetTile.Image.Height
-		model := modelFromSize(w, h)
-		tileTypeID := registerTilesetTile(
-			imgPath, layerTile.ID, flipTransform, model, layerID)
-		tilesetAndIDToCXTile[key] = tileTypeID
-		return tileTypeID
-	}
-	// register new tile from tileset
-	imgPath := path.Join(tmxPath, "..", tileset.Image.Source)
-	rect := tileset.GetTileRect(layerTile.ID)
-	transform := rectTransform(rect,
-		image.Point{tileset.Image.Width, tileset.Image.Height},
-	)
-	transform = transform.Mul3(flipTransform)
-	tileTypeID := registerTilesetTile(
-		imgPath, layerTile.ID, transform, mgl32.Ident4(), layerID)
-	tilesetAndIDToCXTile[key] = tileTypeID
-	return tileTypeID
-	*/
+	return registerTilesetTile(layerTile, TileRegistrationOptions {
+		TmxPath: tmxPath, LayerID: layerID, Tileset: tileset,
+		LayerTile: layerTile, TilesetTile: tilesetTile,
+		FlipTransform: flipTransform,
+	})
 }
