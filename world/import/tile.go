@@ -56,6 +56,7 @@ var tilesetAndIDToCXTile = map[TilesetIDKey]world.TileTypeID{}
 
 func getTileTypeID(
 	layerTile *tiled.LayerTile, tmxPath string, layerID world.LayerID,
+	tiledSprites TiledSprites,
 ) world.TileTypeID {
 	tileset := layerTile.Tileset
 	// nil entry => empty layer tile

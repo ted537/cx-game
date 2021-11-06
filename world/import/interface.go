@@ -3,6 +3,7 @@ package worldimport
 import (
 	"log"
 	"time"
+	"path"
 
 	"github.com/skycoin/cx-game/components/agents"
 	"github.com/skycoin/cx-game/world"
@@ -17,11 +18,13 @@ func ImportWorld(tmxPath string) world.World {
 	}
 	elapsedTiledLoad := time.Since(start)
 	log.Printf("load %s took %s", tmxPath, elapsedTiledLoad)
+
+	tiledSprites := RegisterTiledSprites(tiledMap, path.Join(tmxPath,".."))
 	planet := world.NewPlanet(int32(tiledMap.Width), int32(tiledMap.Height))
 	for _, tiledLayer := range tiledMap.Layers {
 		layerID, foundLayerID := world.LayerIDForName(tiledLayer.Name)
 		if foundLayerID {
-			importLayer(planet, tiledLayer, tmxPath, layerID)
+			importLayer(planet, tiledLayer, tmxPath, layerID, tiledSprites)
 		}
 	}
 	return world.World{

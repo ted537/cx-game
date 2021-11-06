@@ -8,9 +8,9 @@ import (
 func importTile(
 	planet *world.Planet,
 	tileIndex int, layerTile *tiled.LayerTile, tmxPath string,
-	layerID world.LayerID,
+	layerID world.LayerID, tiledSprites TiledSprites,
 ) {
-	tileTypeID := getTileTypeID(layerTile, tmxPath, layerID)
+	tileTypeID := getTileTypeID(layerTile, tmxPath, layerID, tiledSprites)
 	if tileTypeID != world.TileTypeIDAir {
 
 		// correct mismatch between Tiled Y axis (downwards)
@@ -23,9 +23,9 @@ func importTile(
 
 func importLayer(
 	planet *world.Planet, tiledLayer *tiled.Layer, tmxPath string,
-	layerID world.LayerID,
+	layerID world.LayerID, tiledSprites TiledSprites,
 ) {
 	for idx, layerTile := range tiledLayer.Tiles {
-		importTile(planet, idx, layerTile, tmxPath, layerID)
+		importTile(planet, idx, layerTile, tmxPath, layerID, tiledSprites)
 	}
 }

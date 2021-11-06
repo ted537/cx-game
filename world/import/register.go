@@ -55,6 +55,7 @@ func registerTilesetTile(
 	pathPrefix := path.Join(opts.TmxPath, "..")
 	tilesetTileImage := imageForTilesetTile(
 		opts.Tileset, layerTile.ID, opts.TilesetTile, pathPrefix )
+
 	spriteID := tilesetTileImage.RegisterSprite(name)
 
 	tile := world.NewNormalTile()
