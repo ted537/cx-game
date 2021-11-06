@@ -89,5 +89,6 @@ func getTileTypeID(
 		TmxPath: tmxPath, LayerID: layerID, Tileset: tileset,
 		LayerTile: layerTile, TilesetTile: tilesetTile,
 		FlipTransform: flipTransform,
+		TiledSprites: tiledSprites,
 	})
 }

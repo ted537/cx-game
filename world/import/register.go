@@ -1,6 +1,7 @@
 package worldimport
 
 import (
+	"log"
 	"fmt"
 	"path"
 	"image"
@@ -14,6 +15,14 @@ import (
 	"github.com/go-gl/gl/v4.1-core/gl"
 )
 
+func nameForTilesetTile(tilesetName string, tileID uint32) string {
+	return fmt.Sprintf("%v:%v", tilesetName, tileID)
+}
+
+func nameForLayerTile(layerTile *tiled.LayerTile) string {
+	return fmt.Sprintf("%v:%v", layerTile.Tileset.Name, layerTile.ID)
+}
+
 type TileRegistrationOptions struct {
 	TmxPath string
 	LayerID world.LayerID
@@ -23,6 +32,8 @@ type TileRegistrationOptions struct {
 	TilesetTile *tiled.TilesetTile
 
 	FlipTransform mgl32.Mat3
+
+	TiledSprites TiledSprites
 }
 
 type TilesetTileImage struct {
@@ -51,12 +62,17 @@ func (t TilesetTileImage) RegisterSprite(name string) render.SpriteID {
 func registerTilesetTile(
 	layerTile *tiled.LayerTile, opts TileRegistrationOptions,
 ) world.TileTypeID {
-	name := fmt.Sprintf("%v:%v", opts.Tileset.Name, opts.LayerTile.ID)
+	name := nameForLayerTile(layerTile)
 	pathPrefix := path.Join(opts.TmxPath, "..")
 	tilesetTileImage := imageForTilesetTile(
 		opts.Tileset, layerTile.ID, opts.TilesetTile, pathPrefix )
 
-	spriteID := tilesetTileImage.RegisterSprite(name)
+	tiledSprites,ok := opts.TiledSprites[name]
+	if !ok {
+		log.Fatalf("unrecognized tile: %v",name)
+	}
+	spriteID := tiledSprites[0].Image.RegisterSprite(name)
+	//spriteID := tilesetTileImage.RegisterSprite(name)
 
 	tile := world.NewNormalTile()
 	tile.Name = name
