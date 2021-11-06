@@ -52,7 +52,9 @@ func registerTilesetTile(
 	layerTile *tiled.LayerTile, opts TileRegistrationOptions,
 ) world.TileTypeID {
 	name := fmt.Sprintf("%v:%v", opts.Tileset.Name, opts.LayerTile.ID)
-	tilesetTileImage := imageForTilesetTile(layerTile, opts)
+	pathPrefix := path.Join(opts.TmxPath, "..")
+	tilesetTileImage := imageForTilesetTile(
+		opts.Tileset, layerTile.ID, opts.TilesetTile, pathPrefix )
 	spriteID := tilesetTileImage.RegisterSprite(name)
 
 	tile := world.NewNormalTile()
@@ -73,26 +75,26 @@ func registerTilesetTile(
 }
 
 func imageForTilesetTile(
-	layerTile *tiled.LayerTile, opts TileRegistrationOptions,
+	//layerTile *tiled.LayerTile, opts TileRegistrationOptions,
+	tileset *tiled.Tileset, tileID uint32, tilesetTile *tiled.TilesetTile,
+	pathPrefix string,
 ) TilesetTileImage {
-	if opts.TilesetTile != nil && opts.TilesetTile.Image != nil {
-		tileImg := opts.TilesetTile.Image
-		imgPath := path.Join(opts.TmxPath, "..", tileImg.Source)
-		spriteTransform := mgl32.Ident3()
+	if tilesetTile != nil && tilesetTile.Image != nil {
+		tileImg := tilesetTile.Image
+		imgPath := path.Join(pathPrefix, tileImg.Source)
 		return TilesetTileImage {
 			Path: imgPath,
-			SpriteTransform: spriteTransform.Mul3(opts.FlipTransform),
+			SpriteTransform: mgl32.Ident3(),
 			Width: int32(tileImg.Width)/16, Height: int32(tileImg.Height)/16,
 		}
 	} else {
-		imgPath := path.Join(opts.TmxPath, "..", opts.Tileset.Image.Source)
-		spriteRect := opts.Tileset.GetTileRect(layerTile.ID)
-		tileset := opts.Tileset
+		imgPath := path.Join(pathPrefix, tileset.Image.Source)
+		spriteRect := tileset.GetTileRect(tileID)
 		tilesetDims := image.Point { tileset.Image.Width, tileset.Image.Height }
 		spriteTransform := rectTransform( spriteRect, tilesetDims )
 		return TilesetTileImage {
 			Path: imgPath,
-			SpriteTransform: spriteTransform.Mul3(opts.FlipTransform),
+			SpriteTransform: spriteTransform,
 			Width: 1, Height: 1,
 		}
 	}
