@@ -35,3 +35,19 @@ func importLayer(
 		importTile(planet, idx, layerTile, tmxPath, layerID, tiledSprites)
 	}
 }
+
+func findTiledSpritesInMap(
+		allTiledSprites TiledSprites, tiledMap *tiled.Map,
+) TiledSprites {
+	mapTiledSprites := TiledSprites{}
+	for _,layer := range tiledMap.Layers {
+		for _,layerTile := range layer.Tiles {
+			if !layerTile.Nil {
+				name := nameForLayerTile(layerTile)
+				mapTiledSprites[name] = allTiledSprites[name]
+			}
+		}
+	}
+
+	return mapTiledSprites
+}
