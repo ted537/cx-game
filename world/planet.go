@@ -129,7 +129,9 @@ func (planet *Planet) GetAllTilesUnique() []Tile {
 	return tiles
 }
 
-func (planet *Planet) PlaceTileTypeNoConnect(tileTypeID TileTypeID, x, y int) {
+func (planet *Planet) PlaceTileTypeNoConnect(
+		tileTypeID TileTypeID, x, y int, opts TileCreationOptions,
+) {
 	tileType, ok := GetTileTypeByID(tileTypeID)
 	if !ok {
 		log.Fatalf("cannot find tile type for id [%v]", tileTypeID)
@@ -172,13 +174,15 @@ func (planet *Planet) PlaceTileTypeNoConnect(tileTypeID TileTypeID, x, y int) {
 	planet.LightUpdateBlock(x, y)
 }
 
-func (planet *Planet) PlaceTileType(tileTypeID TileTypeID, x, y int) {
+func (planet *Planet) PlaceTileType(
+		tileTypeID TileTypeID, x, y int, opts TileCreationOptions,
+) {
 	tileType, ok := GetTileTypeByID(tileTypeID)
 	if !ok {
 		log.Fatalf("cannot find tile type for id [%v]", tileTypeID)
 	}
 	tilesInLayer := planet.GetLayerTiles(tileType.Layer)
-	planet.PlaceTileTypeNoConnect(tileTypeID, x, y)
+	planet.PlaceTileTypeNoConnect(tileTypeID, x, y, opts)
 	rect := cxmath.Rect{
 		cxmath.Vec2i{int32(x), int32(y)},
 		tileType.Size(),

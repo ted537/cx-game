@@ -72,7 +72,6 @@ func registerTilesetTile(
 		log.Fatalf("unrecognized tile: %v",name)
 	}
 	spriteID := tiledSprites[0].Image.RegisterSprite(name)
-	//spriteID := tilesetTileImage.RegisterSprite(name)
 
 	tile := world.NewNormalTile()
 	tile.Name = name
@@ -92,7 +91,6 @@ func registerTilesetTile(
 }
 
 func imageForTilesetTile(
-	//layerTile *tiled.LayerTile, opts TileRegistrationOptions,
 	tileset *tiled.Tileset, tileID uint32, tilesetTile *tiled.TilesetTile,
 	pathPrefix string,
 ) TilesetTileImage {

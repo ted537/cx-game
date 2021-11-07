@@ -17,7 +17,9 @@ func importTile(
 		// and our Y axis  (upwards)
 		y := int(planet.Height) - tileIndex/int(planet.Width)
 		x := tileIndex % int(planet.Width)
-		planet.PlaceTileType(tileTypeID, x, y)
+		
+		opts := world.NewTileCreationOptions()
+		planet.PlaceTileType(tileTypeID, x, y, opts)
 	}
 }
 

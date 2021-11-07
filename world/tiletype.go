@@ -44,6 +44,11 @@ func (tt *TileType) Transform() mgl32.Mat4 {
 type TileCreationOptions struct {
 	Neighbours tiling.DetailedNeighbours
 }
+
+func NewTileCreationOptions() TileCreationOptions {
+	return TileCreationOptions {}
+}
+
 type TileUpdateOptions struct {
 	Neighbours tiling.DetailedNeighbours
 	Tile       *Tile

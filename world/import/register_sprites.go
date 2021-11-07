@@ -53,8 +53,10 @@ func RegisterTiledSprites(tiledMap *tiled.Map, mapDir string) TiledSprites {
 				metadata := NewTiledMetadata(name)
 				isRegistered,_ := registeredTileIDs[id]
 				if !isRegistered {
-					image := imageForTilesetTile(tileset, uint32(id), nil, mapDir)
-					tiledSprite := TiledSprite { Image: image, Metadata: metadata }
+					image :=
+						imageForTilesetTile(tileset, uint32(id), nil, mapDir)
+					tiledSprite :=
+						TiledSprite { Image: image, Metadata: metadata }
 					tiledSprites[metadata.Name] =
 						append(tiledSprites[metadata.Name], tiledSprite)
 				}
