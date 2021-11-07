@@ -1,6 +1,8 @@
 package worldimport
 
 import (
+	"github.com/go-gl/mathgl/mgl32"
+
 	"github.com/lafriks/go-tiled"
 	"github.com/skycoin/cx-game/world"
 )
@@ -17,8 +19,10 @@ func importTile(
 		// and our Y axis  (upwards)
 		y := int(planet.Height) - tileIndex/int(planet.Width)
 		x := tileIndex % int(planet.Width)
-		
+
 		opts := world.NewTileCreationOptions()
+		flipX, flipY := scaleFromFlipFlags(layerTile)
+		opts.FlipTransform = mgl32.Scale3D( float32(flipX), float32(flipY), 1 )
 		planet.PlaceTileType(tileTypeID, x, y, opts)
 	}
 }

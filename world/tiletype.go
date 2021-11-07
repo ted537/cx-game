@@ -43,10 +43,13 @@ func (tt *TileType) Transform() mgl32.Mat4 {
 
 type TileCreationOptions struct {
 	Neighbours tiling.DetailedNeighbours
+	FlipTransform mgl32.Mat4
 }
 
 func NewTileCreationOptions() TileCreationOptions {
-	return TileCreationOptions {}
+	return TileCreationOptions {
+		FlipTransform: mgl32.Ident4(),
+	}
 }
 
 type TileUpdateOptions struct {

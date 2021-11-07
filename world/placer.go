@@ -21,6 +21,7 @@ func (placer DirectPlacer) CreateTile(
 ) Tile {
 	tile := placer.Tile
 	tile.SpriteID = placer.SpriteID
+	tile.FlipTransform = opts.FlipTransform
 	return tile
 }
 

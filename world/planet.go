@@ -141,10 +141,7 @@ func (planet *Planet) PlaceTileTypeNoConnect(
 	if rootTileIdx == -1 {
 		return
 	}
-	tilesInLayer[rootTileIdx] =
-		tileType.CreateTile(TileCreationOptions{
-			//Neighbours: planet.GetNeighbours(tilesInLayer, x, y, tileTypeID),
-		})
+	tilesInLayer[rootTileIdx] = tileType.CreateTile(opts)
 	rect := cxmath.Rect{
 		cxmath.Vec2i{int32(x), int32(y)},
 		tileType.Size(),
