@@ -30,6 +30,7 @@ type OptionalBool struct {
 type TileSprites []TiledSprite
 type TiledSprites map[string]TileSprites
 
+
 func RegisterTiledSprites(tiledMap *tiled.Map, mapDir string) TiledSprites {
 	tiledSprites := TiledSprites{}
 
@@ -85,4 +86,14 @@ func (metadata *TiledMetadata) ParseFrom(properties tiled.Properties) {
 		metadata.Powered.Set = true
 		metadata.Powered.Value = properties.GetBool("powered")
 	}
+}
+
+func parseMetadataFromLayerTile(layerTile *tiled.LayerTile) TiledMetadata {
+	name := nameForLayerTile(layerTile)
+	metadata := NewTiledMetadata(name)
+	tilesetTile, ok := findTilesetTileForLayerTile(layerTile)
+	if ok {
+		metadata.ParseFrom(tilesetTile.Properties)
+	}
+	return metadata
 }

@@ -20,7 +20,7 @@ func defaltToolForLayer(layerID world.LayerID) types.ToolType {
 }
 
 func findTilesetTileForLayerTile(
-	tilesetTiles []*tiled.TilesetTile, layerTile *tiled.LayerTile,
+	layerTile *tiled.LayerTile,
 ) (*tiled.TilesetTile, bool) {
 	for _, tilesetTile := range layerTile.Tileset.Tiles {
 		if tilesetTile.ID == layerTile.ID {
@@ -48,11 +48,33 @@ func rectTransform(here image.Rectangle, parentDims image.Point) mgl32.Mat3 {
 type TilesetIDKey struct {
 	tileset *tiled.Tileset
 	id      uint32
-	scaleX  int
-	scaleY  int
 }
 
 var tilesetAndIDToCXTile = map[TilesetIDKey]world.TileTypeID{}
+
+func directPlacerForLayerTiles(layerTiles []tiled.LayerTile) world.Placer {
+	spriteID := layerTiles[0].SpriteID
+	return world.DirectPlacer { SpriteID: spriteID, Tile: tile }
+}
+
+func powerPlacerForLayerTiles(layerTiles []tiled.LayerTile) world.Placer {
+
+}
+
+func placerForLayerTiles(layerTiles []tiled.LayerTile) world.Placer {
+	for _,layerTile := range layerTiles {
+		metadata := parseMetadataFromLayerTile(layerTile)
+		if metadata.Powered.Set {
+			return powerPlacerForLayerTiles(layerTiles)
+		}
+	}
+	return directPlacerForLayerTiles(layerTiles)
+}
+
+func registerTiledTile(layerTiles []world.LayerTile) world.TileTypeID {
+	placer := placerForLayerTiles(layerTiles)
+
+}
 
 func getTileTypeID(
 	layerTile *tiled.LayerTile, tmxPath string, layerID world.LayerID,
@@ -65,8 +87,7 @@ func getTileTypeID(
 	}
 
 	// search for tile in existing tiles
-	tilesetTile, foundTilesetTile :=
-		findTilesetTileForLayerTile(tileset.Tiles, layerTile)
+	tilesetTile, foundTilesetTile := findTilesetTileForLayerTile(layerTile)
 
 	if foundTilesetTile {
 		cxtile := tilesetTile.Properties.GetString("cxtile")
@@ -78,7 +99,7 @@ func getTileTypeID(
 
 	flipX,flipY := scaleFromFlipFlags(layerTile)
 	flipTransform := mgl32.Scale2D( float32(flipX), float32(flipY) )
-	key := TilesetIDKey{tileset, layerTile.ID, flipX, flipY}
+	key := TilesetIDKey{ tileset, layerTile.ID }
 	cachedTileTypeID, hitCache := tilesetAndIDToCXTile[key]
 	if hitCache {
 		return cachedTileTypeID
