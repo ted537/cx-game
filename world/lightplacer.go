@@ -1,6 +1,8 @@
 package world
 
 import (
+	"log"
+
 	"github.com/skycoin/cx-game/render"
 )
 
@@ -28,6 +30,8 @@ func (placer LightPlacer) UpdateTile(
 	} else {
 		opts.Tile.SpriteID = placer.OffSpriteID
 	}
+	log.Printf("LightPlacer set spriteID to %v", opts.Tile.SpriteID)
+	log.Printf("On=%v, Off=%v", placer.OnSpriteID, placer.OffSpriteID)
 }
 
 func (placer LightPlacer) ItemSpriteID() render.SpriteID {

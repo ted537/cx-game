@@ -1,18 +1,18 @@
 package worldimport
 
 import (
-	"log"
 	"fmt"
-	"path"
 	"image"
+	"log"
+	"path"
 
-	"github.com/lafriks/go-tiled"
 	"github.com/go-gl/mathgl/mgl32"
+	"github.com/lafriks/go-tiled"
 
-	"github.com/skycoin/cx-game/world"
+	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/skycoin/cx-game/engine/spriteloader"
 	"github.com/skycoin/cx-game/render"
-	"github.com/go-gl/gl/v4.1-core/gl"
+	"github.com/skycoin/cx-game/world"
 )
 
 func nameForTilesetTile(tilesetName string, tileID uint32) string {
@@ -20,15 +20,15 @@ func nameForTilesetTile(tilesetName string, tileID uint32) string {
 }
 
 func nameForLayerTile(layerTile *tiled.LayerTile) string {
-	return fmt.Sprintf("%v:%v", layerTile.Tileset.Name, layerTile.ID)
+	return parseMetadataFromLayerTile(layerTile).Name
 }
 
 type TileRegistrationOptions struct {
 	TmxPath string
 	LayerID world.LayerID
 
-	Tileset *tiled.Tileset
-	LayerTile *tiled.LayerTile
+	Tileset     *tiled.Tileset
+	LayerTile   *tiled.LayerTile
 	TilesetTile *tiled.TilesetTile
 
 	FlipTransform mgl32.Mat3
@@ -37,10 +37,10 @@ type TileRegistrationOptions struct {
 }
 
 type TilesetTileImage struct {
-	Path string
+	Path            string
 	SpriteTransform mgl32.Mat3
-	Width int32 // measured in tiles
-	Height int32
+	Width           int32 // measured in tiles
+	Height          int32
 }
 
 func (t TilesetTileImage) Model() mgl32.Mat4 {
@@ -65,11 +65,11 @@ func registerTilesetTile(
 	name := nameForLayerTile(layerTile)
 	pathPrefix := path.Join(opts.TmxPath, "..")
 	tilesetTileImage := imageForTilesetTile(
-		opts.Tileset, layerTile.ID, opts.TilesetTile, pathPrefix )
+		opts.Tileset, layerTile.ID, opts.TilesetTile, pathPrefix)
 
-	tiledSprites,ok := opts.TiledSprites[name]
+	tiledSprites, ok := opts.TiledSprites[name]
 	if !ok {
-		log.Fatalf("unrecognized tile: %v",name)
+		log.Fatalf("unrecognized tile: %v", name)
 	}
 	spriteID := tiledSprites[0].Image.RegisterSprite(name)
 
@@ -97,20 +97,20 @@ func imageForTilesetTile(
 	if tilesetTile != nil && tilesetTile.Image != nil {
 		tileImg := tilesetTile.Image
 		imgPath := path.Join(pathPrefix, tileImg.Source)
-		return TilesetTileImage {
-			Path: imgPath,
+		return TilesetTileImage{
+			Path:            imgPath,
 			SpriteTransform: mgl32.Ident3(),
-			Width: int32(tileImg.Width)/16, Height: int32(tileImg.Height)/16,
+			Width:           int32(tileImg.Width) / 16, Height: int32(tileImg.Height) / 16,
 		}
 	} else {
 		imgPath := path.Join(pathPrefix, tileset.Image.Source)
 		spriteRect := tileset.GetTileRect(tileID)
-		tilesetDims := image.Point { tileset.Image.Width, tileset.Image.Height }
-		spriteTransform := rectTransform( spriteRect, tilesetDims )
-		return TilesetTileImage {
-			Path: imgPath,
+		tilesetDims := image.Point{tileset.Image.Width, tileset.Image.Height}
+		spriteTransform := rectTransform(spriteRect, tilesetDims)
+		return TilesetTileImage{
+			Path:            imgPath,
 			SpriteTransform: spriteTransform,
-			Width: 1, Height: 1,
+			Width:           1, Height: 1,
 		}
 	}
 }

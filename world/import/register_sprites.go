@@ -1,6 +1,7 @@
 package worldimport
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/lafriks/go-tiled"
@@ -120,10 +121,13 @@ func (metadata *TiledMetadata) ParseFrom(properties tiled.Properties) {
 		metadata.Powered.Set = true
 		metadata.Powered.Value = properties.GetBool("powered")
 	}
+	if hasProperty(properties, "cxtile") {
+		metadata.Name = properties.GetString("cxtile")
+	}
 }
 
 func parseMetadataFromLayerTile(layerTile *tiled.LayerTile) TiledMetadata {
-	name := nameForLayerTile(layerTile)
+	name := fmt.Sprintf("%v:%v", layerTile.Tileset.Name, layerTile.ID)
 	metadata := NewTiledMetadata(name)
 	tilesetTile, ok := findTilesetTileForLayerTile(layerTile)
 	if ok {
