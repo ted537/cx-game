@@ -4,11 +4,25 @@ import (
 	"log"
 
 	"github.com/lafriks/go-tiled"
+
+	"github.com/skycoin/cx-game/render"
 )
 
 // a sprite registered from a tiled import
 type TiledSprite struct {
 	Image    TilesetTileImage
+	Metadata TiledMetadata
+}
+
+func (ts TiledSprite) Register(name string) RegisteredTiledSprite {
+	return RegisteredTiledSprite {
+		SpriteID: ts.Image.RegisterSprite(name),
+		Metadata: ts.Metadata, // just copy metadata over
+	}
+}
+
+type RegisteredTiledSprite struct {
+	SpriteID render.SpriteID
 	Metadata TiledMetadata
 }
 
@@ -27,11 +41,12 @@ type OptionalBool struct {
 	Value bool
 }
 
-type TileSprites []TiledSprite
-type TiledSprites map[string]TileSprites
+type TiledSprites map[string][]TiledSprite
+type RegisteredTiledSprites map[string][]RegisteredTiledSprite
 
-
-func RegisterTiledSprites(tiledMap *tiled.Map, mapDir string) TiledSprites {
+func findTiledSpritesInMapTilesets(
+	tiledMap *tiled.Map, mapDir string,
+) TiledSprites {
 	tiledSprites := TiledSprites{}
 
 	for _,tileset := range tiledMap.Tilesets {
@@ -65,11 +80,19 @@ func RegisterTiledSprites(tiledMap *tiled.Map, mapDir string) TiledSprites {
 		}
 	}
 
-	for name,_ := range tiledSprites {
-		log.Printf("TMX: %v",name)
-	}
-
 	return tiledSprites
+}
+
+func registerTiledSprites(tiledSprites TiledSprites) RegisteredTiledSprites {
+	registeredTiledSprites := RegisteredTiledSprites{}
+	for name,tileSprites := range tiledSprites {
+		registeredTiledSprites[name] = []RegisteredTiledSprite{}
+		for _,tileSprite := range tileSprites {
+			registeredTiledSprites[name] =
+				append(registeredTiledSprites[name], tileSprite.Register(name))
+		}
+	}
+	return registeredTiledSprites
 }
 
 func hasProperty(properties tiled.Properties, name string) bool {

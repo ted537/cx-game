@@ -1,6 +1,8 @@
 package worldimport
 
 import (
+	"log"
+
 	"github.com/go-gl/mathgl/mgl32"
 
 	"github.com/lafriks/go-tiled"
@@ -10,9 +12,14 @@ import (
 func importTile(
 	planet *world.Planet,
 	tileIndex int, layerTile *tiled.LayerTile, tmxPath string,
-	layerID world.LayerID, tiledSprites TiledSprites,
+	layerID world.LayerID, tileTypeIDs map[string]world.TileTypeID,
 ) {
-	tileTypeID := getTileTypeID(layerTile, tmxPath, layerID, tiledSprites)
+	if layerTile.Nil { return }
+	name := nameForLayerTile(layerTile)
+	tileTypeID,ok := tileTypeIDs[name]
+	if !ok {
+		log.Fatalf("cannot found tile type ID for %v", name)
+	}
 	if tileTypeID != world.TileTypeIDAir {
 
 		// correct mismatch between Tiled Y axis (downwards)
@@ -29,14 +36,14 @@ func importTile(
 
 func importLayer(
 	planet *world.Planet, tiledLayer *tiled.Layer, tmxPath string,
-	layerID world.LayerID, tiledSprites TiledSprites,
+	layerID world.LayerID, tileTypeIDs map[string]world.TileTypeID,
 ) {
 	for idx, layerTile := range tiledLayer.Tiles {
-		importTile(planet, idx, layerTile, tmxPath, layerID, tiledSprites)
+		importTile(planet, idx, layerTile, tmxPath, layerID, tileTypeIDs)
 	}
 }
 
-func findTiledSpritesInMap(
+func filterTiledSpritesInMapLayers(
 		allTiledSprites TiledSprites, tiledMap *tiled.Map,
 ) TiledSprites {
 	mapTiledSprites := TiledSprites{}

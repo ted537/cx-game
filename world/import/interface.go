@@ -19,14 +19,20 @@ func ImportWorld(tmxPath string) world.World {
 	elapsedTiledLoad := time.Since(start)
 	log.Printf("load %s took %s", tmxPath, elapsedTiledLoad)
 
-	allTiledSprites := RegisterTiledSprites(tiledMap, path.Join(tmxPath,".."))
-	mapTiledSprites := findTiledSpritesInMap(allTiledSprites, tiledMap)
+	allTiledSprites :=
+		findTiledSpritesInMapTilesets(tiledMap, path.Join(tmxPath,".."))
+	mapTiledSprites := filterTiledSpritesInMapLayers(allTiledSprites, tiledMap)
+
+	registeredTileSprites := registerTiledSprites(mapTiledSprites)
+	tileTypeIDs := registerTileTypesForTiledSprites(registeredTileSprites)
 
 	planet := world.NewPlanet(int32(tiledMap.Width), int32(tiledMap.Height))
 	for _, tiledLayer := range tiledMap.Layers {
 		layerID, foundLayerID := world.LayerIDForName(tiledLayer.Name)
 		if foundLayerID {
-			importLayer(planet, tiledLayer, tmxPath, layerID, mapTiledSprites)
+			importLayer(
+				planet, tiledLayer, tmxPath, layerID, tileTypeIDs,
+			)
 		}
 	}
 	return world.World{

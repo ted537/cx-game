@@ -52,28 +52,58 @@ type TilesetIDKey struct {
 
 var tilesetAndIDToCXTile = map[TilesetIDKey]world.TileTypeID{}
 
-func directPlacerForLayerTiles(layerTiles []tiled.LayerTile) world.Placer {
-	spriteID := layerTiles[0].SpriteID
-	return world.DirectPlacer { SpriteID: spriteID, Tile: tile }
+func directPlacerForTileSprites(tileSprites []RegisteredTiledSprite) world.Placer {
+	tile := world.NewNormalTile()
+	tile.Name = tileSprites[0].Metadata.Name
+	tile.TileTypeID = world.NextTileTypeID()
+
+	return world.DirectPlacer {
+		SpriteID: tileSprites[0].SpriteID, Tile: tile,
+	}
 }
 
-func powerPlacerForLayerTiles(layerTiles []tiled.LayerTile) world.Placer {
-
+func powerPlacerForTileSprites(tileSprites []RegisteredTiledSprite) world.Placer {
+	// TODO
+	return directPlacerForTileSprites(tileSprites)
 }
 
-func placerForLayerTiles(layerTiles []tiled.LayerTile) world.Placer {
-	for _,layerTile := range layerTiles {
-		metadata := parseMetadataFromLayerTile(layerTile)
-		if metadata.Powered.Set {
-			return powerPlacerForLayerTiles(layerTiles)
+func placerForTileSprites(tileSprites []RegisteredTiledSprite) world.Placer {
+	// use powered placer if "powered" field is set on any relevant sprites
+	for _,tileSprite := range tileSprites {
+		if tileSprite.Metadata.Powered.Set {
+			return powerPlacerForTileSprites(tileSprites)
 		}
 	}
-	return directPlacerForLayerTiles(layerTiles)
+	// otherwise, use direct placer (1:1 sprite:tiletype ratio)
+	return directPlacerForTileSprites(tileSprites)
 }
 
-func registerTiledTile(layerTiles []world.LayerTile) world.TileTypeID {
-	placer := placerForLayerTiles(layerTiles)
+func registerTileTypeForTileSprites(
+	tileSprites []RegisteredTiledSprite,
+) world.TileTypeID {
+	layerID := world.TopLayer
+	name := tileSprites[0].Metadata.Name
+	tileType := world.TileType {
+		Name: name,
+		Width: 1, Height: 1, // TODO
+		Placer: placerForTileSprites(tileSprites),
+	}
 
+	tileTypeID :=
+		world.RegisterTileType(name ,tileType, defaltToolForLayer(layerID))
+	return tileTypeID
+}
+
+func registerTileTypesForTiledSprites(
+	tiledSprites RegisteredTiledSprites,
+) map[string]world.TileTypeID {
+	tileTypeIDs := map[string]world.TileTypeID{}
+
+	for name,tileSprites := range tiledSprites {
+		tileTypeIDs[name] = registerTileTypeForTileSprites(tileSprites)
+	}
+
+	return tileTypeIDs
 }
 
 func getTileTypeID(
