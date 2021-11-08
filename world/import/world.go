@@ -14,9 +14,11 @@ func importTile(
 	tileIndex int, layerTile *tiled.LayerTile, tmxPath string,
 	layerID world.LayerID, tileTypeIDs map[string]world.TileTypeID,
 ) {
-	if layerTile.Nil { return }
+	if layerTile.Nil {
+		return
+	}
 	name := nameForLayerTile(layerTile)
-	tileTypeID,ok := tileTypeIDs[name]
+	tileTypeID, ok := tileTypeIDs[name]
 	if !ok {
 		log.Fatalf("cannot found tile type ID for %v", name)
 	}
@@ -29,7 +31,7 @@ func importTile(
 
 		opts := world.NewTileCreationOptions()
 		flipX, flipY := scaleFromFlipFlags(layerTile)
-		opts.FlipTransform = mgl32.Scale3D( float32(flipX), float32(flipY), 1 )
+		opts.FlipTransform = mgl32.Scale3D(float32(flipX), float32(flipY), 1)
 		planet.PlaceTileType(tileTypeID, x, y, opts)
 	}
 }
@@ -44,14 +46,18 @@ func importLayer(
 }
 
 func filterTiledSpritesInMapLayers(
-		allTiledSprites TiledSprites, tiledMap *tiled.Map,
+	allTiledSprites TiledSprites, tiledMap *tiled.Map,
 ) TiledSprites {
 	mapTiledSprites := TiledSprites{}
-	for _,layer := range tiledMap.Layers {
-		for _,layerTile := range layer.Tiles {
+	for _, layer := range tiledMap.Layers {
+		for _, layerTile := range layer.Tiles {
 			if !layerTile.Nil {
 				name := nameForLayerTile(layerTile)
+				layerID, _ := world.LayerIDForName(layer.Name)
 				mapTiledSprites[name] = allTiledSprites[name]
+				for idx := range mapTiledSprites[name] {
+					mapTiledSprites[name][idx].Metadata.LayerID = layerID
+				}
 			}
 		}
 	}

@@ -6,6 +6,7 @@ import (
 	"github.com/lafriks/go-tiled"
 
 	"github.com/skycoin/cx-game/render"
+	"github.com/skycoin/cx-game/world"
 )
 
 // a sprite registered from a tiled import
@@ -15,30 +16,40 @@ type TiledSprite struct {
 }
 
 func (ts TiledSprite) Register(name string) RegisteredTiledSprite {
-	return RegisteredTiledSprite {
+	return RegisteredTiledSprite{
 		SpriteID: ts.Image.RegisterSprite(name),
 		Metadata: ts.Metadata, // just copy metadata over
+		Width:    ts.Image.Width,
+		Height:   ts.Image.Height,
 	}
 }
 
 type RegisteredTiledSprite struct {
 	SpriteID render.SpriteID
+	Width    int32
+	Height   int32
 	Metadata TiledMetadata
 }
 
 // properties on a Tiled tileset tile that are relevant to cx-game
 type TiledMetadata struct {
 	Powered OptionalBool
-	Name string
+	Name    string
+	LayerID world.LayerID
 }
 
 func NewTiledMetadata(name string) TiledMetadata {
-	return TiledMetadata { Name: name }
+	return TiledMetadata{Name: name, LayerID: world.TopLayer}
 }
 
 type OptionalBool struct {
-	Set bool
+	Set   bool
 	Value bool
+}
+
+type LayerTiledSpritePair struct {
+	LayerID world.LayerID
+	Sprite  TiledSprite
 }
 
 type TiledSprites map[string][]TiledSprite
@@ -49,30 +60,30 @@ func findTiledSpritesInMapTilesets(
 ) TiledSprites {
 	tiledSprites := TiledSprites{}
 
-	for _,tileset := range tiledMap.Tilesets {
+	for _, tileset := range tiledMap.Tilesets {
 		log.Printf("registering sprites for tileset %v", tileset.Name)
 		registeredTileIDs := map[uint32]bool{}
-		for _,tilesetTile := range tileset.Tiles {
+		for _, tilesetTile := range tileset.Tiles {
 			name := nameForTilesetTile(tileset.Name, tilesetTile.ID)
 			metadata := NewTiledMetadata(name)
 			metadata.ParseFrom(tilesetTile.Properties)
 			image := imageForTilesetTile(
-				tileset, tilesetTile.ID, tilesetTile, mapDir )
-			tiledSprite := TiledSprite { Image: image, Metadata: metadata }
+				tileset, tilesetTile.ID, tilesetTile, mapDir)
+			tiledSprite := TiledSprite{Image: image, Metadata: metadata}
 			tiledSprites[metadata.Name] =
 				append(tiledSprites[metadata.Name], tiledSprite)
 			registeredTileIDs[tilesetTile.ID] = true
 		}
 		if tileset.Image != nil {
-			for id := uint32(0) ; id < uint32(tileset.TileCount) ; id++ {
+			for id := uint32(0); id < uint32(tileset.TileCount); id++ {
 				name := nameForTilesetTile(tileset.Name, id)
 				metadata := NewTiledMetadata(name)
-				isRegistered,_ := registeredTileIDs[id]
+				isRegistered, _ := registeredTileIDs[id]
 				if !isRegistered {
 					image :=
 						imageForTilesetTile(tileset, uint32(id), nil, mapDir)
 					tiledSprite :=
-						TiledSprite { Image: image, Metadata: metadata }
+						TiledSprite{Image: image, Metadata: metadata}
 					tiledSprites[metadata.Name] =
 						append(tiledSprites[metadata.Name], tiledSprite)
 				}
@@ -85,9 +96,9 @@ func findTiledSpritesInMapTilesets(
 
 func registerTiledSprites(tiledSprites TiledSprites) RegisteredTiledSprites {
 	registeredTiledSprites := RegisteredTiledSprites{}
-	for name,tileSprites := range tiledSprites {
+	for name, tileSprites := range tiledSprites {
 		registeredTiledSprites[name] = []RegisteredTiledSprite{}
-		for _,tileSprite := range tileSprites {
+		for _, tileSprite := range tileSprites {
 			registeredTiledSprites[name] =
 				append(registeredTiledSprites[name], tileSprite.Register(name))
 		}
@@ -96,7 +107,7 @@ func registerTiledSprites(tiledSprites TiledSprites) RegisteredTiledSprites {
 }
 
 func hasProperty(properties tiled.Properties, name string) bool {
-	for _,property := range properties {
+	for _, property := range properties {
 		if property.Name == name {
 			return true
 		}

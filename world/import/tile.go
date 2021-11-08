@@ -6,11 +6,10 @@ import (
 	"github.com/go-gl/mathgl/mgl32"
 	"github.com/lafriks/go-tiled"
 
-	"github.com/skycoin/cx-game/world"
 	"github.com/skycoin/cx-game/components/types"
 	"github.com/skycoin/cx-game/constants"
+	"github.com/skycoin/cx-game/world"
 )
-
 
 func defaltToolForLayer(layerID world.LayerID) types.ToolType {
 	if layerID == world.BgLayer {
@@ -44,7 +43,6 @@ func rectTransform(here image.Rectangle, parentDims image.Point) mgl32.Mat3 {
 	return translate.Mul3(scale)
 }
 
-
 type TilesetIDKey struct {
 	tileset *tiled.Tileset
 	id      uint32
@@ -57,7 +55,7 @@ func directPlacerForTileSprites(tileSprites []RegisteredTiledSprite) world.Place
 	tile.Name = tileSprites[0].Metadata.Name
 	tile.TileTypeID = world.NextTileTypeID()
 
-	return world.DirectPlacer {
+	return world.DirectPlacer{
 		SpriteID: tileSprites[0].SpriteID, Tile: tile,
 	}
 }
@@ -69,7 +67,7 @@ func powerPlacerForTileSprites(tileSprites []RegisteredTiledSprite) world.Placer
 
 func placerForTileSprites(tileSprites []RegisteredTiledSprite) world.Placer {
 	// use powered placer if "powered" field is set on any relevant sprites
-	for _,tileSprite := range tileSprites {
+	for _, tileSprite := range tileSprites {
 		if tileSprite.Metadata.Powered.Set {
 			return powerPlacerForTileSprites(tileSprites)
 		}
@@ -81,16 +79,17 @@ func placerForTileSprites(tileSprites []RegisteredTiledSprite) world.Placer {
 func registerTileTypeForTileSprites(
 	tileSprites []RegisteredTiledSprite,
 ) world.TileTypeID {
-	layerID := world.TopLayer
+	layerID := tileSprites[0].Metadata.LayerID
 	name := tileSprites[0].Metadata.Name
-	tileType := world.TileType {
-		Name: name,
-		Width: 1, Height: 1, // TODO
+	tileType := world.TileType{
+		Name:  name,
+		Width: tileSprites[0].Width, Height: tileSprites[0].Height,
 		Placer: placerForTileSprites(tileSprites),
+		Layer:  layerID,
 	}
 
 	tileTypeID :=
-		world.RegisterTileType(name ,tileType, defaltToolForLayer(layerID))
+		world.RegisterTileType(name, tileType, defaltToolForLayer(layerID))
 	return tileTypeID
 }
 
@@ -99,7 +98,7 @@ func registerTileTypesForTiledSprites(
 ) map[string]world.TileTypeID {
 	tileTypeIDs := map[string]world.TileTypeID{}
 
-	for name,tileSprites := range tiledSprites {
+	for name, tileSprites := range tiledSprites {
 		tileTypeIDs[name] = registerTileTypeForTileSprites(tileSprites)
 	}
 
@@ -127,19 +126,19 @@ func getTileTypeID(
 		}
 	}
 
-	flipX,flipY := scaleFromFlipFlags(layerTile)
-	flipTransform := mgl32.Scale2D( float32(flipX), float32(flipY) )
-	key := TilesetIDKey{ tileset, layerTile.ID }
+	flipX, flipY := scaleFromFlipFlags(layerTile)
+	flipTransform := mgl32.Scale2D(float32(flipX), float32(flipY))
+	key := TilesetIDKey{tileset, layerTile.ID}
 	cachedTileTypeID, hitCache := tilesetAndIDToCXTile[key]
 	if hitCache {
 		return cachedTileTypeID
 	}
 
 	// did not find - register new tile type
-	return registerTilesetTile(layerTile, TileRegistrationOptions {
+	return registerTilesetTile(layerTile, TileRegistrationOptions{
 		TmxPath: tmxPath, LayerID: layerID, Tileset: tileset,
 		LayerTile: layerTile, TilesetTile: tilesetTile,
 		FlipTransform: flipTransform,
-		TiledSprites: tiledSprites,
+		TiledSprites:  tiledSprites,
 	})
 }
