@@ -61,8 +61,19 @@ func directPlacerForTileSprites(tileSprites []RegisteredTiledSprite) world.Place
 }
 
 func powerPlacerForTileSprites(tileSprites []RegisteredTiledSprite) world.Placer {
-	// TODO
-	return directPlacerForTileSprites(tileSprites)
+	tile := world.NewNormalTile()
+	tile.Name = tileSprites[0].Metadata.Name
+	tile.TileTypeID = world.NextTileTypeID()
+
+	placer := world.LightPlacer{Tile: tile}
+	for _, tileSprite := range tileSprites {
+		if tileSprite.Metadata.Powered.Value {
+			placer.OnSpriteID = tileSprite.SpriteID
+		} else {
+			placer.OffSpriteID = tileSprite.SpriteID
+		}
+	}
+	return placer
 }
 
 func placerForTileSprites(tileSprites []RegisteredTiledSprite) world.Placer {

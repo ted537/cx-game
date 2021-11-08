@@ -5,22 +5,22 @@ import (
 )
 
 type LightPlacer struct {
-	Tile Tile
+	Tile                    Tile
 	OnSpriteID, OffSpriteID render.SpriteID
 }
 
-func (placer *LightPlacer) CreateTile(
+func (placer LightPlacer) CreateTile(
 	tt TileType, opts TileCreationOptions,
 ) Tile {
 	tile := placer.Tile
-	updateOpts := TileUpdateOptions {
+	updateOpts := TileUpdateOptions{
 		Tile: &tile,
 	}
 	placer.UpdateTile(tt, updateOpts)
 	return tile
 }
 
-func (placer *LightPlacer) UpdateTile(
+func (placer LightPlacer) UpdateTile(
 	tt TileType, opts TileUpdateOptions,
 ) {
 	if opts.Tile.Power.On {
@@ -28,4 +28,8 @@ func (placer *LightPlacer) UpdateTile(
 	} else {
 		opts.Tile.SpriteID = placer.OffSpriteID
 	}
+}
+
+func (placer LightPlacer) ItemSpriteID() render.SpriteID {
+	return placer.OnSpriteID
 }
