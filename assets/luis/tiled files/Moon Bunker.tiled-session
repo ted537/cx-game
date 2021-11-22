@@ -51,11 +51,11 @@
             "scaleInDock": 1
         },
         "Moon Bunker.tmx": {
-            "scale": 2,
-            "selectedLayer": 0,
+            "scale": 1,
+            "selectedLayer": 7,
             "viewCenter": {
-                "x": 29.75,
-                "y": 4.25
+                "x": 810.5,
+                "y": 555.5
             }
         },
         "Moon Bunker.tmx#Tiles_Moon": {
@@ -87,6 +87,20 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "Stairs_1.tsx": {
+            "scaleInDock": 1
+        },
+        "Stone Bunker.tmx": {
+            "scale": 3,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 1147.1666666666665,
+                "y": 596.3333333333333
+            }
+        },
+        "Stone Bunker.tmx#Tiles_metal_slabs": {
+            "scaleInDock": 1
+        },
         "Tiles_1.tsx": {
             "dynamicWrapping": false,
             "scaleInDock": 1.5,
@@ -116,9 +130,19 @@
             "scaleInDock": 1.5,
             "scaleInEditor": 1
         },
+        "Tiles_metal_lattice.tsx": {
+            "scaleInDock": 1
+        },
         "Tiles_metal_slabs.tsx": {
             "scaleInDock": 1.5,
             "scaleInEditor": 1
+        },
+        "Tiles_stone_blocks.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 2
+        },
+        "Tiles_stone_bulkheads.tsx": {
+            "scaleInDock": 1
         },
         "Wall_1.tsx": {
             "dynamicWrapping": false,
