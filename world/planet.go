@@ -23,7 +23,6 @@ type Planet struct {
 	collidingLines  []float32
 	collidingLinesX int
 	collidingLinesY int
-	Time            float32
 	LightingValues  []LightValue
 
 	program, liquidProgram render.Program
@@ -466,9 +465,6 @@ func (planet *Planet) MinimizeDistance(
 	return from, toCloser
 }
 
-func (planet *Planet) Update(dt float32) {
-	planet.Time += dt
-}
 
 func (planet *Planet) FixedUpdate() {
 	planet.UpdateLighting()
