@@ -15,9 +15,10 @@ type World struct {
 	Entities  Entities
 	Planet    Planet
 	Stats     WorldStats
+	Circuits  Circuits
 }
 
-func (world World) TileIsClear(layerID LayerID, x, y int) bool {
+func (world *World) TileIsClear(layerID LayerID, x, y int) bool {
 	layerTiles := world.Planet.GetLayerTiles(layerID)
 
 	tileClear := !world.Planet.TileExists(layerTiles, x, y)
