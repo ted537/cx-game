@@ -1,5 +1,9 @@
 package world
 
+import (
+	"log"
+)
+
 type CircuitID uint32
 type Circuit []uint32 // list of tile indices
 type Circuits map[CircuitID]Circuit
@@ -32,7 +36,7 @@ func (bc *BoundCircuit) Wattage() int {
 	return wattage
 }
 
-func (bc *BoundCircuit) Tick() {
+func (bc *BoundCircuit) FixedTick() {
 	active := bc.Wattage() > 0
 	bc.Toggle(active)
 }
@@ -47,3 +51,29 @@ func (bc *BoundCircuit) Toggle(active bool) {
 	}
 }
 
+func (planet *Planet) UpdateCircuits() {
+	for _,circuit := range planet.Circuits {
+		boundCircuit := circuit.Bind(planet)
+		boundCircuit.FixedTick()
+	}
+}
+
+func (planet *Planet) electricTileIndices() []int {
+	indices := []int{}
+	for y := 0 ; y < int(planet.Height) ; y++ {
+		for x := 0 ; x < int(planet.Width) ; x++ {
+			tile,ok := planet.GetTile(x,y, TopLayer)
+			if ok && tile.IsElectric() {
+				idx := planet.GetTileIndex(x,y)
+				indices = append(indices, idx)
+			}
+		}
+	}
+	return indices
+}
+
+func (planet *Planet) DetectCircuits() {
+	for _,tileIdx := range planet.electricTileIndices() {
+		log.Printf("detected electric tile at idx = %d", tileIdx)
+	}
+}

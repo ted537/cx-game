@@ -24,6 +24,7 @@ type Planet struct {
 	collidingLinesX int
 	collidingLinesY int
 	LightingValues  []LightValue
+	Circuits  Circuits
 
 	program, liquidProgram render.Program
 }
@@ -468,7 +469,7 @@ func (planet *Planet) MinimizeDistance(
 
 func (planet *Planet) FixedUpdate() {
 	planet.UpdateLighting()
-
+	planet.UpdateCircuits()
 }
 
 func (planet *Planet) NearOxygenGenerator(position cxmath.Vec2) bool {

@@ -15,7 +15,6 @@ type World struct {
 	Entities  Entities
 	Planet    Planet
 	Stats     WorldStats
-	Circuits  Circuits
 }
 
 func (world *World) TileIsClear(layerID LayerID, x, y int) bool {
