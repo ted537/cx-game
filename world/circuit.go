@@ -3,6 +3,7 @@ package world
 import (
 	"log"
 	"github.com/skycoin/cx-game/cxmath"
+	"github.com/skycoin/cx-game/constants"
 )
 
 type CircuitID uint32
@@ -76,5 +77,6 @@ func (planet *Planet) electricTilePositions() []cxmath.Vec2i {
 func (planet *Planet) DetectCircuits() {
 	log.Printf("detecting circuits")
 	positions := planet.electricTilePositions()
-	clusters := cxmath.FindClusters(positions)
+	clusters := cxmath.FindClusters(positions, constants.POWER_REACH_RADIUS)
+	log.Printf("found clusters: %v", clusters)
 }
