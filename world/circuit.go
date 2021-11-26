@@ -21,7 +21,7 @@ type BoundCircuit struct {
 }
 
 func (bc *BoundCircuit) Tiles() []*Tile {
-	topLayerTiles := bc.Planet.GetLayerTiles(TopLayer)
+	topLayerTiles := bc.Planet.GetLayerTiles(MidLayer)
 	tiles := []*Tile{}
 	for _,tileIdx := range bc.Circuit {
 		tile := &topLayerTiles[tileIdx]
@@ -33,13 +33,17 @@ func (bc *BoundCircuit) Tiles() []*Tile {
 func (bc *BoundCircuit) Wattage() int {
 	wattage := 0
 	for _,tile := range bc.Tiles() {
+		log.Printf("tile %s has wattage %d", tile.Name, tile.Power.Wattage)
 		wattage += tile.Power.Wattage
 	}
 	return wattage
 }
 
 func (bc *BoundCircuit) FixedTick() {
+	log.Printf("circuit wattage is %d", bc.Wattage())
+	log.Printf("circuit has %d electric tiles", len(bc.Tiles()))
 	active := bc.Wattage() > 0
+	if active { log.Printf("circuit is ON") }
 	bc.Toggle(active)
 }
 
@@ -88,5 +92,22 @@ func (planet *Planet) DetectCircuits() {
 				append(planet.Circuits[clusterID], tileIdx)
 		}
 	}
-	log.Printf("planet circuits look like %v", planet.Circuits)
+}
+
+func (planet *Planet) AddCircuitTile(at cxmath.Vec2i) {
+	for circuitID,tileIndices := range planet.Circuits {
+		for _,tileIdx := range tileIndices {
+			pos := planet.TileIdxToPos(tileIdx)
+			// TODO remove magic number
+			if pos.Sub(at).ManhattanDist() < 10 {
+				hereTileIdx := planet.GetTileIndex(int(at.X), int(at.Y))
+				// add new tile to circuit
+				planet.Circuits[circuitID] =
+					append(planet.Circuits[circuitID], hereTileIdx)
+				log.Printf("added tile to circuit")
+			}
+		}
+	}
+	log.Printf("could not find home for circuit")
+	// TODO create new circuit
 }
