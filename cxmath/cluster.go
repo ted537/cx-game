@@ -1,25 +1,41 @@
 package cxmath
 
-type IdxPair struct { First,Second int }
+import (
+	"log"
+)
+
+// unordered
+type IdxPair struct { A,B int }
+
+func NewIdxPair(A,B int) IdxPair{
+	// sort
+	if A>B {
+		tmp := A
+		A = B
+		B = tmp
+	}
+	return IdxPair {A,B}
+}
 
 // should probably optimize this at some point
 func FindClusters(points []Vec2i, radius int) [][]Vec2i {
 	connections := findConnections(points,radius)
+	log.Printf("connections: %v", connections)
 	clusters := collapseConnectionsToClusters(points,connections)
 	return clusters
 }
 
 // flood-fill variant
 func findConnections(points []Vec2i, radius int) map[IdxPair]bool {
-	lookup := map[Vec2i]bool{}
-	for _,point := range points { lookup[point] = true }
+	lookup := map[Vec2i]int{}
+	for idx,point := range points { lookup[point] = idx }
 
 	connections := map[IdxPair]bool{}
 	for pointIdx,point := range points {
-		for neighbourIdx,neighbour := range neighbours(point,radius) {
-			exists := lookup[neighbour]
+		for _,neighbour := range neighbours(point,radius) {
+			neighbourIdx,exists := lookup[neighbour]
 			if exists {
-				idxPair := IdxPair { pointIdx, neighbourIdx }
+				idxPair := NewIdxPair(pointIdx, neighbourIdx)
 				connections[idxPair] = true
 			}
 		}
@@ -50,10 +66,14 @@ func collapseConnectionsToClusters(
 	for idx := range clusterIDs { clusterIDs[idx] = idx }
 
 	clusters := map[int]*[]Vec2i{}
+	for idx,point := range points {
+		cluster := []Vec2i{point}
+		clusters[idx] = &cluster
+	}
 
 	for connection,_ := range connections {
-		firstClusterID := clusterIDs[connection.First]
-		secondClusterID := clusterIDs[connection.Second]
+		firstClusterID := clusterIDs[connection.A]
+		secondClusterID := clusterIDs[connection.B]
 
 		// point both existing clusters to (possibly) new slice
 		newPoints :=
