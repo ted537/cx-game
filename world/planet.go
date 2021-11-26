@@ -141,7 +141,8 @@ func (planet *Planet) PlaceTileTypeNoConnect(
 	if rootTileIdx == -1 {
 		return
 	}
-	tilesInLayer[rootTileIdx] = tileType.CreateTile(opts)
+	tile := tileType.CreateTile(opts)
+	tilesInLayer[rootTileIdx] = tile
 	rect := cxmath.Rect{
 		cxmath.Vec2i{int32(x), int32(y)},
 		tileType.Size(),
@@ -168,6 +169,9 @@ func (planet *Planet) PlaceTileTypeNoConnect(
 		}
 	}
 
+	if tile.IsElectric() {
+		log.Printf("placing electric tile")
+	}
 	planet.LightUpdateBlock(x, y)
 }
 

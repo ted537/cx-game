@@ -55,6 +55,7 @@ func directPlacerForTileSprites(tileSprites []RegisteredTiledSprite) world.Place
 	tile := world.NewNormalTile()
 	tile.Name = tileSprites[0].Metadata.Name
 	tile.TileTypeID = world.NextTileTypeID()
+	tile.Power.Wattage = tileSprites[0].Metadata.Wattage
 
 	return world.DirectPlacer{
 		SpriteID: tileSprites[0].SpriteID, Tile: tile,
