@@ -7,7 +7,7 @@ import (
 )
 
 type CircuitID uint32
-type Circuit []uint32 // list of tile indices
+type Circuit []int // list of tile indices
 type Circuits map[CircuitID]Circuit
 
 func (c Circuit) Bind(planet *Planet) BoundCircuit {
@@ -75,8 +75,18 @@ func (planet *Planet) electricTilePositions() []cxmath.Vec2i {
 }
 
 func (planet *Planet) DetectCircuits() {
-	log.Printf("detecting circuits")
 	positions := planet.electricTilePositions()
 	clusters := cxmath.FindClusters(positions, constants.POWER_REACH_RADIUS)
-	log.Printf("found clusters: %v", clusters)
+
+	planet.Circuits = map[CircuitID]Circuit{}
+	for clusterIdx,cluster := range clusters {
+		clusterID := CircuitID(clusterIdx)
+		planet.Circuits[clusterID] = Circuit{}
+		for _,point := range cluster {
+			tileIdx := planet.GetTileIndex(int(point.X), int(point.Y))
+			planet.Circuits[clusterID] =
+				append(planet.Circuits[clusterID], tileIdx)
+		}
+	}
+	log.Printf("planet circuits look like %v", planet.Circuits)
 }
