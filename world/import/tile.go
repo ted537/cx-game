@@ -65,6 +65,7 @@ func powerPlacerForTileSprites(tileSprites []RegisteredTiledSprite) world.Placer
 	tile := world.NewNormalTile()
 	tile.Name = tileSprites[0].Metadata.Name
 	tile.TileTypeID = world.NextTileTypeID()
+	tile.Power.Wattage = tileSprites[0].Metadata.Wattage
 
 	placer := world.LightPlacer{Tile: tile}
 	for _, tileSprite := range tileSprites {

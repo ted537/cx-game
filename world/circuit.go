@@ -2,6 +2,7 @@ package world
 
 import (
 	"log"
+	"github.com/skycoin/cx-game/cxmath"
 )
 
 type CircuitID uint32
@@ -58,22 +59,22 @@ func (planet *Planet) UpdateCircuits() {
 	}
 }
 
-func (planet *Planet) electricTileIndices() []int {
-	indices := []int{}
+func (planet *Planet) electricTilePositions() []cxmath.Vec2i {
+	positions := []cxmath.Vec2i{}
 	for y := 0 ; y < int(planet.Height) ; y++ {
 		for x := 0 ; x < int(planet.Width) ; x++ {
-			tile,ok := planet.GetTile(x,y, TopLayer)
+			tile,ok := planet.GetTile(x,y, MidLayer)
 			if ok && tile.IsElectric() {
-				idx := planet.GetTileIndex(x,y)
-				indices = append(indices, idx)
+				position := cxmath.Vec2i { int32(x), int32(y) }
+				positions = append(positions, position)
 			}
 		}
 	}
-	return indices
+	return positions
 }
 
 func (planet *Planet) DetectCircuits() {
-	for _,tileIdx := range planet.electricTileIndices() {
-		log.Printf("detected electric tile at idx = %d", tileIdx)
-	}
+	log.Printf("detecting circuits")
+	positions := planet.electricTilePositions()
+	clusters := cxmath.FindClusters(positions)
 }
